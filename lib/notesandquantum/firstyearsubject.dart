@@ -807,7 +807,7 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
                 fontSize: 35,
                 fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Colors.black12,
+          backgroundColor: Color(0xFF0000A0),
         ),
         body: SingleChildScrollView(
                   child: Container(

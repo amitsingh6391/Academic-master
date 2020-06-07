@@ -1,16 +1,27 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:Academicmaster/firstslide.dart';
 import 'package:Academicmaster/pages/commentspage.dart';
 import 'package:Academicmaster/pages/createpost.dart';
 import "package:Academicmaster/services/crud.dart";
+import 'package:Academicmaster/view/forgot_password.dart';
 import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter/foundation.dart';
 
 import "package:flutter/material.dart";
 
 import "package:cached_network_image/cached_network_image.dart";
+
+import 'package:gallery_saver/gallery_saver.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+
 import "commentspage.dart";
-
-
+import "package:link_text/link_text.dart";
 
 class HomPage extends StatefulWidget {
   @override
@@ -44,103 +55,100 @@ class _HomPageState extends State<HomPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-    //define a button to select the ne w post
+        //define a button to select the ne w post
 
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.green,
-      child: Icon(Icons.add_a_photo),
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CreateBlog()));
-      },
-    ),
-    appBar: AppBar(
-      backgroundColor: Colors.green,
-      title: Text(
-        "explore information",
-        style: TextStyle(
-            fontSize: 30,
-            fontFamily: "Dancing",
-            fontWeight: FontWeight.bold),
-      ),
-      actions: <Widget>[
-        Icon(
-          Icons.school,
-          size: 50,
-          color: Colors.red,
+        floatingActionButton: FloatingActionButton(
+          tooltip: "upload a new post",
+          backgroundColor: Colors.green,
+          child: Icon(Icons.camera_alt),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreateBlog()));
+          },
         ),
-      ],
-    ),
-    body: SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-    children: <Widget>[
-      Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.black, Colors.black],
+        appBar: AppBar(
+          backgroundColor: Color(0xFF0000A0),
+          title: Text(
+            "explore information",
+            style: TextStyle(
+                fontSize: 30,
+                fontFamily: "Dancing",
+                fontWeight: FontWeight.bold),
           ),
-          borderRadius: BorderRadius.circular(20),
+          leading: IconButton(
+                icon: Icon(Icons.cancel, color: Colors.white, size: 50),
+                onPressed: () {
+                  exit(0);
+                }),
         ),
-        child: blogsStream != null
-            ? Column(
-                children: <Widget>[
-                  StreamBuilder(
-                    stream: blogsStream,
-                    builder: (context, snapshot) {
-                      return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          itemCount: snapshot.data.documents.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return BlogsTile(
-                              authorName: snapshot.data.documents[index]
-                                  .data['authorName'],
-                              title: snapshot
-                                  .data.documents[index].data["title"],
-                              description: snapshot
-                                  .data.documents[index].data['desc'],
-                              imgUrl: snapshot
-                                  .data.documents[index].data['imgUrl'],
-                             
-                              
-                            );
-                          });
-                    },
-                  ),
+        body: SingleChildScrollView(
+           physics: ScrollPhysics(),
+                  child: Container(
+             
+              child: blogsStream != null
+                  ? Container(
+                                    child: StreamBuilder(
+                      stream: blogsStream,
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          reverse: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: snapshot.data.documents.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                      return BlogsTile(
+          authorName: snapshot.data.documents[index]
+              .data['authorName'],
+          title: snapshot
+              .data.documents[index].data["title"],
+          description: snapshot
+              .data.documents[index].data['desc'],
+          imgUrl: snapshot
+              .data.documents[index].data['imgUrl'],
+          iconUrl: snapshot
+              .data.documents[index].data['iconUrl'],
 
-                  
-                ],
-              )
-            : Container(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator(),
-              ),
-      ),
-    ],
-        ),
-      ));
+                      );
+                            });
+                      },
+                    ),
+                  )
+                  : Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          ),
+            ),
+        )
+        );
   }
 }
 
-class BlogsTile extends StatelessWidget {
-  String imgUrl, title, description, authorName;
+class BlogsTile extends StatefulWidget {
+  String title, description, imgUrl, iconUrl,authorName;
 
-  BuildContext context;
+
   BlogsTile(
       {@required this.imgUrl,
+      @required this.iconUrl,
       @required this.title,
       @required this.description,
       @required this.authorName});
 
+  @override
+  _BlogsTileState createState() => _BlogsTileState();
+}
+
+class _BlogsTileState extends State<BlogsTile> {
+  BuildContext context;
+
   DatabaseMethods databaseMethods = new DatabaseMethods();
+
   TextEditingController commentsEditingController = new TextEditingController();
+
   QuerySnapshot searchResultSnapshot;
 
   CrudMethods crudMethods = new CrudMethods();
-
-  //add comments in database
 
   addcomment() async {
     if (commentsEditingController.text.isNotEmpty) {
@@ -157,162 +165,228 @@ class BlogsTile extends StatelessWidget {
     }
   }
 
+  launchurl() async {
+    const url = "https://abesit.in/library/question-paper-bank/";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw " could not launch $url";
+    }
+  }
+  
+  var likes=0;
+  var dislikes=0;
+  var likecolor=Colors.black;
+  var discolor=Colors.black;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(bottom: 30),
+      // margin: EdgeInsets.only(bottom: 30),
 
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+      // decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
 
-        height: 960,
-        //color: Colors.red,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-    children: <Widget>[
-      Container(
-        height: 550,
-        width: MediaQuery.of(context).size.width,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: CachedNetworkImage(
-            imageUrl: imgUrl,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      Container(
-        height: 50,
-        child: Text(
-          "tags.. $title",
-          //textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w500,
-              fontFamily: "Dancing",
-              color: Colors.white),
-        ),
-      ),
-      Container(
-        height: 50,
-        child: Text(
-          "postby..  $authorName",
-          // textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w500,
-              fontFamily: "Dancing",
-              color: Colors.white),
-        ),
-      ),
-      Container(
-        height: 100,
-        child: Text(
-          "Captions:  $description",
-          style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w500,
-              fontFamily: "Dancing",
-              color: Colors.white),
-        ),
-      ),
+      height: 800,
+      //color: Colors.red,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: <Widget>[
+          Container(
+              child: Row(children: [
+                
 
-     // for comments only
-      // SizedBox(
-      //   height: 10,
-      // ),
-      // Container(
-      //   height: 40,
-      //   color: Colors.black,
-      //   child: Expanded(
-      //     child: Row(
-      //       children: <Widget>[
-      //       IconButton(
-      //           icon: Icon(
-      //             Icons.thumb_up,
-      //             color: Colors.blue,
-      //             size: 42,
-      //           ),
-      //           tooltip: "thanks for likemy post ...$authorName"),
-      //         SizedBox(
-      //           width: 10,
-      //         ),
-      //         IconButton(
-      //           icon: Icon(
-      //             Icons.thumb_down,
-      //             color: Colors.red,
-      //             size: 42,
-      //           ),
-      //           tooltip: "we try better next time $authorName",
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      SizedBox(
-        height: 10,
-      ),
-
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              Colors.white,
-              Colors.green,
-            ]),
-            borderRadius: BorderRadius.circular(30)),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: commentsEditingController,
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
-                    hintText: "Do comments ...",
-                    hintStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
-                    )),
-              ),
+                 
+                 ClipOval(
+                      child:CachedNetworkImage(
+                        imageUrl: widget.iconUrl,
+                        height:70,width:70,
+                      fit:BoxFit.cover)
+                 ),
+                 
+                 SizedBox(width:10),
+                Text(widget.authorName,
+                    style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Dancing",
+            color: Colors.black))
+              ] // fontWeight: FontWeight
+                  ),
             ),
-            GestureDetector(
-              onTap: () {
-                addcomment();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (conetxt) => Comments()));
-              },
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [
-                          Colors.pink,
-                          Colors.yellow,
-                        ],
-                        begin: FractionalOffset.topLeft,
-                        end: FractionalOffset.bottomRight),
-                    borderRadius: BorderRadius.circular(40)),
-                padding: EdgeInsets.all(12),
-                child: Icon(Icons.send),
+          Container(
+              height: 150,
+              width: MediaQuery.of(context).size.width,
+              child:
+              LinkText(
+                             
+                  text:  widget.title,
+                    textStyle: TextStyle(
+                        fontSize: 17,
+                        //fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
               ),
-            )
-          ],
-        ),
+
+          Container(
+            height: 430,
+            width: MediaQuery.of(context).size.width,
+            child: CachedNetworkImage(
+              imageUrl: widget.imgUrl,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.fill
+            ),
+          ),
+         
+         Container(
+          child:Row(
+            children: <Widget>[
+
+              GestureDetector(
+                              child: Icon(
+                  Icons.thumb_up,size:35,color: likecolor,
+                ),
+                onTap: (){
+                  setState(() {
+                    likes=likes+1;
+                    likecolor = Colors.blue;
+                  });
+                },
+                onLongPress: (){
+                  setState(() {
+                    likes= likes-1;
+                  likecolor= Colors.black;
+                  
+                  });
+                },
+              ),
+              
+              Text("$likes"),
+              SizedBox(width:10),
+              GestureDetector(
+                              child: Icon(
+                  Icons.thumb_down,size:35,color: discolor,
+                ),
+                onTap: (){
+                  setState(() {
+                    dislikes=dislikes+1;
+                    discolor = Colors.red;
+                  });
+                },
+                onLongPress: (){
+                  setState(() {
+                    dislikes= dislikes-1;
+                  discolor= Colors.black;
+                 
+                  });
+                },
+              ),
+              Text("$dislikes")
+            ],
+          )
+         ),
+
+          Container(
+           // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: commentsEditingController,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    decoration: InputDecoration(
+                        hintText: "Do comments ...",
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        )),
+                  ),
+                ),
+                Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(40)),
+                  //color:Colors.red,
+                  child: IconButton(
+                    tooltip: "share post with your friends",
+                    icon: Icon(
+                      Icons.share,
+                    ),
+                    //color: Colors.white,
+                    iconSize: 30,
+                    onPressed: () async => await _shareImageFromUrl(widget.imgUrl),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    addcomment();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (conetxt) => Comments()));
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                              Colors.pink,
+                              Colors.yellow,
+                            ],
+                            begin: FractionalOffset.topLeft,
+                            end: FractionalOffset.bottomRight),
+                        borderRadius: BorderRadius.circular(40)),
+                    padding: EdgeInsets.all(12),
+                    child: Icon(Icons.send),
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: 20,
+            color: Colors.white
+          )
+        ],
       ),
-      SizedBox(
-        height: 10,
-      ),
-      Container(
-        height: 20,
-        color: Colors.white,
-      )
-    ],
-        ),
+    );
+  }
+
+  Future<void> _shareImageFromUrl(String imgURL) async {
+    try {
+      var request = await HttpClient().getUrl(Uri.parse(imgURL));
+      var response = await request.close();
+      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+      await Share.file('Academic master', 'amlog.jpg', bytes, 'image/jpg');
+    } catch (e) {
+      print('error: $e');
+    }
+  }
+
+  Future<void> _saveNetworkImage(String imgUrl) async {
+    String path =
+        "https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg";
+
+    try {
+      GallerySaver.saveImage(path).then(
+        (bool success) {
+          // // setState(() {
+          // //   print('Image is saved');
+          // // },
+          // );
+          print("complete");
+          print(imgUrl);
+        },
       );
+    } catch (e) {
+      print("amit $e");
+    }
   }
 }

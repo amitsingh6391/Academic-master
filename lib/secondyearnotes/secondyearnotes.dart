@@ -172,9 +172,16 @@ String Mysubject(){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:Text("notes and quantum",style: TextStyle(
-        fontFamily: "Dancing",fontSize: 40,fontWeight: FontWeight.bold
-      ),)),
+      appBar: AppBar(title:
+      Text("Notes",
+      style: TextStyle(
+        fontFamily: "Dancing",
+        fontSize: 40,
+        fontWeight: FontWeight.bold
+      ),
+      ),
+      backgroundColor:Color(0xFF0000A0),
+      ),
       body: WebView(
         initialUrl: Mysubject(),
         javascriptMode: JavascriptMode.unrestricted,

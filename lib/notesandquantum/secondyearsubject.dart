@@ -919,7 +919,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
       appBar: AppBar(title: Text("Imporant questions",
       style:TextStyle(fontFamily: "Dancing",fontSize: 35,fontWeight:FontWeight.bold, ) ,
       ),
-      backgroundColor: Colors.green,),
+      backgroundColor: Color(0xFF0000A0),),
       body:SingleChildScrollView(
               child: Container(
                 color: Colors.black12,

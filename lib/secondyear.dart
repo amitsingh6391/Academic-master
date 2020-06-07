@@ -1,5 +1,7 @@
 import 'package:Academicmaster/os.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import "syllabus.dart";
 import 'notesandquantum/secondyearsubject.dart';
 import 'package:admob_flutter/admob_flutter.dart';
@@ -40,7 +42,7 @@ class _SecondyearhomeState extends State<Secondyearhome> {
         fontSize: 40,
         fontFamily: "Dancing"),
         ),
-backgroundColor: Colors.black12,
+backgroundColor: Color(0xFF0000A0),
       ),
       
       body:Secondyearbody()
@@ -93,7 +95,7 @@ class _SecondyearbodyState extends State<Secondyearbody> {
           //here we place the banner ads
           
            AdmobBanner(
-            adUnitId: "ca-app-pub-9875174510591808/8965297361",
+            adUnitId: "ca-app-pub-6517770398502887/4932199928",
              adSize: AdmobBannerSize.BANNER
              ),
 
@@ -150,7 +152,40 @@ class _SecondyearbodyState extends State<Secondyearbody> {
             ),
           ),
 
+
+
           SizedBox(height:10),
+           Expanded(
+            flex: 1,
+            child: Container(
+             // color: Colors.pink,
+              height: 100,
+             
+              child: Row(
+        children: <Widget>[
+          // Image.network(
+            
+          //     "https://media1.giphy.com/media/l1J9HWBKLp20YfNAY/source.gif",
+          //     width: 170,),
+          Icon(Icons.book,size: 100,color: Colors.pink,),
+          FlatButton(
+            child: Text(
+              "Previous year paper",
+              style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
+            ),
+            onPressed: (){
+             // Navigator.push(context, MaterialPageRoute(builder: (context)=>launchurl(),));
+              launchurl();
+            },
+          ),
+        ],
+                ),
+
+            ),
+          ),
+
+          SizedBox(height:10),
+
 
           Expanded(
             flex: 1,
@@ -218,6 +253,16 @@ class _SecondyearbodyState extends State<Secondyearbody> {
       
     
   }
+  //launchurl
+  launchurl() async{
+ const url = "https://abesit.in/library/question-paper-bank/";
+ if (await canLaunch(url)){
+   await launch(url);
+ }else{
+   throw " could not launch $url";
+ }
+
+}
 }
 
 

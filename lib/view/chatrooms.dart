@@ -1,3 +1,4 @@
+import 'package:Academicmaster/firstslide.dart';
 import 'package:Academicmaster/view/chat.dart';
 
 import 'package:Academicmaster/view/helper/authnicate.dart';
@@ -50,6 +51,11 @@ class _ChatRoomState extends State<ChatRoom> {
 
   getUserInfogetChats() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+   Constants.myEmail = await HelperFunctions.getUserEmailSharedPreference();
+    
+    
+
+
     DatabaseMethods().getUserChats(Constants.myName).then((snapshots) {
       setState(() {
         chatRooms = snapshots;
@@ -62,10 +68,11 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      drawer: NavDrawer(),
+       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xFF0000A0),
         title: Text(
           "yourfriends",
           style: TextStyle(
@@ -84,7 +91,8 @@ class _ChatRoomState extends State<ChatRoom> {
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Icon(Icons.exit_to_app)),
-          )
+          ),
+
         ],
       ),
       body: Container(
@@ -121,17 +129,18 @@ class ChatRoomsTile extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            color: Colors.yellow,
+            color: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             child: Row(
               children: [
                 Container(
                   height: 40,
                   width: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(40)),
-                  child: Icon(Icons.person),
+                  
+                 child: CircleAvatar(
+                   backgroundImage:AssetImage("images/thirdgif3.gif")
+                 ),
+                  
                 ),
                 SizedBox(
                   width: 12,

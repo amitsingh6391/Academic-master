@@ -1,4 +1,4 @@
-//import 'dart:io';
+
 import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';
 //import 'package:TheMitian/view/widgets/widget.dart';
@@ -68,87 +68,95 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+      Scaffold(
+        
+        resizeToAvoidBottomPadding: false,
       
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-         //title: Text("Let's talk",style: TextStyle(fontSize:30,fontFamily:"Dancing"),),
-        actions: <Widget>[
-          Icon(
-            Icons.message,
-            size: 60,
-          ),
-          Container(
-            width: 150,
-          )
-        ],
-      ),
-      body: Container(
-       // height: 500,
-        color:Colors.white,
-        child: Stack(
-          children: [
-            chatMessages(),
-            
-            Container(alignment: Alignment.bottomCenter,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              child: Container(
-                
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-               // color: Color(0x54FFFFFF),
-               color:Colors.white60,
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextField(
-                          controller: messageEditingController,
-                          //style: simpleTextStyle(),
-                          style: TextStyle(color:Colors.black),
-                          decoration: InputDecoration(
-                              hintText: " send Message ...",
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                               border: OutlineInputBorder(
-                              borderSide: BorderSide(color:Colors.black),)
-                          ),
-                        ),
-                        ),
-                    SizedBox(width: 16,),
-                    GestureDetector(
-                      onTap: () {
-                        addMessage();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Colors.pink,
-                                    Colors.yellow,
-                                  ],
-                                  begin: FractionalOffset.topLeft,
-                                  end: FractionalOffset.bottomRight
-                              ),
-                              borderRadius: BorderRadius.circular(40)
-                          ),
-                          padding: EdgeInsets.all(12),
-                          child: Icon(Icons.send),
-                            ),
-                    ),
-                  ],
-                ),
-              ),
+
+
+       
+        appBar: AppBar(
+          backgroundColor: Color(0xFF0000A0),
+           //title: Text("Let's talk",style: TextStyle(fontSize:30,fontFamily:"Dancing"),),
+          actions: <Widget>[
+            Icon(
+              Icons.message,
+              size: 60,
             ),
+            Container(
+              width: 150,
+            )
           ],
         ),
-      ),
+        backgroundColor:Colors.white,
+        body: Container(
+          child: Stack(
+                  // Column(
+             children: [
+                chatMessages(),
+                  
+                
+                Container(
+                    alignment: Alignment.bottomCenter,
+                    width:MediaQuery.of(context).size.width,
+                    child: Container(
+                      
+                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                     // color: Color(0x54FFFFFF),
+                     color:Colors.white60,
+                      child: Row(
+                        
+                        children: [
+                          Expanded(
+                child: TextField(
+                    controller: messageEditingController,
+                    //style: simpleTextStyle(),
+                    style: TextStyle(color:Colors.black),
+                    decoration: InputDecoration(
+                        hintText: " send Message...",
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                         border: OutlineInputBorder(
+                        borderSide: BorderSide(color:Colors.black),)
+                    ),
+                  ),
+                ),
+                          SizedBox(width: 16,),
+                         
+                          GestureDetector(
+                            onTap: () {
+                addMessage();
+                            },
+                            child: Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [
+                            Colors.pink,
+                            Colors.yellow,
+                          ],
+                          begin: FractionalOffset.topLeft,
+                          end: FractionalOffset.bottomRight
+                      ),
+                      borderRadius: BorderRadius.circular(40)
+                  ),
+                  padding: EdgeInsets.all(12),
+                  child: Icon(Icons.send),
+                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            //),
+          ),
+        ),
+      
     );
   }
 
@@ -192,7 +200,7 @@ class MessageTile extends StatelessWidget {
              Colors.black,
              Colors.black,
            ]:[
-             Colors.deepPurple,
+             Colors.green,
              Colors.blue,
            ]
 

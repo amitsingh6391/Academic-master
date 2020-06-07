@@ -37,7 +37,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 fontSize: 50,
                 fontFamily: "Dancing"),
           ),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Color(0xFF0000A0),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -314,7 +314,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                 fontSize: 35,
                 fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Colors.black12,
+          backgroundColor: Color(0xFF0000A0),
         ),
         body: SingleChildScrollView(
                   child: Container(

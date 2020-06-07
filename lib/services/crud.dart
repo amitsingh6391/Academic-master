@@ -9,9 +9,13 @@ class CrudMethods {
   }
 
   getData() async {
-    return await Firestore.instance.collection("blogs").snapshots();
+    return await Firestore.instance.collection("blogs").orderBy("time").snapshots();
   }
 
+  //profile....
+getprofile() async {
+    return await Firestore.instance.collection("user").snapshots();
+  }
 
 
   //now i add to comments in  database;

@@ -30,7 +30,7 @@ class _TheMitianState extends State<TheMitian> {
 
       debugShowCheckedModeBanner:false,
 
-      title:"E-Classroom",
+      title:"Academic master",
       //home:Homescreen(),
       home:SplashScreen(),
       
@@ -61,9 +61,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      backgroundColor: Colors.black,
+      //backgroundColor: Color(0xFF0000A0),
 
       body: Container(
+        decoration: BoxDecoration(
+          gradient:LinearGradient(colors: [
+            Colors.yellow,
+            Colors.blue,
+            Colors.green
+          ])
+        ),
              child: Column(
                children: <Widget>[
                  SizedBox
@@ -73,9 +80,9 @@ class _SplashScreenState extends State<SplashScreen> {
                  SizedBox(
   width: 350.0,
   child: ColorizeAnimatedTextKit(
-    onTap: () {
-        print("Tap Event");
-      },
+    // onTap: () {
+    //     print("Tap Event");
+    //   },
     text: [
       "Academic Master",
       
@@ -85,10 +92,13 @@ class _SplashScreenState extends State<SplashScreen> {
     
     ),
     colors: [
-      Colors.purple[100],
-      Colors.blue[100],
-      Colors.yellow[100],
-      Colors.red[100],
+      Colors.redAccent[200],
+      Colors.pink[200],
+
+      //Colors.[100],
+      Color(0xFF0000A0)
+
+      
     ],
     textAlign: TextAlign.center,
     alignment: AlignmentDirectional.topStart // or Alignment.topLeft

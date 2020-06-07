@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-
 class CreateBlog extends StatefulWidget {
   @override
   _CreateBlogState createState() => _CreateBlogState();
@@ -17,25 +16,20 @@ class _CreateBlogState extends State<CreateBlog> {
   String authorName, title, desc;
 
   File selectedImage;
+  File selectedIcon;
   bool _isLoading = false;
   CrudMethods crudMethods = new CrudMethods();
 
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    // setState(() {
-    //   selectedImage = image;
-    // });
     cropImage(image);
   }
 
   Future getImagefromcamera() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
-  //  slectedImage = image;
-  //   }); setState(() {
-  //     se
-  cropImage(image);
+    cropImage(image);
   }
 
   cropImage(File image) async {
@@ -47,28 +41,60 @@ class _CreateBlogState extends State<CreateBlog> {
     });
   }
 
+  //for imageicon...
+
+  Future getIcon() async {
+    var icon = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    cropIcon(icon);
+  }
+
+  cropIcon(File icon) async {
+    File croppedIcon = await ImageCropper.cropImage(
+        sourcePath: icon.path, compressQuality: 40);
+
+    setState(() {
+      selectedIcon = croppedIcon;
+    });
+  }
+
   uploadBlog() async {
-    if (selectedImage != null) {
+    if (selectedIcon != null && selectedImage!= null) {
       setState(() {
         _isLoading = true;
+       // print("hii");
       });
 
       /// uploading image to firebase storage
-      StorageReference firebaseStorageRef = FirebaseStorage.instance
+      StorageReference firebaseStorageRefe = FirebaseStorage.instance
           .ref()
           .child("blogImages")
           .child("${randomAlphaNumeric(9)}.jpg");
 
-      final StorageUploadTask task = firebaseStorageRef.putFile(selectedImage);
+      final StorageUploadTask tasks = firebaseStorageRefe.putFile(selectedImage);
 
-      var downloadUrl = await (await task.onComplete).ref.getDownloadURL();
+      var downloadUrl = await (await tasks.onComplete).ref.getDownloadURL();
       print("this is url $downloadUrl");
 
-      Map<String, String> blogMap = {
+      //for icons...
+
+      StorageReference firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child("posticon")
+          .child("${randomAlphaNumeric(9)}.jpg");
+
+      final StorageUploadTask task = firebaseStorageRef.putFile(selectedIcon);
+
+      var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
+      print("this is url $downloadiconUrl");
+
+      Map<String, dynamic> blogMap = {
         "imgUrl": downloadUrl,
+        "iconUrl": downloadiconUrl,
         "authorName": authorName,
         "title": title,
-        "desc": desc
+        "desc": desc,
+        'time': DateTime.now().millisecondsSinceEpoch,
       };
       crudMethods.addData(blogMap).then((result) {
         Navigator.push(
@@ -84,46 +110,222 @@ class _CreateBlogState extends State<CreateBlog> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.cyan,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF0000A0),
         title: Text(
           "Upload information",
           style: TextStyle(
               fontFamily: "Dancing", fontSize: 30, fontWeight: FontWeight.bold),
         ),
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () {
-              uploadBlog();
-            },
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.file_upload)),
-          )
-        ],
       ),
       body: _isLoading
           ? Container(
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             )
-          : Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.black26, Colors.black45],
+          : SingleChildScrollView(
+                      child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  // gradient: LinearGradient(
+                  //   colors: [Colors.black26, Colors.black45],
+                  // ),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
-                  GestureDetector(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          getImage();
+                        },
+                        child: selectedImage != null
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [Colors.black26, Colors.black45],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                height: 350,
+                                width: MediaQuery.of(context).size.width,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(6),
+                                  child: Image.file(
+                                    selectedImage,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                height: 210,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Colors.yellow,
+                                      Colors.orange,
+                                    ]),
+                                    borderRadius: BorderRadius.circular(50)),
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text("Slect image for post"),
+                                    IconButton(
+                                      tooltip: "take image from phone",
+                                      color: Colors.white,
+                                      icon: Icon(Icons.image),
+                                      iconSize: 70,
+                                      onPressed: () {
+                                        getImage();
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          getImagefromcamera();
+                                        },
+                                        tooltip: "take image from camera",
+                                        icon: Icon(Icons.camera_alt),
+                                        color: Colors.white,
+                                        iconSize: 70),
+                                  ],
+                                ),
+                              )),
+
+                    //           SizedBox(height: 20,),
+                    //           Text("Select image for your profile icon",style: TextStyle(color:Colors.white),),
+
+                    //  GestureDetector(
+                    //   onTap: () {
+                    //     getIcon();
+                    //   },
+                    //   child: selectedIcon != null
+                    //       ? Container(
+                    //           decoration: BoxDecoration(
+                    //             gradient: LinearGradient(
+                    //               colors: [Colors.black26, Colors.black45],
+                    //             ),
+                    //             borderRadius: BorderRadius.circular(20),
+                    //           ),
+                    //           margin: EdgeInsets.symmetric(horizontal: 16),
+                    //           height: 170,
+                    //           width: MediaQuery.of(context).size.width,
+                    //           child: ClipRRect(
+                    //             borderRadius: BorderRadius.circular(6),
+                    //             child: Image.file(
+                    //               selectedIcon,
+                    //               fit: BoxFit.cover,
+                    //             ),
+                    //           ),
+                    //         )
+                    //       : Container(
+                    //           margin: EdgeInsets.symmetric(horizontal: 16),
+                    //           height: 100,
+                    //           decoration: BoxDecoration(
+                    //              shape: BoxShape.circle,
+                    //              color: Colors.black
+                    //              ),
+                    //           //width: MediaQuery.of(context).size.width,
+                    //           child: Column(
+                    //             children: <Widget>[
+                                  
+                                  
+                    //               IconButton(
+                    //                 tooltip: "take image from phone",
+                    //                 color: Colors.white,
+                    //                 icon: Icon(Icons.person),
+                    //                 iconSize: 70,
+                    //                 onPressed: () {
+                    //                   getIcon();
+                    //                 },
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: <Widget>[
+                          TextField(
+                            decoration: InputDecoration(
+                              icon: Icon(
+                                Icons.person,
+                              ),
+                              hintText: "User name.....",
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black)),
+                            ),
+                            onChanged: (val) {
+                              authorName = val;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              icon: Icon(
+                                Icons.description,
+                              ),
+                              hintText: "Description",
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.yellow)),
+                            ),
+                            onChanged: (val) {
+                              title = val;
+                            },
+                          ),
+                         
+                          // TextField(
+
+                          //   decoration: InputDecoration(
+                          //     icon: Icon(Icons.face),
+                          //     hintText: "tags.....",
+                          //     border: OutlineInputBorder(
+                          //         borderSide: BorderSide(color: Colors.white)),
+                          //   ),
+                          //   onChanged: (val) {
+                          //     desc = val;
+                          //   },
+                          // ),
+
+                          //select you posticon..
+                          
+
+                          
+                          // SizedBox(height: 20),
+
+                          // GestureDetector(
+                          //     onTap: () {
+                          //       uploadBlog();
+                          //     },
+                          //     child: Icon(
+                          //       Icons.cloud_upload,
+                          //       size: 100,
+                          //     ))
+                        ],
+                      ),
+
+                        
+                    ),
+                     SizedBox(height: 10,),
+                              Text("Select profile pic",style: TextStyle(color:Colors.white),),
+
+                     GestureDetector(
                       onTap: () {
-                        getImage();
+                        getIcon();
                       },
-                      child: selectedImage != null
+                      child: selectedIcon != null
                           ? Container(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -137,108 +339,52 @@ class _CreateBlogState extends State<CreateBlog> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(6),
                                 child: Image.file(
-                                  selectedImage,
+                                  selectedIcon,
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             )
                           : Container(
                               margin: EdgeInsets.symmetric(horizontal: 16),
-                              height: 310,
+                              height: 100,
                               decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    Colors.yellow,
-                                    Colors.orange,
-                                  ]),
-                                  borderRadius: BorderRadius.circular(50)),
-                              width: MediaQuery.of(context).size.width,
+                                 shape: BoxShape.circle,
+                                 color: Colors.black
+                                 ),
+                              //width: MediaQuery.of(context).size.width,
                               child: Column(
                                 children: <Widget>[
+                                  
+                                  
                                   IconButton(
-                                    tooltip: "take image from phone",
+                                    tooltip: "Select ypur profile pic",
                                     color: Colors.white,
-                                    icon: Icon(Icons.image),
+                                    icon: Icon(Icons.person),
                                     iconSize: 70,
-                                    onPressed: (){
-                                      getImage();
+                                    onPressed: () {
+                                      getIcon();
                                     },
                                   ),
-                                  SizedBox(
-                                    height: 130,
-                                  ),
-                                  IconButton(
-                                    onPressed:(){
-
-                                      getImagefromcamera();
-
-                                    },
-                                    tooltip: "take image from camera" ,
-                                   icon: Icon(Icons.camera_alt),
-                                      color: Colors.white, 
-                                      iconSize: 70),
                                 ],
                               ),
                             )),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal:20,vertical:20),
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      
-                      children: <Widget>[
-                        TextField(
-                          
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.person,),
-                            hintText: "User name.....",
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)),
-                          ),
-                          onChanged: (val) {
-                            authorName = val;
-                          },
-                        ),
-                        SizedBox(height: 10,),
-                        TextField(
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.description,),
-                            hintText: "#captions.....",
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.yellow)),
-                          ),
-                          onChanged: (val) {
-                            title = val;
-                          },
-                        ),
-                         SizedBox(height: 10,),
-                        TextField(
-                        
-                          decoration: InputDecoration(
-                            icon: Icon(Icons.face),
-                            hintText: "tags.....",
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                          ),
-                          onChanged: (val) {
-                            desc = val;
-                          },
-                        ),
-                        SizedBox(height:20),
 
-                        GestureDetector(
-                          onTap: (){
-                            uploadBlog();
-                          },
-                          child: Icon
-                          (Icons.cloud_upload,size: 100,))
-                      ],
-                    ),
-                  )
-                ],
+                            SizedBox(height: 10),
+
+                            Text("upload post"),
+                            
+                          GestureDetector(
+                              onTap: () {
+                                uploadBlog();
+                              },
+                              child: Icon(
+                                Icons.cloud_upload,
+                                size: 100,
+                              ))
+                  ])
+                ),
               ),
-            ),
-    );
+          );
+    
   }
 }

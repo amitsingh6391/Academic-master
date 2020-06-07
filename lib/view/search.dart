@@ -140,9 +140,10 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+     
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFF0000A0),
         title: Text(
           "join new friends",
           style: TextStyle(
@@ -166,7 +167,7 @@ class _SearchState extends State<Search> {
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    color: Colors.yellow,
+                    color: Colors.white,
                     child: Row(
                       children: [
                         Expanded(

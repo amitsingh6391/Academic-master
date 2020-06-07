@@ -42,6 +42,7 @@ CrudMethods crudMethods = new CrudMethods();
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.cyan,
        appBar: AppBar(
           backgroundColor: Colors.green,
           title: Text(
@@ -66,9 +67,9 @@ CrudMethods crudMethods = new CrudMethods();
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.black, Colors.black],
-                ),
+                // gradient: LinearGradient(
+                //   colors: [Colors.black, Colors.black],
+                // ),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: commentsStream  != null

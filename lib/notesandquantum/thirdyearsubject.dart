@@ -848,7 +848,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 fontSize: 40,
               ),
           ),
-          backgroundColor: Colors.teal,
+          backgroundColor: Color(0xFF0000A0),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -1133,7 +1133,7 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
           style: TextStyle(
               fontFamily: "Dancing", fontSize: 30, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF0000A0),
       ),
       body: SingleChildScrollView(
         child: Container(

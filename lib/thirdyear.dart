@@ -1,4 +1,5 @@
 import 'package:Academicmaster/notesandquantum/thirdyearsubject.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import "syllabus.dart";
   
@@ -43,7 +44,7 @@ Widget build(BuildContext context) {
           fontWeight: FontWeight.bold,
         ),
       ),
-      backgroundColor:Colors.black12 ),
+      backgroundColor:Color(0xFF0000A0) ),
       body: Thirdyearbody(),
     );
   }
@@ -65,7 +66,7 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
    @override
   void initState() {               //intilazied the appid
     super.initState();
-    //Admob.initialize(ams.getAdMobAppId());
+    Admob.initialize(ams.getAdMobAppId());
   }
 
   
@@ -89,10 +90,10 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
               )
             ),
 
-            // AdmobBanner(
-            // adUnitId:"ca-app-pub-9875174510591808/8965297361",
-            //  adSize: AdmobBannerSize.BANNER
-            //  ),
+            AdmobBanner(
+            adUnitId:"ca-app-pub-6517770398502887/9636666030",
+             adSize: AdmobBannerSize.BANNER
+             ),
              
  
             Expanded(
@@ -119,6 +120,39 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
                       ),
                       onPressed: () {
                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Viewpdf(),));
+
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            Expanded(
+              flex: 1,
+              child: Container(
+               // color: Colors.yellow,
+                child: Row(
+                  children: <Widget>[
+
+                    // Image.network(
+                    //    "https://cdn.clipart.email/5ee45e6ab3b1ea49ea8343740b596489_clipart-books-gif-animation-clipart-books-gif-animation-_1000-1000.gif",
+                       
+                    //    width: 100,),
+                         
+                       Icon(Icons.book,size: 100,color: Colors.pink,),
+                    
+                    FlatButton(
+                      child: Text(
+                        "Previous year paper",
+                        style: TextStyle(
+                            fontFamily: "Dancing",
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                      // Navigator.push(context, MaterialPageRoute(builder: (context)=>launchurl(),));
+                       launchurl();
 
                       },
                     ),
@@ -186,4 +220,13 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
       color: Colors.black12,
     );
   }
+  launchurl() async{
+ const url = "https://abesit.in/library/question-paper-bank/";
+ if (await canLaunch(url)){
+   await launch(url);
+ }else{
+   throw " could not launch $url";
+ }
+
+}
 }

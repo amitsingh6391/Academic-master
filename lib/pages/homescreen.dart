@@ -1,8 +1,10 @@
+import 'package:Academicmaster/branch.dart';
 import 'package:Academicmaster/os.dart';
 
 import "package:flutter/material.dart";
 
 import '../aktuerp.dart';
+
 import "homepage.dart";
 
 import "package:Academicmaster/pages/posts.dart";
@@ -21,12 +23,16 @@ class _HomescreenState extends State<Homescreen> {
   var pages = [
    
   
-    MyApp(),
-
-    Homepage(),
+    
+   MyApp(),
+   HomPage(),
+   
+    Branch(),
 
     
-    HomPage(),
+    
+    
+   
 
     Aktuerp(),
 
@@ -47,7 +53,7 @@ class _HomescreenState extends State<Homescreen> {
           items: [
              
             BottomNavigationBarItem(
-              icon: Icon(Icons.group),
+              icon: Icon(Icons.people),
               title: Text("Chat"),
             ),
             BottomNavigationBarItem(
@@ -55,8 +61,8 @@ class _HomescreenState extends State<Homescreen> {
               title: Text("Home"),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.image),
-              title: Text("blogs"),
+              icon: Icon(Icons.book),
+              title: Text("Study material"),
             ),
 
             BottomNavigationBarItem(
