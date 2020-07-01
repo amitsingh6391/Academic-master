@@ -4,6 +4,10 @@ import 'package:Academicmaster/pages/homepage.dart';
 import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
 
+import 'civil/fetchcivildata.dart';
+import 'ece/fetchecedata.dart';
+import 'mechnical/fetchsubject.dart';
+
 class Branch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -81,7 +85,7 @@ class Branch extends StatelessWidget {
                   children: <Widget>[
                     MyContainer("Civil", context),
                     box(),
-                    MyContainer("Electrical", context),
+                    MyContainer("ECE", context),
                   ],
                 ),
                 box(),
@@ -116,14 +120,33 @@ class Branch extends StatelessWidget {
           )),
       child: GestureDetector(
         onTap: () {
+          if(branch=="Computer science"){
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Homepage()));
+          }
+         
+          else if(branch=="Civil"){
+              Navigator.push(
+              context, MaterialPageRoute(builder: (context) =>CivilPage()));
+          }
+           else if(branch=="Mechnical"){
+              Navigator.push(
+              context, MaterialPageRoute(builder: (context) =>MechnicalPage()));
+          }
+           else if(branch=="ECE"){
+             Navigator.push(
+              context, MaterialPageRoute(builder: (context) =>ECEPage()));
+          }
+          else{
+           Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Homepage()));
+          }
         },
         child: Center(
           child: Text(
             branch,
             style: TextStyle(
-                fontFamily: "Dancing", fontSize: 35, color: Colors.white),
+                fontFamily: "Dancing", fontSize: 30, color: Colors.white),
           ),
         ),
       ),

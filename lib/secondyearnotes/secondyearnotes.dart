@@ -64,6 +64,8 @@ String mathnotes = "https://drive.google.com/open?id=1GIaNhd5IbNQwaVahaWUBnF5Xl0
 
     String osq = "https://drive.google.com/open?id=1K48ntlO0cwJhRVwycmgbQvpo6xULNDSZ";
 
+    String python = "https://drive.google.com/file/d/1pXKOeQ8nAWfSpcthVTfMuaukS_xXRQHp/view?usp=sharing";
+
 
 String Mysubject(){
      
@@ -74,6 +76,9 @@ String Mysubject(){
      else if(widget.subject=="cssq"){
        return (cssq);
      }
+     else if(widget.subject=="cssnotes"){
+       return (cssq);
+     }
      else if(widget.subject=="mpq"){
        return (mpq);
      }
@@ -82,6 +87,12 @@ String Mysubject(){
        return (uhmvq);
 
      }
+     else if(widget.subject == "uhmvnotes"){
+
+       return (uhmvq);
+
+     }
+
      else if(widget.subject == "taflunit1q"){
 
        return (taflunit1q);
@@ -159,6 +170,11 @@ String Mysubject(){
      else if(widget.subject == "mathnotes"){
 
        return (mathnotes);
+
+     }
+      else if(widget.subject == "python"){
+
+       return (python);
 
      }
      else{

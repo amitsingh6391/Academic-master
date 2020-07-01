@@ -95,7 +95,7 @@ class _SecondyearbodyState extends State<Secondyearbody> {
           //here we place the banner ads
           
            AdmobBanner(
-            adUnitId: "ca-app-pub-6517770398502887/4932199928",
+            adUnitId: "ca-app-pub-4709741532241387/9725279456",
              adSize: AdmobBannerSize.BANNER
              ),
 
@@ -231,7 +231,7 @@ class _SecondyearbodyState extends State<Secondyearbody> {
           FlatButton(
             child: Text(
               "Important question",
-              style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
+              style: TextStyle(fontFamily: "Dancing", fontSize: 23,fontWeight: FontWeight.bold),
             ),
             onPressed: (){
               Navigator.push(context,MaterialPageRoute(builder: (context)=>Secondyearquantum(),),);

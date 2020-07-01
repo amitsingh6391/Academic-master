@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:Academicmaster/civil/uploacivildata.dart';
 import 'package:Academicmaster/pages/commentspage.dart';
-import 'package:Academicmaster/pages/createpost.dart';
 import 'package:Academicmaster/services/admob_service.dart';
 import "package:Academicmaster/services/crud.dart";
 import 'package:Academicmaster/view/helper/constants.dart';
@@ -18,16 +18,14 @@ import "package:cached_network_image/cached_network_image.dart";
 import 'package:gallery_saver/gallery_saver.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-
-import "commentspage.dart";
 import "package:link_text/link_text.dart";
 
-class HomPage extends StatefulWidget {
+class CivilPage extends StatefulWidget {
   @override
-  _HomPageState createState() => _HomPageState();
+  _CivilPageState createState() => _CivilPageState();
 }
 
-class _HomPageState extends State<HomPage> {
+class _CivilPageState extends State<CivilPage> {
   CrudMethods crudMethods = new CrudMethods();
 
   Stream blogsStream;
@@ -42,7 +40,7 @@ class _HomPageState extends State<HomPage> {
 
   @override
   void initState() {
-    crudMethods.getData().then((result) {
+    crudMethods.getcivilData().then((result) {
       setState(() {
         blogsStream = result;
       });
@@ -55,9 +53,9 @@ class _HomPageState extends State<HomPage> {
     return Scaffold(
 
         //define a button to select the ne w post
-
+ 
         floatingActionButton: FloatingActionButton(
-          tooltip: "upload a new post",
+          tooltip: "upload a new civilcontent",
           backgroundColor: Colors.green,
           child: Icon(Icons.add),
           onPressed: () {
@@ -68,9 +66,9 @@ class _HomPageState extends State<HomPage> {
         appBar: AppBar(
           backgroundColor: Color(0xFF0000A0),
           title: Text(
-            "explore information",
+            "explore civil information",
             style: TextStyle(
-                fontSize: 30,
+                fontSize: 25,
                 fontFamily: "Dancing",
                 fontWeight: FontWeight.bold),
           ),
@@ -81,47 +79,51 @@ class _HomPageState extends State<HomPage> {
           //       }),
         ),
         body: SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Container(
-            child: blogsStream != null
-                ? Container(
-                    child: StreamBuilder(
+           physics: ScrollPhysics(),
+                  child: Container(
+             
+              child: blogsStream != null
+                  ? Container(
+                                    child: StreamBuilder(
                       stream: blogsStream,
                       builder: (context, snapshot) {
                         return ListView.builder(
-                            reverse: true,
+                          reverse: true,
                             physics: NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             itemCount: snapshot.data.documents.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return BlogsTile(
-                                authorName: snapshot
-                                    .data.documents[index].data['authorName'],
-                                title: snapshot
-                                    .data.documents[index].data["title"],
-                                description:
-                                    snapshot.data.documents[index].data['desc'],
-                                imgUrl: snapshot
-                                    .data.documents[index].data['imgUrl'],
-                                iconUrl: snapshot
-                                    .data.documents[index].data['iconUrl'],
-                              );
+                      return BlogsTile(
+          authorName: snapshot.data.documents[index]
+              .data['authorName'],
+          title: snapshot
+              .data.documents[index].data["title"],
+          description: snapshot
+              .data.documents[index].data['desc'],
+          imgUrl: snapshot
+              .data.documents[index].data['imgUrl'],
+          iconUrl: snapshot
+              .data.documents[index].data['iconUrl'],
+
+                      );
                             });
                       },
                     ),
                   )
-                : Container(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(),
-                  ),
+                  : Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
           ),
-        ));
+            ),
+        )
+        );
   }
 }
 
 class BlogsTile extends StatefulWidget {
-  String title, description, imgUrl, iconUrl, authorName;
+  String title, description, imgUrl, iconUrl,authorName;
+
 
   BlogsTile(
       {@required this.imgUrl,
@@ -168,20 +170,23 @@ class _BlogsTileState extends State<BlogsTile> {
       throw " could not launch $url";
     }
   }
-
-  var likes = 0;
-  var dislikes = 0;
-  var likecolor = Colors.black;
-  var discolor = Colors.black;
+  
+  var likes=0;
+  var dislikes=0;
+  var likecolor=Colors.black;
+  var discolor=Colors.black;
 
   final ams = AdMobService(); //call admobclass from services
 
-  @override
-  void initState() {
-    //intilazied the appid
+  
+
+   @override
+  void initState() {               //intilazied the appid
     super.initState();
     Admob.initialize(ams.getAdMobAppId());
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -189,91 +194,108 @@ class _BlogsTileState extends State<BlogsTile> {
       // margin: EdgeInsets.only(bottom: 30),
 
       // decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
-
-      height: 790,
+      
+      height: 465,
       //color: Colors.red,
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: <Widget>[
           Container(
-            child: Row(children: [
-              ClipOval(
-                  child: CachedNetworkImage(
-                      imageUrl: widget.iconUrl,
-                      height: 70,
-                      width: 70,
-                      fit: BoxFit.cover)),
-              SizedBox(width: 10),
-              Text(widget.authorName,
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Dancing",
-                      color: Colors.black))
-            ] // fontWeight: FontWeight
-                ),
-          ),
-          Container(
-            height: 140,
-            width: MediaQuery.of(context).size.width,
-            child: LinkText(
-              text: widget.title,
-              textStyle: TextStyle(
-                  fontSize: 17,
-                  //fontWeight: FontWeight.w500,
-                  color: Colors.black),
+              child: Row(children: [
+                
+
+                 
+                 ClipOval(
+                      child:CachedNetworkImage(
+                        imageUrl: widget.iconUrl,
+                        height:50,width:50,
+                      fit:BoxFit.cover)
+                 ),
+                 
+                 SizedBox(width:10),
+                Text(widget.authorName,
+                    style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Dancing",
+            color: Colors.black))
+              ] // fontWeight: FontWeight
+                  ),
             ),
-          ),
           Container(
-            height: 400,
+              height: 90,
+              width: MediaQuery.of(context).size.width,
+              child:
+              LinkText(
+                             
+                  text:  widget.title,
+                    textStyle: TextStyle(
+                        fontSize: 17,
+                        //fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                  ),
+              ),
+
+          Container(
+            height: 180,
             width: MediaQuery.of(context).size.width,
             child: CachedNetworkImage(
-                imageUrl: widget.imgUrl,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.fill),
+              imageUrl: widget.imgUrl,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.fill
+            ),
           ),
-          Container(
-              child: Row(
+         
+         Container(
+          child:Row(
             children: <Widget>[
+
               GestureDetector(
-                child: Icon(
-                  Icons.thumb_up,
-                  size: 35,
-                  color: likecolor,
+                              child: Icon(
+                  Icons.thumb_up,size:35,color: likecolor,
                 ),
-                onTap: () {
+                onTap: (){
                   setState(() {
+                    
                     likecolor = Colors.blue;
                   });
                 },
-                onLongPress: () {
+                onLongPress: (){
                   setState(() {
-                    likecolor = Colors.black;
+                  
+                  likecolor= Colors.black;
+                  
                   });
                 },
               ),
-              SizedBox(width: 10),
+              
+             
+              SizedBox(width:10),
               GestureDetector(
-                child: Icon(
-                  Icons.thumb_down,
-                  size: 35,
-                  color: discolor,
+                              child: Icon(
+                  Icons.thumb_down,size:35,color: discolor,
                 ),
-                onTap: () {
+                onTap: (){
                   setState(() {
+                    
                     discolor = Colors.red;
                   });
                 },
-                onLongPress: () {
+                onLongPress: (){
                   setState(() {
-                    discolor = Colors.black;
+                
+                  discolor= Colors.black;
+                 
                   });
                 },
               ),
+             
             ],
-          )),
+          )
+         ),
+
           Container(
-            // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+           // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Row(
               children: [
                 Expanded(
@@ -285,7 +307,7 @@ class _BlogsTileState extends State<BlogsTile> {
                         hintText: "Do comments ...",
                         hintStyle: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                         ),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red),
@@ -306,8 +328,7 @@ class _BlogsTileState extends State<BlogsTile> {
                     ),
                     //color: Colors.white,
                     iconSize: 30,
-                    onPressed: () async =>
-                        await _shareImageFromUrl(widget.imgUrl),
+                    onPressed: () async => await _shareImageFromUrl(widget.imgUrl),
                   ),
                 ),
                 GestureDetector(
@@ -335,13 +356,13 @@ class _BlogsTileState extends State<BlogsTile> {
               ],
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(height: 20, color: Colors.white),
-          // AdmobBanner(
-          //     adUnitId: "ca-app-pub-4709741532241387/1729285651",
-          //     adSize: AdmobBannerSize.BANNER),
+         
+        
+         
+           AdmobBanner(
+            adUnitId:"ca-app-pub-4709741532241387/1144081856",
+             adSize: AdmobBannerSize.BANNER
+             ),
         ],
       ),
     );

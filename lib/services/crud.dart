@@ -8,9 +8,47 @@ class CrudMethods {
     });
   }
 
+
+//add civil data..on firestore
+   Future<void> addcivilData(civilData) async {
+    Firestore.instance.collection("civil").add(civilData).catchError((e) {
+      print(e);
+    });
+  }
+
+  //add ece data on firestore..
+
+  Future<void> addeceData(eceData) async {
+    Firestore.instance.collection("ece").add(eceData).catchError((e) {
+      print(e);
+    });
+  }
+
+  //add mechnical data...on firestore
+
+   Future<void> addmechnicalData(mechnicalData) async {
+    Firestore.instance.collection("mechnical").add(mechnicalData).catchError((e) {
+      print(e);
+    });
+  }
+
   getData() async {
     return await Firestore.instance.collection("blogs").orderBy("time").snapshots();
   }
+
+   getcivilData() async {
+    return await Firestore.instance.collection("civil").orderBy("time").snapshots();
+  }
+
+
+ geteceData() async {
+    return await Firestore.instance.collection("ece").orderBy("time").snapshots();
+  }
+
+ getmechnicalData() async {
+    return await Firestore.instance.collection("mechnical").orderBy("time").snapshots();
+  }
+
 
   //profile....
 getprofile() async {
@@ -18,7 +56,10 @@ getprofile() async {
   }
 
 
-  //now i add to comments in  database;
+
+
+
+  //now we add to comments in  database;
 
   Future<void> addcomments(postcomments) async {
     Firestore.instance.collection("comments").add(postcomments).catchError((e) {

@@ -57,7 +57,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                           "Distributed system",
                           style: TextStyle(
                               fontFamily: "Dancing",
-                              fontSize: 40,
+                              fontSize: 38,
                               fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -269,7 +269,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         "Human coumpterinterface",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 30,
+                            fontSize: 27,
                             fontWeight: FontWeight.bold),
                       ),
                       mycontainer(10),
@@ -311,7 +311,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
             "Important questions",
             style: TextStyle(
                 fontFamily: "Dancing",
-                fontSize: 35,
+                fontSize: 32,
                 fontWeight: FontWeight.bold),
           ),
           backgroundColor: Color(0xFF0000A0),
@@ -329,7 +329,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                         "Distributessystem",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 50,
+                            fontSize: 40,
                             fontFamily: "Dancing"),
                       ),
               
@@ -462,7 +462,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                         "Human Coumpter Interfaceq",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 30,
+                            fontSize: 21,
                             fontWeight: FontWeight.bold),
                       ),
                       //mycontainer(20),
@@ -479,7 +479,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                         "Understanding The Humanbeing ",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 25,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
                       //mycontainer(20),

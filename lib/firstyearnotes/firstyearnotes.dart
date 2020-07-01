@@ -14,7 +14,7 @@ class _Notes1State extends State<Notes1> {
 
   String chemistrynotes = "https://drive.google.com/open?id=1LnwEa-G6VdcCip3wpD2bCReT25S5PYwO";
     //String Chemistrynotes = "https://drive";
-
+ String chemistryq = "https://drive.google.com/file/d/1LnwEa-G6VdcCip3wpD2bCReT25S5PYwO/view?usp=sharing";
     
     //notes of physics
     String physicsunit1 =  "https://drive.google.com/open?id=1EPyTZusI6idqugU7UDyHQQTHhIJuNrr0";
@@ -27,6 +27,7 @@ class _Notes1State extends State<Notes1> {
     String cunit3 = "https://drive.google.com/open?id=1EWnCYSQKn9EmmGRzCToqLmIkOTjnQdqL";
     String cunit4 = "https://drive.google.com/open?id=1E_WbxyEuTic5mAfOa8VZgU5x8xtXtwYn";
     String cunit5 = "https://drive.google.com/open?id=1Ea5reJMl8lFAJjy6IcAMuXDW7FFYXP6_";
+    String cquantum = "https://drive.google.com/file/d/1cgaq6AtwwfrF7uWL7nxILYZZRTIFH5Pb/view?usp=sharing";
 
     String electricalnotes = "https://drive.google.com/open?id=1Equv7AO-_h9EZy7uw-A74HOWpZ3U9BNm";
 
@@ -36,6 +37,9 @@ class _Notes1State extends State<Notes1> {
     String electricalquantum = "https://drive.google.com/open?id=1VLjjro8NJL4oJtXTN32zyH_KaqZsUji6";
 
     String pcnotes = "https://drive.google.com/open?id=1LGTQTfOrD2C7cw9IHaIKD6wKkMKsTbYF";
+    String professionalenglishq ="https://drive.google.com/file/d/1cCTcWXqK1K0WTghJo6Navuc_gI81-sxd/view?usp=sharing";
+
+    String physicsq = "https://drive.google.com/file/d/1cpSpZuE0lWF7DYvcZSZrii4WtNf-EjGZ/view?usp=sharing";
 
     String doc;
     bool loading ;
@@ -46,11 +50,17 @@ class _Notes1State extends State<Notes1> {
        return
        (Math2quantum);
      }
+     else if(widget.subject=="math2notes"){
+       return(Math2quantum);
+     }
      else if(widget.subject=="electricalquantum"){
        return (electricalquantum);
      }
      else if(widget.subject=="Chemistryn"){
        return (chemistrynotes);
+     }
+      else if(widget.subject=="Chemistryq"){
+       return (chemistryq);
      }
      else if(widget.subject=="electricaln"){
        return (electricalnotes);
@@ -71,6 +81,12 @@ class _Notes1State extends State<Notes1> {
        );
 
      }
+    else if(widget.subject=="professionalenglish"){
+       return(
+         professionalenglishq
+       );
+
+     }
      else if(widget.subject == "cunit3"){
 
        return (cunit3);
@@ -84,6 +100,11 @@ class _Notes1State extends State<Notes1> {
      else if(widget.subject == "cunit5"){
 
        return (cunit5);
+
+     }
+     else if(widget.subject == "cquantum"){
+
+       return (cquantum);
 
      }
      else if(widget.subject == "physicsunit1"){
@@ -100,6 +121,9 @@ class _Notes1State extends State<Notes1> {
 
        return (physicsunit3);
 
+     }
+     else if(widget.subject=="physicsq"){
+       return(physicsq);
      }
      else{
        return (cunit2);

@@ -149,7 +149,7 @@ class ChatRoomsTile extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: 40,
+                        fontSize: 35,
                         fontFamily: 'Dancing',
                         fontWeight: FontWeight.bold))
               ],

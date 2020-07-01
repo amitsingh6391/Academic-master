@@ -1,3 +1,4 @@
+
 import 'package:Academicmaster/branch.dart';
 import 'package:Academicmaster/os.dart';
 
@@ -25,6 +26,7 @@ class _HomescreenState extends State<Homescreen> {
   
     
    MyApp(),
+  
    HomPage(),
    
     Branch(),
