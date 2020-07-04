@@ -19,7 +19,7 @@ class _AktuerpState extends State<Aktuerp> {
       debugShowCheckedModeBanner: false,
       routes: {
         "/":(_)=>WebviewScaffold(
-          url:"https://erp.aktu.ac.in/",
+          url:"https://aktu.ac.in/",
          
         appBar: AppBar(title:Center(
           child: Text("Aktu erp",style:TextStyle(fontSize:40)

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:Academicmaster/pages/commentspage.dart';
-import 'package:Academicmaster/pages/createpost.dart';
+
 import 'package:Academicmaster/services/admob_service.dart';
 import "package:Academicmaster/services/crud.dart";
 import 'package:Academicmaster/view/helper/constants.dart';
@@ -18,19 +18,19 @@ import "package:cached_network_image/cached_network_image.dart";
 import 'package:gallery_saver/gallery_saver.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-
-import "commentspage.dart";
 import "package:link_text/link_text.dart";
+
+import 'addcourse.dart';
 
 Color x = Colors.white;
 Color textcolor = Colors.black;
 
-class HomPage extends StatefulWidget {
+class FreecoursePage extends StatefulWidget {
   @override
-  _HomPageState createState() => _HomPageState();
+  _FreecoursePageState createState() => _FreecoursePageState();
 }
 
-class _HomPageState extends State<HomPage> {
+class _FreecoursePageState extends State<FreecoursePage> {
   CrudMethods crudMethods = new CrudMethods();
 
   Stream blogsStream;
@@ -41,11 +41,11 @@ class _HomPageState extends State<HomPage> {
   TextEditingController commentsEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
 
-  
-
+  // Color x=Colors.white;
+  // Color textcolor=Colors.black;
   @override
   void initState() {
-    crudMethods.getData().then((result) {
+    crudMethods.getfreecourseData().then((result) {
       setState(() {
         blogsStream = result;
       });
@@ -60,7 +60,7 @@ class _HomPageState extends State<HomPage> {
         //define a button to select the ne w post
         backgroundColor: x,
         floatingActionButton: FloatingActionButton(
-          tooltip: "upload a new post",
+          tooltip: "upload a new ece contents",
           backgroundColor: Colors.green,
           child: Icon(Icons.add),
           onPressed: () {
@@ -71,9 +71,9 @@ class _HomPageState extends State<HomPage> {
         appBar: AppBar(
           backgroundColor: Color(0xFF0000A0),
           title: Text(
-            "explore information",
+            "Get Paid courses free",
             style: TextStyle(
-                fontSize: 25,
+                fontSize: 23,
                 fontFamily: "Dancing",
                 fontWeight: FontWeight.bold),
           ),
@@ -82,7 +82,7 @@ class _HomPageState extends State<HomPage> {
           //       onPressed: () {
           //         exit(0);
           //       }),
-           actions: <Widget>[
+          actions: <Widget>[
             GestureDetector(
                 onTap: () {
                   setState(() {
@@ -174,21 +174,6 @@ class _BlogsTileState extends State<BlogsTile> {
 
   CrudMethods crudMethods = new CrudMethods();
 
-  addcomment() async {
-    if (commentsEditingController.text.isNotEmpty) {
-      Map<String, dynamic> postcomments = {
-        "comments_by": Constants.myName,
-        "comments": commentsEditingController.text,
-        'time': DateTime.now().toLocal()
-      };
-
-      crudMethods.addcomments(postcomments).then((result) {});
-      //Navigator.push(context,MaterialPageRoute(builder:(context)=>Comments()));
-    } else {
-      print("no data");
-    }
-  }
-
   launchurl() async {
     const url = "https://abesit.in/library/question-paper-bank/";
     if (await canLaunch(url)) {
@@ -197,11 +182,6 @@ class _BlogsTileState extends State<BlogsTile> {
       throw " could not launch $url";
     }
   }
-
-  var likes = 0;
-  var dislikes = 0;
-  var likecolor = Colors.black;
-  var discolor = Colors.black;
 
   final ams = AdMobService(); //call admobclass from services
 
@@ -219,7 +199,7 @@ class _BlogsTileState extends State<BlogsTile> {
 
       // decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
 
-      height: 770,
+      height: 440,
       //color: Colors.red,
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -229,32 +209,32 @@ class _BlogsTileState extends State<BlogsTile> {
               ClipOval(
                   child: CachedNetworkImage(
                       imageUrl: widget.iconUrl,
-                      height: 70,
-                      width: 70,
+                      height: 50,
+                      width: 50,
                       fit: BoxFit.cover)),
               SizedBox(width: 10),
               Text(widget.authorName,
                   style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       fontFamily: "Dancing",
-                      color:textcolor))
+                      color: textcolor))
             ] // fontWeight: FontWeight
                 ),
           ),
           Container(
-            height: 140,
+            height: 90,
             width: MediaQuery.of(context).size.width,
             child: LinkText(
               text: widget.title,
               textStyle: TextStyle(
                   fontSize: 17,
                   //fontWeight: FontWeight.w500,
-                  color:textcolor),
+                  color: textcolor),
             ),
           ),
           Container(
-            height: 400,
+            height: 180,
             width: MediaQuery.of(context).size.width,
             child: CachedNetworkImage(
                 imageUrl: widget.imgUrl,
@@ -262,68 +242,9 @@ class _BlogsTileState extends State<BlogsTile> {
                 fit: BoxFit.fill),
           ),
           Container(
-              child: Row(
-            children: <Widget>[
-              GestureDetector(
-                child: Icon(
-                  Icons.thumb_up,
-                  size: 35,
-                  color: likecolor,
-                ),
-                onTap: () {
-                  setState(() {
-                    likecolor = Colors.blue;
-                  });
-                },
-                onLongPress: () {
-                  setState(() {
-                    likecolor = Colors.black;
-                  });
-                },
-              ),
-              SizedBox(width: 10),
-              GestureDetector(
-                child: Icon(
-                  Icons.thumb_down,
-                  size: 35,
-                  color: discolor,
-                ),
-                onTap: () {
-                  setState(() {
-                    discolor = Colors.red;
-                  });
-                },
-                onLongPress: () {
-                  setState(() {
-                    discolor = Colors.black;
-                  });
-                },
-              ),
-            ],
-          )),
-          Container(
             // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: commentsEditingController,
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                        hintText: "Do comments ...",
-                         enabledBorder: OutlineInputBorder(
-                         borderSide:BorderSide(color:textcolor,width:3)
-                       ),
-                        hintStyle: TextStyle(
-                          color:textcolor,
-                          fontSize: 16,
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color:textcolor),
-                        )),
-                  ),
-                ),
                 Container(
                   height: 40,
                   width: 40,
@@ -342,36 +263,11 @@ class _BlogsTileState extends State<BlogsTile> {
                         await _shareImageFromUrl(widget.imgUrl),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    addcomment();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (conetxt) => Comments()));
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              Colors.pink,
-                              Colors.yellow,
-                            ],
-                            begin: FractionalOffset.topLeft,
-                            end: FractionalOffset.bottomRight),
-                        borderRadius: BorderRadius.circular(40)),
-                    padding: EdgeInsets.all(12),
-                    child: Icon(Icons.send),
-                  ),
-                )
               ],
             ),
           ),
-         
-         SizedBox(height:10),
           AdmobBanner(
-              adUnitId: "ca-app-pub-4709741532241387/1729285651",
-              //adUnitId:"ca-app-pub-3940256099942544/6300978111",
+              adUnitId: "ca-app-pub-4709741532241387/9221241791",
               adSize: AdmobBannerSize.BANNER),
         ],
       ),
@@ -386,26 +282,6 @@ class _BlogsTileState extends State<BlogsTile> {
       await Share.file('Academic master', 'amlog.jpg', bytes, 'image/jpg');
     } catch (e) {
       print('error: $e');
-    }
-  }
-
-  Future<void> _saveNetworkImage(String imgUrl) async {
-    String path =
-        "https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg";
-
-    try {
-      GallerySaver.saveImage(path).then(
-        (bool success) {
-          // // setState(() {
-          // //   print('Image is saved');
-          // // },
-          // );
-          print("complete");
-          print(imgUrl);
-        },
-      );
-    } catch (e) {
-      print("amit $e");
     }
   }
 }

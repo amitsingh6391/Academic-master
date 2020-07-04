@@ -18,17 +18,16 @@ class NavDrawer extends StatefulWidget {
 }
 
 class _NavDrawerState extends State<NavDrawer> {
+  launchurl() async {
+    const url =
+        "https://play.google.com/store/apps/details?id=com.academic.master";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw "could not launch $url";
+    }
+  }
 
-  launchurl() async{
- const url = "https://play.google.com/store/apps/details?id=com.academic.master";
- if (await canLaunch(url)){
-   await launch(url);
- }else{
-   throw "could not launch $url";
- }
-
-
-}
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -59,7 +58,7 @@ class _NavDrawerState extends State<NavDrawer> {
                   ));
             },
           ),
-           ListTile(
+          ListTile(
             leading: Icon(Icons.star),
             title: Text("Rate us"),
             onTap: () {
@@ -111,17 +110,16 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 }
 
- 
-  Future<void>sharelink() async {
+Future<void> sharelink() async {
   try {
-    Share.text('Academic Maste',
-        'https://play.google.com/store/apps/details?id=com.academic.master', 'text/plain');
+    Share.text(
+        'Academic Maste',
+        'https://play.google.com/store/apps/details?id=com.academic.master',
+        'text/plain');
   } catch (e) {
     print('error: $e');
   }
 }
-  
-
 
 SizedBox box(double x, double y) {
   return SizedBox(
@@ -138,13 +136,23 @@ class About extends StatefulWidget {
 }
 
 class _AboutState extends State<About> {
+  contact() async {
+    final Uri params = Uri(scheme: "mailto", path: "amitsingh506142@gmail.com");
+
+    String url = params.toString();
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw "could not launch $url";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      
-      onWillPop: ()async => true,
-          child: Scaffold(
-            
+      onWillPop: () async => true,
+      child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF8cc8fa),
           title: Text("About Us ",
@@ -170,13 +178,16 @@ class _AboutState extends State<About> {
                 ),
                 Text(
                     " Founded in 2020 Academic Master  provides a platform that helps each and every student to learn .  Inside our app we have tried to cover all the notes and important question regarding to your examination in our reach ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text(
                     " * you can also chat with your friends  in chat section  and ask your querries, our response team will try to respond ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text(
                     "*  videos are provided for your convinience we have tried our best  to give you  a better platform to study free of cost",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Container(
                   height: 10,
                 ),
@@ -206,41 +217,27 @@ class _AboutState extends State<About> {
                       ],
                     )),
                 Container(
-                    height: 36,
-                    child: Row(children: <Widget>[
-                      Text("Suported by:",
-                          style: GoogleFonts.bitter(
-                              fontSize: 30,
-                              color: Colors.blueAccent,
-                              fontWeight: FontWeight.bold)),
-                    ])),
-                Container(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "Chandan Mal",
-                          style: GoogleFonts.indieFlower(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                    height: 200,
+                    child: Row(children: [
+                      Text(
+                        "Contact us",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 40, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+
+                          contact();
+                        },
+                        child: Icon(
+                          Icons.mail,
+                          size: 40,
                         ),
-                      
-                        Text(
-                          "Sanal Yadav",
-                          style: GoogleFonts.indieFlower(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Vishal",
-                          style: GoogleFonts.indieFlower(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Sapna singh",
-                          style: GoogleFonts.indieFlower(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    )),
+                      )
+                    ]))
               ],
             ),
           ),
@@ -304,7 +301,6 @@ class _FeedbackState extends State<Feedback> {
                 Colors.pink[100],
                 Colors.yellow[100],
               ],
-              
             ),
           ),
           child: Column(
@@ -346,8 +342,4 @@ class _FeedbackState extends State<Feedback> {
           ),
         ));
   }
-
-  
 }
-
-

@@ -32,6 +32,13 @@ class CrudMethods {
     });
   }
 
+  //add free courses..
+  Future<void> addfreecourseData(freecourseData) async {
+    Firestore.instance.collection("freecourse").add(freecourseData).catchError((e) {
+      print(e);
+    });
+  }
+
   getData() async {
     return await Firestore.instance.collection("blogs").orderBy("time").snapshots();
   }
@@ -49,6 +56,9 @@ class CrudMethods {
     return await Firestore.instance.collection("mechnical").orderBy("time").snapshots();
   }
 
+ getfreecourseData() async {
+    return await Firestore.instance.collection("freecourse").orderBy("time").snapshots();
+  }
 
   //profile....
 getprofile() async {

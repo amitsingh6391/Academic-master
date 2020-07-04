@@ -4,9 +4,11 @@ import 'package:Academicmaster/view/viewservices/database.dart';
 //import 'package:TheMitian/view/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:link_text/link_text.dart';
 
 
-
+Color backgroundcolor=Colors.white;
+Color textcolor = Colors.black;
 
 class Chat extends StatefulWidget {
   final String chatRoomId;
@@ -74,22 +76,45 @@ class _ChatState extends State<Chat> {
         resizeToAvoidBottomPadding: false,
       
 
-
+        backgroundColor:backgroundcolor,
        
         appBar: AppBar(
           backgroundColor: Color(0xFF0000A0),
            //title: Text("Let's talk",style: TextStyle(fontSize:30,fontFamily:"Dancing"),),
           actions: <Widget>[
             Icon(
-              Icons.message,
-              size: 60,
+              Icons.mail,
+              size: 50,
             ),
-            Container(
-              width: 150,
-            )
+            SizedBox(width:50),
+            GestureDetector(
+                onTap: () {
+                  setState(() {
+                    backgroundcolor = Colors.white;
+                    textcolor = Colors.black;
+                  });
+                },
+                child: Icon(
+                  Icons.brightness_2,
+                  color: Colors.white,
+                  size: 40,
+                )),
+                SizedBox(width: 20,),
+            GestureDetector(
+                onTap: () {
+                  setState(() {
+                    backgroundcolor = Colors.black;
+                    textcolor = Colors.white;
+                  });
+                },
+                child: Icon(
+                  Icons.brightness_4,
+                  color: Colors.black,
+                  size: 40,
+                )),
+           
           ],
-        ),
-        backgroundColor:Colors.white,
+        ), 
         body: Container(
           child: Stack(
                   // Column(
@@ -104,7 +129,7 @@ class _ChatState extends State<Chat> {
                       
                       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                      // color: Color(0x54FFFFFF),
-                     color:Colors.white60,
+                     //color:Colors.white60,
                       child: Row(
                         
                         children: [
@@ -112,18 +137,22 @@ class _ChatState extends State<Chat> {
                 child: TextField(
                     controller: messageEditingController,
                     //style: simpleTextStyle(),
-                    style: TextStyle(color:Colors.black),
+                    style: TextStyle(color:textcolor),
                     decoration: InputDecoration(
+                       enabledBorder: OutlineInputBorder(
+                         borderSide:BorderSide(color:textcolor,width:3)
+                       ),
                         hintText: " send Message...",
                         hintStyle: TextStyle(
-                          color: Colors.black,
+                          color: textcolor,
                           fontSize: 16,
                         ),
                          border: OutlineInputBorder(
-                        borderSide: BorderSide(color:Colors.black),)
+                        //borderSide: BorderSide(color:Colors.black),
+                        borderRadius: BorderRadius.circular(10)
                     ),
                   ),
-                ),
+                ),),
                           SizedBox(width: 16,),
                          
                           GestureDetector(
@@ -197,23 +226,25 @@ class MessageTile extends StatelessWidget {
            gradient: LinearGradient(
            
            colors:sendByMe ? [
-             Colors.black,
-             Colors.black,
+             Colors.red,
+             Colors.red,
            ]:[
              Colors.green,
-             Colors.blue,
+             Colors.green,
            ]
 
            )
         ),
-        child: Text(message,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: 'OverpassRegular',
-            fontWeight: FontWeight.w300)),
-      ),
-    );
+        child: LinkText(
+                  text:message,
+              textAlign: TextAlign.start,
+              textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontFamily: 'OverpassRegular',
+              fontWeight: FontWeight.bold)),
+        ),
+      );
+    
   }
 }

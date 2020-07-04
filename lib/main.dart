@@ -62,10 +62,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Column(
               children: <Widget>[
                 SizedBox(height: 200),
-                Container(
-                  height: 200,
-                  child: Image(
-                    image: AssetImage("images/ic_launcher.png"),
+                CircleAvatar(
+                  backgroundColor: Colors.green,
+                  radius: 100,
+                                    child: Image(
+                    image: AssetImage("images/icon.png"),
                     fit: BoxFit.fill,
                   ),
                 ),
