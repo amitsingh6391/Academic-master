@@ -1,6 +1,6 @@
 import 'package:Academicmaster/branch.dart';
 import 'package:Academicmaster/freecourse/fetchcourse.dart';
-import 'package:Academicmaster/os.dart';
+import 'package:Academicmaster/view/chatrooms.dart';
 
 import "package:flutter/material.dart";
 
@@ -21,8 +21,10 @@ class _HomescreenState extends State<Homescreen> {
   int currentpage = 0;
 
   var pages = [
-    MyApp(),
-    HomPage(),
+   MyApp(),
+  
+   HomPage(),
+  
     Branch(),
     FreecoursePage(),
     Aktuerp(),

@@ -18,12 +18,16 @@ import 'package:admob_flutter/admob_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class Homepage extends StatefulWidget {
+import "package:Academicmaster/mechnicaldata/mechnical2yearfetchdata.dart";
+import "package:Academicmaster/mechnicaldata/mechnical3yearfetchdata.dart";
+import "package:Academicmaster/mechnicaldata/mechnical4yearfetchdata.dart";
+
+class Mechnicalyear extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _MechnicalyearState createState() => _MechnicalyearState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _MechnicalyearState extends State<Mechnicalyear> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,7 +166,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Secondyear(),
+                                builder: (context) => Mechnical2yearPage(),
                               ));
                         },
                       ),
@@ -195,7 +199,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Thirdyear(),
+                                builder: (context) => Mechnical3yearPage(),
                               ));
                         },
                       ),
@@ -228,7 +232,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Fourthyear(),
+                                builder: (context) => Mechnical4yearPage(),
                               ));
                         },
                       ),

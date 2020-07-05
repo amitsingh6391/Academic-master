@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:Academicmaster/pages/posts.dart';
+//import 'package:Academicmaster/pages/posts.dart';
 import 'package:Academicmaster/view/helper/theme.dart';
 import 'package:Academicmaster/view/viewservices/auth.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';

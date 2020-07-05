@@ -6,14 +6,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-import 'fetchecedata.dart';
+import 'civil4yearfetchdata.dart';
 
-class CreateBlog extends StatefulWidget {
+
+
+class Civil4yearupload extends StatefulWidget {
   @override
-  _CreateBlogState createState() => _CreateBlogState();
+  _Civil4yearuploadState createState() => _Civil4yearuploadState();
 }
 
-class _CreateBlogState extends State<CreateBlog> {
+class _Civil4yearuploadState extends State<Civil4yearupload> {
   String authorName, title, desc;
 
   File selectedImage;
@@ -69,7 +71,7 @@ class _CreateBlogState extends State<CreateBlog> {
       /// uploading image to firebase storage
       StorageReference firebaseStorageRefe = FirebaseStorage.instance
           .ref()
-          .child("eceImages")
+          .child("civil4yearImages")
           .child("${randomAlphaNumeric(9)}.jpg");
 
       final StorageUploadTask tasks =
@@ -82,7 +84,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
       StorageReference firebaseStorageRef = FirebaseStorage.instance
           .ref()
-          .child("eceicon")
+          .child("civil4yearicon")
           .child("${randomAlphaNumeric(9)}.jpg");
 
       final StorageUploadTask task = firebaseStorageRef.putFile(selectedIcon);
@@ -90,7 +92,7 @@ class _CreateBlogState extends State<CreateBlog> {
       var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
       print("this is url $downloadiconUrl");
 
-      Map<String, dynamic> eceMap = {
+      Map<String, dynamic> civil4yearMap = {
         "imgUrl": downloadUrl,
         "iconUrl": downloadiconUrl,
         "authorName": authorName,
@@ -98,11 +100,11 @@ class _CreateBlogState extends State<CreateBlog> {
         "desc": desc,
         'time': DateTime.now().millisecondsSinceEpoch,
       };
-      crudMethods.addeceData(eceMap).then((result) {
+      crudMethods.addcivil4yearData(civil4yearMap).then((result) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ECEPage(),
+              builder: (context) => Civil4yearPage(),
             ));
       });
     } else {}
@@ -116,9 +118,9 @@ class _CreateBlogState extends State<CreateBlog> {
       appBar: AppBar(
         backgroundColor: Color(0xFF0000A0),
         title: Text(
-          "Upload EcE contents",
+          "Upload civil 4 year contents",
           style: TextStyle(
-              fontFamily: "Dancing", fontSize: 25, fontWeight: FontWeight.bold),
+              fontFamily: "Dancing", fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
       body: _isLoading

@@ -9,7 +9,7 @@ import 'package:Academicmaster/view/search.dart';
 import 'package:Academicmaster/view/viewservices/auth.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';
 import 'package:Academicmaster/view/widgets/widget.dart';
-
+import "dart:io";
 import "package:flutter/material.dart";
 
 class ChatRoom extends StatefulWidget {
@@ -51,10 +51,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   getUserInfogetChats() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-   Constants.myEmail = await HelperFunctions.getUserEmailSharedPreference();
-    
-    
-
+    Constants.myEmail = await HelperFunctions.getUserEmailSharedPreference();
 
     DatabaseMethods().getUserChats(Constants.myName).then((snapshots) {
       setState(() {
@@ -68,44 +65,43 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
-       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Color(0xFF0000A0),
-        title: Text(
-          "yourfriends",
-          style: TextStyle(
-            fontFamily: "Dancing",
-            fontSize: 30,
-          ),
-        ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-            onTap: () {
-              AuthService().signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Authenticate()));
-            },
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.exit_to_app)),
-          ),
-
-        ],
+        drawer: NavDrawer(),
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+    backgroundColor: Color(0xFF0000A0),
+    title: Text(
+      "yourfriends",
+      style: TextStyle(
+        fontFamily: "Dancing",
+        fontSize: 30,
       ),
-      body: Container(
-        child: chatRoomsList(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Search()));
+    ),
+    centerTitle: true,
+    actions: [
+      GestureDetector(
+        onTap: () {
+          AuthService().signOut();
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => Authenticate()));
         },
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Icon(Icons.exit_to_app)),
       ),
-    );
+    ],
+        ),
+        body: Container(
+    child: chatRoomsList(),
+        ),
+        floatingActionButton: FloatingActionButton(
+    child: Icon(Icons.search),
+    onPressed: () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Search()));
+    },
+        ),
+      );
   }
 }
 
@@ -124,6 +120,7 @@ class ChatRoomsTile extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => Chat(
                       chatRoomId: chatRoomId,
+                      userName: userName,
                     )));
       },
       child: Column(
@@ -136,11 +133,8 @@ class ChatRoomsTile extends StatelessWidget {
                 Container(
                   height: 40,
                   width: 30,
-                  
-                 child: CircleAvatar(
-                   backgroundImage:AssetImage("images/thirdgif3.gif")
-                 ),
-                  
+                  child: CircleAvatar(
+                      backgroundImage: AssetImage("images/thirdgif3.gif")),
                 ),
                 SizedBox(
                   width: 12,
@@ -163,3 +157,8 @@ class ChatRoomsTile extends StatelessWidget {
     );
   }
 }
+
+
+
+
+

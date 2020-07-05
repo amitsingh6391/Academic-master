@@ -17,13 +17,17 @@ import "package:firebase_admob/firebase_admob.dart";
 import 'package:admob_flutter/admob_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import "package:Academicmaster/ecedata/ece2yearfetchdata.dart";
+import "package:Academicmaster/ecedata/ece3yearfetchdata.dart";
+import "package:Academicmaster/ecedata/ece4yearfetchdata.dart";
 
-class Homepage extends StatefulWidget {
+
+class Eceyear extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _EceyearState createState() => _EceyearState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _EceyearState extends State<Eceyear> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,7 +166,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Secondyear(),
+                                builder: (context) => Ece2yearPage(),
                               ));
                         },
                       ),
@@ -195,7 +199,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Thirdyear(),
+                                builder: (context) => Ece3yearPage(),
                               ));
                         },
                       ),
@@ -228,7 +232,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Fourthyear(),
+                                builder: (context) => Ece4yearPage(),
                               ));
                         },
                       ),

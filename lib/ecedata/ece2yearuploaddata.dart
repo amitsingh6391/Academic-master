@@ -1,4 +1,4 @@
-
+import 'package:Academicmaster/freecourse/fetchcourse.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "package:flutter/material.dart";
 import "dart:io";
@@ -6,17 +6,16 @@ import "package:Academicmaster/services/crud.dart";
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:image_cropper/image_cropper.dart';
-
-import 'fetchsubject.dart';
-
+import "ece2yearfetchdata.dart";
 
 
-class CreateBlog extends StatefulWidget {
+
+class Ece2yearuplod extends StatefulWidget {
   @override
-  _CreateBlogState createState() => _CreateBlogState();
+  _Ece2yearuplodState createState() => _Ece2yearuplodState();
 }
 
-class _CreateBlogState extends State<CreateBlog> {
+class _Ece2yearuplodState extends State<Ece2yearuplod> {
   String authorName, title, desc;
 
   File selectedImage;
@@ -72,7 +71,7 @@ class _CreateBlogState extends State<CreateBlog> {
       /// uploading image to firebase storage
       StorageReference firebaseStorageRefe = FirebaseStorage.instance
           .ref()
-          .child("mechnicalImages")
+          .child("ecesecondyearImages")
           .child("${randomAlphaNumeric(9)}.jpg");
 
       final StorageUploadTask tasks =
@@ -85,7 +84,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
       StorageReference firebaseStorageRef = FirebaseStorage.instance
           .ref()
-          .child("mechnicalicon")
+          .child("ecesecondyearicon")
           .child("${randomAlphaNumeric(9)}.jpg");
 
       final StorageUploadTask task = firebaseStorageRef.putFile(selectedIcon);
@@ -93,7 +92,7 @@ class _CreateBlogState extends State<CreateBlog> {
       var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
       print("this is url $downloadiconUrl");
 
-      Map<String, dynamic> mechnicalMap = {
+      Map<String, dynamic> ecesecondyearMap = {
         "imgUrl": downloadUrl,
         "iconUrl": downloadiconUrl,
         "authorName": authorName,
@@ -101,11 +100,11 @@ class _CreateBlogState extends State<CreateBlog> {
         "desc": desc,
         'time': DateTime.now().millisecondsSinceEpoch,
       };
-      crudMethods.addmechnicalData(mechnicalMap).then((result) {
+      crudMethods.addece2yearData(ecesecondyearMap).then((result) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MechnicalPage(),
+              builder: (context) => Ece2yearPage(),
             ));
       });
     } else {}
@@ -119,9 +118,9 @@ class _CreateBlogState extends State<CreateBlog> {
       appBar: AppBar(
         backgroundColor: Color(0xFF0000A0),
         title: Text(
-          "Upload Mechnical contents",
+          "Upload Ece contents",
           style: TextStyle(
-              fontFamily: "Dancing", fontSize: 25, fontWeight: FontWeight.bold),
+              fontFamily: "Dancing", fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: _isLoading

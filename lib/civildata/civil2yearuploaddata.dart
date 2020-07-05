@@ -1,4 +1,4 @@
-import 'package:Academicmaster/pages/posts.dart';
+import 'package:Academicmaster/freecourse/fetchcourse.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "package:flutter/material.dart";
 import "dart:io";
@@ -6,27 +6,31 @@ import "package:Academicmaster/services/crud.dart";
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:image_cropper/image_cropper.dart';
-import "package:intl/intl.dart";
-class CreateBlog extends StatefulWidget {
+
+import 'civil2yearfetchdata.dart';
+
+
+
+class CivilSecondyearuplod extends StatefulWidget {
   @override
-  _CreateBlogState createState() => _CreateBlogState();
+  _CivilSecondyearuplodState createState() => _CivilSecondyearuplodState();
 }
 
-class _CreateBlogState extends State<CreateBlog> {
+class _CivilSecondyearuplodState extends State<CivilSecondyearuplod> {
   String authorName, title, desc;
 
   File selectedImage;
   File selectedIcon;
   bool _isLoading = false;
   CrudMethods crudMethods = new CrudMethods();
-  DateTime now = DateTime.now();
-  Future<void> getImage() async {
+
+  Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     cropImage(image);
   }
 
-  Future<void> getImagefromcamera() async {
+  Future getImagefromcamera() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     cropImage(image);
@@ -43,7 +47,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
   //for imageicon...
 
-  Future<void> getIcon() async {
+  Future getIcon() async {
     var icon = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     cropIcon(icon);
@@ -68,7 +72,7 @@ class _CreateBlogState extends State<CreateBlog> {
       /// uploading image to firebase storage
       StorageReference firebaseStorageRefe = FirebaseStorage.instance
           .ref()
-          .child("blogImages")
+          .child("civilsecondyearImages")
           .child("${randomAlphaNumeric(9)}.jpg");
 
       final StorageUploadTask tasks =
@@ -81,7 +85,7 @@ class _CreateBlogState extends State<CreateBlog> {
 
       StorageReference firebaseStorageRef = FirebaseStorage.instance
           .ref()
-          .child("posticon")
+          .child("civilsecondyearicon")
           .child("${randomAlphaNumeric(9)}.jpg");
 
       final StorageUploadTask task = firebaseStorageRef.putFile(selectedIcon);
@@ -89,20 +93,19 @@ class _CreateBlogState extends State<CreateBlog> {
       var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
       print("this is url $downloadiconUrl");
 
-      Map<String, dynamic> blogMap = {
+      Map<String, dynamic> civilsecondyearMap = {
         "imgUrl": downloadUrl,
         "iconUrl": downloadiconUrl,
         "authorName": authorName,
         "title": title,
         "desc": desc,
         'time': DateTime.now().millisecondsSinceEpoch,
-        "posttime":DateFormat("MM-dd - kk:mm").format(now)
       };
-      crudMethods.addData(blogMap).then((result) {
+      crudMethods.addcivil2yearData(civilsecondyearMap).then((result) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomPage(),
+              builder: (context) => CivilsecondyearPage(),
             ));
       });
     } else {}
@@ -116,9 +119,9 @@ class _CreateBlogState extends State<CreateBlog> {
       appBar: AppBar(
         backgroundColor: Color(0xFF0000A0),
         title: Text(
-          "Upload information",
+          "upload civil 2 year",
           style: TextStyle(
-              fontFamily: "Dancing", fontSize: 30, fontWeight: FontWeight.bold),
+              fontFamily: "Dancing", fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: _isLoading
@@ -212,7 +215,7 @@ class _CreateBlogState extends State<CreateBlog> {
                               icon: Icon(
                                 Icons.person,
                               ),
-                              hintText: "User name.....",
+                              hintText: "Subject name.....",
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black)),
                             ),
@@ -228,7 +231,7 @@ class _CreateBlogState extends State<CreateBlog> {
                               icon: Icon(
                                 Icons.description,
                               ),
-                              hintText: "Description",
+                              hintText: "Description or url",
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.yellow)),
                             ),

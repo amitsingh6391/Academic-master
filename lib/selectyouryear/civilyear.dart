@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:Academicmaster/civildata/civil2yearfetchdata.dart';
+import 'package:Academicmaster/civildata/civil3yearfetchdata.dart';
+import 'package:Academicmaster/civildata/civil4yearfetchdata.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,12 +21,12 @@ import 'package:admob_flutter/admob_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class Homepage extends StatefulWidget {
+class Civilyear extends StatefulWidget {
   @override
-  _HomepageState createState() => _HomepageState();
+  _CivilyearState createState() => _CivilyearState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _CivilyearState extends State<Civilyear> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,7 +165,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Secondyear(),
+                                builder: (context) => CivilsecondyearPage(),
                               ));
                         },
                       ),
@@ -195,7 +198,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Thirdyear(),
+                                builder: (context) => Civil3yearPage(),
                               ));
                         },
                       ),
@@ -228,7 +231,7 @@ class _HomebodyState extends State<Homebody> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Fourthyear(),
+                                builder: (context) => Civil4yearPage(),
                               ));
                         },
                       ),

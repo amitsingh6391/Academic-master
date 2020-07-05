@@ -38,8 +38,8 @@ dependencies:
 
   youtube_player_flutter: ^6.1.0+7
 
-  image_picker: ^0.6.5+3
-  image_cropper: ^1.2.1
+  image_picker: ^0.6.7+3 
+  image_cropper: ^1.2.3
   cloud_firestore: ^0.13.5
   firebase_storage: ^3.1.5
   random_string: ^2.0.1
@@ -67,6 +67,7 @@ dependencies:
   foldable_sidebar: ^1.0.0
   device_apps: ^1.0.9
   flutter_animation_set: ^0.0.3
+  intl: ^0.16.1
   
   
   
