@@ -119,11 +119,11 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan,
+      backgroundColor: Colors.greenAccent,
      // resizeToAvoidBottomInset: true,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(title: Text("Academic master",style: TextStyle(fontWeight: FontWeight.bold),),
-      backgroundColor: Colors.cyan,
+      backgroundColor: Colors.greenAccent,
       ),
       body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
@@ -141,7 +141,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     child: CircleAvatar(
                       radius: 70,
-                      backgroundImage:AssetImage("images/ic_launcher.png")
+                      backgroundImage:AssetImage("images/thirdgif3.gif")
                     ),
                  ),
                 
@@ -223,7 +223,10 @@ class _SignUpState extends State<SignUp> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               gradient: LinearGradient(
-                colors: [const Color(0xff007EF4), const Color(0xff2A75BC)],
+                colors: [
+                Colors.green,
+                Colors.green,
+                  ],
               )),
           width: MediaQuery.of(context).size.width,
           child: Text(

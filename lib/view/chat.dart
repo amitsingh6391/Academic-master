@@ -78,7 +78,7 @@ DateTime now = DateTime.now();
     return 
       Scaffold(
           
-          resizeToAvoidBottomPadding: false,
+         resizeToAvoidBottomPadding: false,
         
 
           backgroundColor:backgroundcolor,
@@ -240,22 +240,23 @@ class MessageTile extends StatelessWidget {
 
                )
             ),
-            child: LinkText(
-                      text:message,
-                  textAlign: TextAlign.start,
-                  textStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: 'OverpassRegular',
-                  fontWeight: FontWeight.bold)),
+            child: Column(
+              children: <Widget>[
+                LinkText(
+                          text:message,
+                      textAlign: TextAlign.start,
+                      textStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'OverpassRegular',
+                      )),
+                      SizedBox(height:15),
+                      Text(msgtime,style:TextStyle(fontSize:10) ,textAlign: TextAlign.right,),
+              ],
+            ),
             ),
           ),
-          Container(
-            alignment: Alignment.bottomRight,
-           
-            child: Text(msgtime,textAlign: TextAlign.right,
-            style: TextStyle(color:textcolor,fontSize:10),),
-            )
+        
       ],
     );
     

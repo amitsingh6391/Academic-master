@@ -95,7 +95,7 @@ class _SecondyearbodyState extends State<Secondyearbody> {
           //here we place the banner ads
           
            AdmobBanner(
-            adUnitId: "ca-app-pub-4709741532241387/9725279456",
+            adUnitId: "ca-app-pub-5023637575934146/2815076541",
              adSize: AdmobBannerSize.BANNER
              ),
 

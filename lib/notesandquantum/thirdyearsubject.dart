@@ -676,9 +676,9 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                         ],
                       ),
                     ),
-                    AdmobBanner(
-                        adUnitId: "ca-app-pub-5023637575934146/1266583394",
-                        adSize: AdmobBannerSize.BANNER),
+                    // AdmobBanner(
+                    //     adUnitId: "ca-app-pub-5023637575934146/1266583394",
+                    //     adSize: AdmobBannerSize.BANNER),
                     Box(),
                     Container(
                       color: Colors.blueGrey,

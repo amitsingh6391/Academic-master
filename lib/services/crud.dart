@@ -5,8 +5,16 @@ class CrudMethods {
   Future<void> addData(blogData) async {
     Firestore.instance.collection("blogs").add(blogData).catchError((e) {
       print(e);
+      print(FieldPath.documentId);
     });
+   
   }
+
+
+//adds postlike
+ 
+
+
 
 
 //add civil data..on firestore
@@ -162,7 +170,7 @@ getprofile() async {
   }
 
    getcommentsdata() async {
-    return await Firestore.instance.collection("comments").snapshots();
+    return await Firestore.instance.collection("comments").orderBy("time").snapshots();
   }
 
 }

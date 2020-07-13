@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:Academicmaster/pages/commentspage.dart';
@@ -10,7 +11,6 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/foundation.dart';
-
 import "package:flutter/material.dart";
 
 import "package:cached_network_image/cached_network_image.dart";
@@ -19,11 +19,22 @@ import 'package:gallery_saver/gallery_saver.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../firstslide.dart';
 import "commentspage.dart";
 import "package:link_text/link_text.dart";
 
+import "package:intl/intl.dart";
+import 'package:like_button/like_button.dart';
+import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import "package:Academicmaster/services/crud.dart";
+
 Color x = Colors.white;
 Color textcolor = Colors.black;
+CrudMethods crudMethods = new CrudMethods();
+Color whitescreen = Colors.black;
+Color blackscreen = Colors.white;
+
 
 class HomPage extends StatefulWidget {
   @override
@@ -40,10 +51,13 @@ class _HomPageState extends State<HomPage> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController commentsEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
-
+  
+ 
   @override
   void initState() {
     crudMethods.getData().then((result) {
+      //here i get the blogs..
+
       setState(() {
         blogsStream = result;
       });
@@ -55,49 +69,47 @@ class _HomPageState extends State<HomPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-      return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Confirm Exit"),
-            content: Text("Are you sure you want to exit?"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("YES"),
-                onPressed: () {
-                  exit(0);
-                },
-              ),
-              FlatButton(
-                child: Text("NO"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-            )
-          ],
-        );
-      }
-    );
-    
-  },
-
-          child: Scaffold(
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirm Exit"),
+                content: Text("Are you sure you want to exit?"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("YES"),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      },
+      child: Scaffold(
 
           //define a button to select the ne w post
+           drawer: NavDrawer(),
           backgroundColor: x,
           floatingActionButton: FloatingActionButton(
             tooltip: "upload a new post",
             backgroundColor: Colors.green,
             child: Icon(Icons.add),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CreateBlog()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreateBlog()));
             },
           ),
           appBar: AppBar(
             backgroundColor: Color(0xFF0000A0),
-            leading: Icon(Icons.face),
+           
             title: Text(
               "explore information",
               style: TextStyle(
@@ -116,6 +128,9 @@ class _HomPageState extends State<HomPage> {
                     setState(() {
                       x = Colors.white;
                       textcolor = Colors.black;
+                      // likebydefault = Colors.black;
+                      // dislikebydefault = Colors.black;
+                     
                     });
                   },
                   child: Icon(
@@ -128,6 +143,9 @@ class _HomPageState extends State<HomPage> {
                     setState(() {
                       x = Colors.black;
                       textcolor = Colors.white;
+                      // likebydefault = Colors.white;
+                      // dislikebydefault = Colors.white;
+                   
                     });
                   },
                   child: Icon(
@@ -152,18 +170,33 @@ class _HomPageState extends State<HomPage> {
                               itemCount: snapshot.data.documents.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                return BlogsTile(
-                                  authorName: snapshot
-                                      .data.documents[index].data['authorName'],
-                                  title: snapshot
-                                      .data.documents[index].data["title"],
-                                  description:
-                                      snapshot.data.documents[index].data['desc'],
-                                  imgUrl: snapshot
-                                      .data.documents[index].data['imgUrl'],
-                                  iconUrl: snapshot
-                                      .data.documents[index].data['iconUrl'],
-                                  posttime:snapshot.data.documents[index].data["posttime"]
+                                // _updateLike = int.tryParse(
+                                //     "${snapshot.data.documents[index].data["like"].toString}");
+                                //     print(_updateLike);
+                                return Column(
+                                  children: <Widget>[
+                                    BlogsTile(
+                                      authorName: snapshot.data.documents[index]
+                                          .data['authorName'],
+                                      title: snapshot
+                                          .data.documents[index].data["title"],
+                                      description: snapshot
+                                          .data.documents[index].data['desc'],
+                                      imgUrl: snapshot
+                                          .data.documents[index].data['imgUrl'],
+                                      iconUrl: snapshot.data.documents[index]
+                                          .data['iconUrl'],
+                                      posttime: snapshot.data.documents[index]
+                                          .data["posttime"],
+                                      postid: snapshot.data.documents[index]
+                                          .data["documentID"],
+                                      postLike: snapshot
+                                          .data.documents[index].data["like"],
+                                      disLike: snapshot.data.documents[index]
+                                          .data["dislike"],
+                                        
+                                    ),
+                                  ],
                                 );
                               });
                         },
@@ -180,15 +213,28 @@ class _HomPageState extends State<HomPage> {
 }
 
 class BlogsTile extends StatefulWidget {
-  String title, description, imgUrl, iconUrl, authorName,posttime;
+  String title,
+      description,
+      imgUrl,
+      iconUrl,
+      authorName,
+      posttime,
+      postid,
+      postLike,
+      disLike;
 
-  BlogsTile(
-      {@required this.imgUrl,
-      @required this.iconUrl,
-      @required this.title,
-      @required this.description,
-      @required this.authorName,
-      @required this.posttime});
+  BlogsTile({
+    @required this.imgUrl,
+    @required this.iconUrl,
+    @required this.title,
+    @required this.description,
+    @required this.authorName,
+    @required this.posttime,
+    @required this.postLike,
+    @required this.postid,
+    @required this.disLike,
+  
+  });
 
   @override
   _BlogsTileState createState() => _BlogsTileState();
@@ -204,13 +250,15 @@ class _BlogsTileState extends State<BlogsTile> {
   QuerySnapshot searchResultSnapshot;
 
   CrudMethods crudMethods = new CrudMethods();
+  DateTime now = DateTime.now();
 
   addcomment() async {
     if (commentsEditingController.text.isNotEmpty) {
       Map<String, dynamic> postcomments = {
         "comments_by": Constants.myName,
         "comments": commentsEditingController.text,
-        'time': DateTime.now().toLocal()
+        'time': DateTime.now().millisecondsSinceEpoch,
+        "commenttime": DateFormat("yyyy-MM-dd - kk:mm").format(now)
       };
 
       crudMethods.addcomments(postcomments).then((result) {});
@@ -229,10 +277,7 @@ class _BlogsTileState extends State<BlogsTile> {
     }
   }
 
-  var likes = 0;
-  var dislikes = 0;
-  var likecolor = Colors.black;
-  var discolor = Colors.black;
+  
 
   final ams = AdMobService(); //call admobclass from services
 
@@ -243,10 +288,73 @@ class _BlogsTileState extends State<BlogsTile> {
     Admob.initialize(ams.getAdMobAppId());
   }
 
+  final dbref = Firestore.instance;
+  void updatepost(String newlike) async {
+  
+    
+        await dbref.collection("blogs").document(widget.postid).setData({
+      "like": newlike,
+      "dislike": widget.disLike,
+      "imgUrl": widget.imgUrl,
+      "iconUrl": widget.iconUrl,
+      "authorName": widget.authorName,
+      "title": widget.title,
+      "desc": widget.description,
+      'time': DateTime.now().millisecondsSinceEpoch,
+      "posttime": DateFormat("MM-dd - kk:mm").format(now),
+      "documentID": widget.postid
+    });
+     
+    
+    print("ok");
+    print(widget.postid);
+  }
+
+  //delte data from firestore.....
+
+   void deletepost() async {
+   
+   await  Firestore.instance.collection("blogs").document(widget.postid).delete();
+
+    print("ok");
+    print("delete");
+  }
+
+//update for dislike....
+
+  void updatedislike(String newdislike) async {
+
+    
+      
+      await dbref.collection("blogs").document(widget.postid).setData({
+      "like": widget.postLike,
+      "dislike": newdislike,
+      "imgUrl": widget.imgUrl,
+      "iconUrl": widget.iconUrl,
+      "authorName": widget.authorName,
+      "title": widget.title,
+      "desc": widget.description,
+      'time': DateTime.now().millisecondsSinceEpoch,
+      "posttime": DateFormat("MM-dd - kk:mm").format(now),
+      "documentID": widget.postid
+    }
+    
+    );
+      
+  
+   
+    
+    print("ok");
+    print(widget.postid);
+  }
+
+
+Color likecolor = Colors.brown;
+Color dislikecolor = Colors.brown; 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 750,
+      height: 670,
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: <Widget>[
@@ -255,8 +363,8 @@ class _BlogsTileState extends State<BlogsTile> {
               ClipOval(
                   child: CachedNetworkImage(
                       imageUrl: widget.iconUrl,
-                      height: 70,
-                      width: 70,
+                      height: 50,
+                      width: 50,
                       fit: BoxFit.cover)),
               SizedBox(width: 10),
               Text(widget.authorName,
@@ -279,58 +387,94 @@ class _BlogsTileState extends State<BlogsTile> {
                   color: textcolor),
             ),
           ),
+
           Container(
-            height: 395,
+            height: 375,
             width: MediaQuery.of(context).size.width,
-            child: CachedNetworkImage(
-                imageUrl: widget.imgUrl,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.fill),
+            child: PinchZoomImage(
+              image: Image.network(widget.imgUrl),
+              zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
+              hideStatusBarWhileZooming: true,
+              onZoomStart: () {
+                print('Zoom started');
+              },
+              onZoomEnd: () {
+                print('Zoom finished');
+              },
+            ),
           ),
+
           Container(
               child: Row(
             children: <Widget>[
-              GestureDetector(
-                child: Icon(
-                  Icons.thumb_up,
-                  size: 35,
-                  color: likecolor,
-                ),
-                onTap: () {
-                  setState(() {
-                    likecolor = Colors.blue;
-                  });
-                },
-                onLongPress: () {
-                  setState(() {
-                    likecolor = Colors.black;
-                  });
-                },
-              ),
+              
               SizedBox(width: 10),
-              GestureDetector(
-                child: Icon(
-                  Icons.thumb_down,
-                  size: 35,
-                  color: discolor,
-                ),
-                onTap: () {
-                  setState(() {
-                    discolor = Colors.red;
-                  });
-                },
-                onLongPress: () {
-                  setState(() {
-                    discolor = Colors.black;
-                  });
-                },
+              IconButton(
+                  icon: Icon(
+                    Icons.thumb_up,
+                    size: 40,
+                  ),
+                  color:likecolor,
+                  onPressed: () {
+                    var x = int.parse(widget.postLike);
+                    x = x + 1;
+                    String newlike;
+                    newlike = x.toString();
+                    setState(() {
+                      updatepost(newlike);
+                      //likebydefault = Colors.blue;
+                       likecolor=Colors.blue;
+
+                    });
+                    // likecolor = Colors.blue;
+                  }),
+              SizedBox(
+                width: 10,
               ),
-              SizedBox(width: 170,),
               Text(
-               
-                widget.posttime,style: TextStyle(fontSize:13,color: textcolor),)
+                widget.postLike,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: textcolor,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.thumb_down,
+                    size: 40,
+                  ),
+                  color: dislikecolor,
+                  onPressed: () {
+                    var x = int.parse(widget.disLike);
+                    x = x + 1;
+                    String newdislike;
+                    newdislike = x.toString();
+                    setState(() {
+                      updatedislike(newdislike);
+                      
+                    });
+                    dislikecolor = Colors.red;
+                  }),
+                  SizedBox(width:15),
+              Text(
+                widget.disLike,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: textcolor,
+                    fontWeight: FontWeight.bold),
+              ),
+               SizedBox(width:85),
+               IconButton(icon: Icon(Icons.delete,size: 30,color: Colors.red,), 
+               onPressed: (){
+                 deletepost();
+               }
+               )
             ],
           )),
+
           Container(
             // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Row(
@@ -397,10 +541,10 @@ class _BlogsTileState extends State<BlogsTile> {
             ),
           ),
           SizedBox(height: 10),
-          AdmobBanner(
-              adUnitId: "ca-app-pub-4709741532241387/1729285651",
-              //adUnitId:"ca-app-pub-3940256099942544/6300978111",
-              adSize: AdmobBannerSize.BANNER),
+          // AdmobBanner(
+          //     adUnitId: "ca-app-pub-5023637575934146/5339692753",
+          //     //adUnitId:"ca-app-pub-3940256099942544/6300978111",
+          //     adSize: AdmobBannerSize.BANNER),
         ],
       ),
     );

@@ -7,7 +7,9 @@ class AdMobService{
 String getAdMobAppId(){
   if(Platform.isAndroid){
     //realaddid
-    return  "ca-app-pub-4709741532241387~6971656435";
+    //return  "ca-app-pub-4709741532241387~6971656435";
+    return  "ca-app-pub-5023637575934146~1394088201";
+
   }
   return null;
 }
@@ -16,8 +18,10 @@ String getBannerAdId(){
   if(Platform.isAndroid){
    
     //for test "ca-app-pub-3940256099942544/6300978111";
-    return "ca-app-pub-4709741532241387/8710638730";
+   // return "ca-app-pub-4709741532241387/8710638730";
+   return "ca-app-pub-5023637575934146/9990478111";
   }
+
   return null;
 
 }
@@ -28,7 +32,7 @@ String getInterstitialAdId(){
     
     //for test id " ca-app-pub-3940256099942544/1033173712"
 
-    return "ca-app-pub-4709741532241387/6907544428";
+    return "ca-app-pub-5023637575934146/6570107854";
   }
   return null;
 
@@ -38,7 +42,7 @@ String getInterstitialAdId(){
 
 InterstitialAd getnewTripInterstitial(){
   return InterstitialAd(
-    adUnitId: "ca-app-pub-4709741532241387/6907544428",
+    adUnitId: "ca-app-pub-5023637575934146/6570107854",
     listener:(MobileAdEvent event) {
     print("InterstitialAd event is $event");
   }, 

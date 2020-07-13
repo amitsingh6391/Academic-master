@@ -69,9 +69,9 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(title: Text("Academic master",
       style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      backgroundColor: Colors.cyan,
+      backgroundColor: Colors.greenAccent,
       ),
-       backgroundColor:Colors.cyan,
+       backgroundColor:Colors.greenAccent,
       body: isLoading
           ? Container(
               child: Center(child: CircularProgressIndicator()),
@@ -156,8 +156,10 @@ class _SignInState extends State<SignIn> {
                             borderRadius: BorderRadius.circular(30),
                             gradient: LinearGradient(
                               colors: [
-                                const Color(0xff007EF4),
-                                const Color(0xff2A75BC)
+                               // const Color(0xff007EF4),
+                               // const Color(0xff2A75BC)
+                               Colors.green,
+                               Colors.green
                               ],
                             )),
                         width: MediaQuery.of(context).size.width,

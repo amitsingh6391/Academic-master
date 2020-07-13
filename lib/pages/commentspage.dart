@@ -3,6 +3,7 @@ import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:link_text/link_text.dart';
 
 class Comments extends StatefulWidget {
   //  String x;
@@ -42,9 +43,18 @@ CrudMethods crudMethods = new CrudMethods();
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      floatingActionButton: FloatingActionButton(onPressed: (){
+    Firestore.instance.collection("comments").getDocuments().then((snapshot){
+      for(DocumentSnapshot ds in snapshot.documents){
+        ds.reference.delete();
+      }
+    });
+      },
+      child:Icon(Icons.delete)),
       backgroundColor: Colors.cyan,
        appBar: AppBar(
           backgroundColor: Colors.green,
+          
           title: Text(
             "  comments ",
             style: TextStyle(
@@ -79,6 +89,7 @@ CrudMethods crudMethods = new CrudMethods();
                           stream: commentsStream ,
                           builder: (context, snapshot) {
                             return ListView.builder(
+                              reverse: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 itemCount: snapshot.data.documents.length,
@@ -89,6 +100,8 @@ CrudMethods crudMethods = new CrudMethods();
                                         .data['comments'],
                                     comments_by: snapshot
                                         .data.documents[index].data["comments_by"],
+                                    commenttime: snapshot.data.documents[index].data["commenttime"],
+
                                   
                                     
                                     
@@ -115,13 +128,13 @@ CrudMethods crudMethods = new CrudMethods();
 //here we define inside listview in comments
 
 class CommentsTile extends StatelessWidget {
-  String comments, comments_by;
+  String comments, comments_by,commenttime;
 
   BuildContext context;
   CommentsTile(
       {@required this.comments,
       @required this.comments_by,
-    
+    @required this.commenttime
       });
 
  
@@ -145,14 +158,21 @@ class CommentsTile extends StatelessWidget {
           
           Container(
             height: 120,
-            child: Text(
-              "comments.....  $comments",
-              // textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
+            // child: Text(
+            //   "$comments",
+            //   // textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //       fontSize: 25,
+            //       fontWeight: FontWeight.w500,
                   
-                  color: Colors.black),
+            //       color: Colors.black),
+            // ),
+            child: LinkText(
+              text:"$comments",
+              textStyle: TextStyle(
+                  fontSize: 17,
+                  //fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
           Container(
@@ -168,7 +188,7 @@ class CommentsTile extends StatelessWidget {
           ),
 
           //for comments only
-          
+          Text(commenttime,style:TextStyle(fontSize:10,))
            
           
         ],

@@ -431,10 +431,10 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
                     ],
                   ),
                 ),
-                AdmobBanner(
-              adUnitId: "ca-app-pub-5023637575934146/3332481719",
-               adSize: AdmobBannerSize.BANNER
-               ),
+              //   AdmobBanner(
+              // adUnitId: "ca-app-pub-5023637575934146/3332481719",
+              //  adSize: AdmobBannerSize.BANNER
+              //  ),
                 Box(),
                 Container(
                   color: Colors.blue,

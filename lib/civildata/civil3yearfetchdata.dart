@@ -264,9 +264,9 @@ class _BlogsTileState extends State<BlogsTile> {
               ],
             ),
           ),
-          AdmobBanner(
-              adUnitId: "ca-app-pub-4709741532241387/9221241791",
-              adSize: AdmobBannerSize.BANNER),
+          // AdmobBanner(
+          //     adUnitId: "ca-app-pub-5023637575934146/7875831535",
+          //     adSize: AdmobBannerSize.BANNER),
         ],
       ),
     );

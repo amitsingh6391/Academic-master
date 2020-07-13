@@ -1,4 +1,4 @@
-// 
+//
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,6 +8,8 @@ class DatabaseMethods {
       print(e.toString());
     });
   }
+
+  //add likes
 
   getUserInfo(String email) async {
     return Firestore.instance
@@ -28,7 +30,7 @@ class DatabaseMethods {
 
   //for comments
 
-   getcomments() async {
+  getcomments() async {
     return await Firestore.instance.collection("users").snapshots();
   }
 
@@ -42,7 +44,7 @@ class DatabaseMethods {
     });
   }
 
-  getChats(String chatRoomId) async{
+  getChats(String chatRoomId) async {
     return Firestore.instance
         .collection("chatRoom")
         .document(chatRoomId)
@@ -51,14 +53,14 @@ class DatabaseMethods {
         .snapshots();
   }
 
-
-  Future<void> addMessage(String chatRoomId, chatMessageData){
-
-    Firestore.instance.collection("chatRoom")
+  Future<void> addMessage(String chatRoomId, chatMessageData) {
+    Firestore.instance
+        .collection("chatRoom")
         .document(chatRoomId)
         .collection("chats")
-        .add(chatMessageData).catchError((e){
-          print(e.toString());
+        .add(chatMessageData)
+        .catchError((e) {
+      print(e.toString());
     });
   }
 
@@ -68,5 +70,4 @@ class DatabaseMethods {
         .where('users', arrayContains: itIsMyName)
         .snapshots();
   }
-
 }

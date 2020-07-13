@@ -1,53 +1,49 @@
 import 'dart:io';
-
-import 'package:Academicmaster/firstslide.dart';
-import 'package:Academicmaster/firstyear.dart';
 import 'package:Academicmaster/pages/homepage.dart';
+
 import 'package:Academicmaster/selectyouryear/civilyear.dart';
 import 'package:Academicmaster/selectyouryear/eceyear.dart';
 import 'package:Academicmaster/selectyouryear/mechnicalyear.dart';
 import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
-import 'ece/fetchecedata.dart';
-import 'mechnical/fetchsubject.dart';
+
 
 class Branch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-       onWillPop: () {
-      return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Confirm Exit"),
-            content: Text("Are you sure you want to exit?"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("YES"),
-                onPressed: () {
-                  exit(0);
-                },
-              ),
-              FlatButton(
-                child: Text("NO"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-            )
-          ],
-        );
-      }
-    );
-    
-  },
-          child: Scaffold(
+      onWillPop: () {
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirm Exit"),
+                content: Text("Are you sure you want to exit?"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("YES"),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      },
+      child: Scaffold(
 
           //  drawer: NavDrawer(),
           //  appBar:AppBar(
           //    backgroundColor: Color(0xFF00bbf8),
           //  ),
+     
           body: SingleChildScrollView(
         child: Column(
           children: [
@@ -71,10 +67,10 @@ class Branch extends StatelessWidget {
                   },
                   text: ["Academic", "master"],
                   textStyle: TextStyle(
-                      fontSize: 100,
+                      fontSize: 90,
                       fontFamily: "Dancing",
                       fontWeight: FontWeight.bold,
-                      color: Colors.amber),
+                      color: Colors.greenAccent),
                   textAlign: TextAlign.start,
                   alignment: AlignmentDirectional.center,
                 ),
@@ -87,13 +83,13 @@ class Branch extends StatelessWidget {
                 boxHeight: 100,
                 loadDuration: Duration(seconds: 10),
                 text: "Select your Branch--",
-                waveColor: Colors.amber,
-                boxBackgroundColor: Colors.black12,
+                waveColor: Colors.greenAccent,
+                boxBackgroundColor: Colors.white,
                 textStyle: TextStyle(
                     fontSize: 40,
                     fontFamily: "Dancing",
                     fontWeight: FontWeight.bold,
-                    color: Colors.red),
+                    color: Colors.black),
               ),
             ),
             //  Box(context),
@@ -146,32 +142,27 @@ class Branch extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           gradient: LinearGradient(
             colors: [
-              Colors.black,
-              Colors.black12,
+              Colors.greenAccent,
+              Colors.green,
             ],
           )),
       child: GestureDetector(
         onTap: () {
-          if(branch=="Computer science"){
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Homepage()));
-          }
-         
-          else if(branch=="Civil"){
-              Navigator.push(
-              context, MaterialPageRoute(builder: (context) =>Civilyear()));
-          }
-           else if(branch=="Mechnical"){
-              Navigator.push(
-              context, MaterialPageRoute(builder: (context) =>Mechnicalyear()));
-          }
-           else if(branch=="ECE"){
-             Navigator.push(
-              context, MaterialPageRoute(builder: (context) =>Eceyear()));
-          }
-          else{
-           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Homepage()));
+          if (branch == "Computer science") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Homepage()));
+          } else if (branch == "Civil") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Civilyear()));
+          } else if (branch == "Mechnical") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Mechnicalyear()));
+          } else if (branch == "ECE") {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Eceyear()));
+          } else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Homepage()));
           }
         },
         child: Center(

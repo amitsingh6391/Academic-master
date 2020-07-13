@@ -55,7 +55,7 @@ class _HomescreenState extends State<Homescreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.book),
-              title: Text("Note,quantm",style: TextStyle(fontSize: 12),),
+              title: Text("Study Material",style: TextStyle(fontSize: 12),),
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.next_week,),

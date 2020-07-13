@@ -62,11 +62,7 @@ class _NavDrawerState extends State<NavDrawer> {
             leading: Icon(Icons.star),
             title: Text("Rate us"),
             onTap: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => About(context),
-              //     ));
+              
               launchurl();
             },
           ),
@@ -104,6 +100,16 @@ class _NavDrawerState extends State<NavDrawer> {
             },
             //trailing: Icon(Icons.dashboard),
           ),
+           ListTile(
+            leading: Icon(Icons.update),
+            title: Text("Update app"),
+            onTap: () {
+              
+              launchurl();
+            },)
+
+
+
         ],
       ),
     );

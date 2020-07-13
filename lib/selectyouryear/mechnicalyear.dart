@@ -83,7 +83,8 @@ class _HomebodyState extends State<Homebody> {
               children: <Widget>[Container(height: 10)],
             ),
             AdmobBanner(
-                adUnitId: ams.getBannerAdId(), adSize: AdmobBannerSize.BANNER),
+                adUnitId: ams.getBannerAdId(),
+                 adSize: AdmobBannerSize.BANNER),
             Row(
               children: <Widget>[
                 Container(

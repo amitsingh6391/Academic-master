@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:Academicmaster/pages/posts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "package:flutter/material.dart";
 import "dart:io";
@@ -7,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:image_cropper/image_cropper.dart';
 import "package:intl/intl.dart";
+
 class CreateBlog extends StatefulWidget {
   @override
   _CreateBlogState createState() => _CreateBlogState();
@@ -89,6 +93,7 @@ class _CreateBlogState extends State<CreateBlog> {
       var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
       print("this is url $downloadiconUrl");
 
+      
       Map<String, dynamic> blogMap = {
         "imgUrl": downloadUrl,
         "iconUrl": downloadiconUrl,
@@ -96,15 +101,50 @@ class _CreateBlogState extends State<CreateBlog> {
         "title": title,
         "desc": desc,
         'time': DateTime.now().millisecondsSinceEpoch,
-        "posttime":DateFormat("MM-dd - kk:mm").format(now)
+        "posttime": DateFormat("MM-dd - kk:mm").format(now),
+        "like": "0",
+       
+       
       };
-      crudMethods.addData(blogMap).then((result) {
-        Navigator.push(
+       
+      
+
+         var rng = new Random();
+         String documentID = rng.nextInt(1000000).toString();
+         
+         await Firestore.instance.collection("blogs").document(documentID).setData({
+
+        "imgUrl": downloadUrl,
+        "iconUrl": downloadiconUrl,
+        "authorName": authorName,
+        "title": title,
+        "desc": desc,
+        'time': DateTime.now().millisecondsSinceEpoch,
+        "posttime": DateFormat("MM-dd - kk:mm").format(now),
+        "like": "0",
+        "dislike":"0",
+        "documentID":documentID
+           
+         }).then((result){
+           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => HomPage(),
             ));
-      });
+         });
+
+      
+
+
+      
+
+      // crudMethods.addData(blogMap).then((result) {
+      //   Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => HomPage(),
+      //       ));
+      // });
     } else {}
   }
 
