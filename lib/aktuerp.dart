@@ -20,13 +20,6 @@ class _AktuerpState extends State<Aktuerp> {
       routes: {
         "/":(_)=>WebviewScaffold(
           url:"https://aktu.ac.in/",
-         
-        appBar: AppBar(title:Center(
-          child: Text("Aktu erp",style:TextStyle(fontSize:40)
-          ),
-        ),
-        backgroundColor: Color(0xFF0000A0),
-        ),
         withZoom: true,
         )
       },

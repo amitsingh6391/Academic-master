@@ -11,6 +11,7 @@ import "homepage.dart";
 import "package:Academicmaster/pages/posts.dart";
 
 import "package:Academicmaster/view/viewmain.dart";
+import"package:curved_navigation_bar/curved_navigation_bar.dart";
 
 class Homescreen extends StatefulWidget {
   @override
@@ -22,9 +23,9 @@ class _HomescreenState extends State<Homescreen> {
 
   var pages = [
    MyApp(),
-  
+
    HomPage(),
-  
+
     Branch(),
     FreecoursePage(),
     Aktuerp(),
@@ -49,7 +50,7 @@ class _HomescreenState extends State<Homescreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-               
+
               ),
               title: Text("Home"),
             ),

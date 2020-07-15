@@ -70,7 +70,7 @@ dependencies:
   intl: ^0.16.1
   like_button: ^1.0.1
   pinch_zoom_image_updated: ^0.2.6
-  
+  curved_navigation_bar: ^0.3.0
   
   
   

@@ -10,6 +10,8 @@ import "package:flutter/material.dart";
 import 'package:Academicmaster/view/widgets/widget.dart';
 
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -67,11 +69,33 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(title: Text("Academic master",
-      style: TextStyle(fontWeight: FontWeight.bold),
+      style: GoogleFonts.quicksand(
+          textStyle: Theme.of(context).textTheme.display1,
+          fontWeight: FontWeight.w700,
+
+          fontSize: 45,color: Color(0xffffce00)),
+
       ),
-      backgroundColor: Colors.greenAccent,
+      centerTitle: true,
+      bottom: PreferredSize(
+        child: Text("The simplest way to success",
+        style: GoogleFonts.fondamento(fontSize: 20,color: Colors.white),),
+        preferredSize: Size.fromHeight(50.0),
       ),
-       backgroundColor:Colors.greenAccent,
+        /*flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    Colors.green,
+                    Color(0xff2782bb)
+                  ])
+          ),
+        ),*/
+        backgroundColor: Color(0xff484d5c),
+      ),
+       backgroundColor:Colors.white,
       body: isLoading
           ? Container(
               child: Center(child: CircularProgressIndicator()),
@@ -81,10 +105,10 @@ class _SignInState extends State<SignIn> {
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
-                   // Spacer(),
-                    CircleAvatar(
-                      radius: 100,
-                      backgroundImage:AssetImage("images/thirdgif3.gif"),
+                    Image.network(
+                      "https://cdn.dribbble.com/users/2367833/screenshots/7816190/media/b1aaf5c98510012b56422d1619dc62e8.gif",
+                      width: 400,
+                      height: 200,
                     ),
                     Form(
                       key: formKey,
@@ -158,8 +182,8 @@ class _SignInState extends State<SignIn> {
                               colors: [
                                // const Color(0xff007EF4),
                                // const Color(0xff2A75BC)
-                               Colors.green,
-                               Colors.green
+                               Colors.brown[200],
+                               Colors.yellow[300]
                               ],
                             )),
                         width: MediaQuery.of(context).size.width,
@@ -203,20 +227,75 @@ class _SignInState extends State<SignIn> {
                           child: Text(
                             "Register now",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
+                                color: Colors.redAccent,
+                                fontSize: 20,
                                 decoration: TextDecoration.underline),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: _urllauncher,
+                        child:Text(
+                          "Privacy Policy",
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                          ),
+
+                        )),
+                        FlatButton(
+                            onPressed: _terms,
+                            child:Text(
+                              "Terms And Condition",
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold
+                              ),
+
+                            )
+                        )
+                      ],
+
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(constraints: BoxConstraints(maxWidth: 300),
+                            child:
+                        Text("By continuing you agree to our terms of service and privacy policy",
+                        style: TextStyle(color: Colors.black),)
+                        ),],
+                    ),
+                    SizedBox(
                       height: 50,
-                    )
+                    ),
                   ],
                 ),
               ),
           ),
     );
+  }
+}
+_urllauncher() async {
+  const url = 'https://academic-master.flycricket.io/privacy.html';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+_terms() async {
+  const url = 'https://academic-master.flycricket.io/terms.html';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }

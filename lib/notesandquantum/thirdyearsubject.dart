@@ -38,24 +38,25 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
           title: Text(
             "Subject",
             style: GoogleFonts.playfairDisplay(
-                color: Colors.green[100],
+                color: Colors.black,
                 fontSize: 40,
               ),
           ),
-          backgroundColor: Color(0xFF0000A0),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Colors.red[200],
+                      Colors.blue[200]
+                    ])
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
-             decoration: BoxDecoration(
-            
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Colors.teal[200],
-                
-                ],
-              ),
-            ),
+
               
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +67,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                   child: Container(
                     height: 70,
                     padding: EdgeInsets.all(20),
-                    color: Colors.green[200],
+                    color: Colors.lightBlue[100],
                     child: Row(
                       children: <Widget>[
                         Text(
@@ -86,11 +87,11 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                             
                               DropdownButton<String>(
                                 hint: Text("                          Select unit",
-                                style: TextStyle(fontSize: 20,color: Colors.black),
+                                style: TextStyle(fontSize: 20,color: Colors.red),
                                 ),
                                 icon: Icon(Icons.arrow_drop_down,size: 44,),
                                 elevation: 10,
-                                style: TextStyle(color: Colors.teal),
+                                style: TextStyle(color: Colors.black),
                                
                                 onChanged: (String newValue){
                                   setState(() {
@@ -137,7 +138,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   
                     child: Text(
                       "  *   DBMS",
@@ -152,11 +153,11 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                             
                               DropdownButton<String>(
                                 hint: Text("                          Select unit",
-                                style: TextStyle(fontSize: 20,color: Colors.black),
+                                style: TextStyle(fontSize: 20,color: Colors.red),
                                 ),
                                 icon: Icon(Icons.arrow_drop_down,size: 44,),
                                 elevation: 10,
-                                style: TextStyle(color: Colors.teal),
+                                style: TextStyle(color: Colors.black),
                                
                                 onChanged: (String newValue){
                                   setState(() {
@@ -202,7 +203,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -222,7 +223,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 //     adSize: AdmobBannerSize.BANNER),
                 Container(height: 70,
                 padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -241,7 +242,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 Container(
                   height: 70,
                   padding:EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -260,7 +261,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -279,7 +280,7 @@ class _ThirdyearsubjectState extends State<Thirdyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -325,9 +326,20 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
         title: Text(
           "Important questions",
           style: TextStyle(
-              fontFamily: "Dancing", fontSize: 30, fontWeight: FontWeight.bold),
+              color: Colors.black,fontFamily: "Dancing", fontSize: 30, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Color(0xFF0000A0),
+
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    Colors.deepPurple[200],
+                    Colors.yellowAccent[100]
+                  ])
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -335,14 +347,15 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
           child: Column(
             children: <Widget>[
               Container(
-                color: Colors.red,
+                height: 70,
+                color: Colors.deepPurple[100],
                 child: Row(
                   children: <Widget>[
                     Text(
-                      "Compiler design",
+                      "   Compiler design",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 50,
+                          fontSize: 30,
                           fontFamily: "Dancing"),
                     ),
                   ],
@@ -360,9 +373,9 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                         Text(
                           "unit1",
                           style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.pink),
+                              fontSize: 30,
+
+                              color: Colors.red),
                         ),
                         Buttonnotes(context, "compilerdesignq_unit1")
                       ],
@@ -376,9 +389,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                         Text(
                           "unit2",
                           style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.pink),
+                              fontSize: 30,
+                              color: Colors.red),
                         ),
                         Buttonnotes(context, "compilerdesignq_unit2")
                       ],
@@ -392,9 +404,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                         Text(
                           "unit3",
                           style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.pink),
+                              fontSize: 30,
+                              color: Colors.red),
                         ),
                         Buttonnotes(context, "compilerdesignq_unit3")
                       ],
@@ -408,9 +419,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                         Text(
                           "unit4",
                           style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.pink),
+                              fontSize: 30,
+                              color: Colors.red),
                         ),
                         Buttonnotes(context, "compilerdesignq_unit4")
                       ],
@@ -424,9 +434,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                         Text(
                           "unit5",
                           style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.pink),
+                              fontSize: 30,
+                              color: Colors.red),
                         ),
                         //Buttonnotes(context, "cunit5")
                       ],
@@ -438,14 +447,15 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      color: Colors.red,
+                      height: 70,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
-                            "Industrial Socioology",
+                            "   Industrial Socioology",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 40,
+                                fontSize: 30,
                                 fontFamily: "Dancing"),
                           ),
                         ],
@@ -460,9 +470,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit1",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(
                                   context, "IndustrialSocioology_qunit1")
@@ -477,9 +486,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit2",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(
                                   context, "IndustrialSocioology_qunit2")
@@ -494,9 +502,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit3",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(
                                   context, "IndustrialSocioology_qunit3")
@@ -511,9 +518,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit4",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(
                                   context, "IndustrialSocioology_qunit4")
@@ -528,9 +534,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit5",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(
                                   context, "IndustrialSocioology_qunit5")
@@ -544,7 +549,7 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                     //     adSize: AdmobBannerSize.BANNER),
                     Box(),
                     Container(
-                      color: Colors.orange,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -561,7 +566,7 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                     ),
                     Box(),
                     Container(
-                      color: Colors.yellowAccent,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -578,7 +583,7 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                     ),
                     Box(),
                     Container(
-                      color: Colors.pink,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -602,9 +607,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit1",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(context, "IMqunit1")
                             ],
@@ -618,9 +622,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit2",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(context, "IMqunit2")
                             ],
@@ -634,9 +637,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit3",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(context, "IMqunit3")
                             ],
@@ -650,9 +652,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit4",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                                Buttonnotes(context, "IMqunit4")
                             ],
@@ -666,9 +667,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                               Text(
                                 "unit5",
                                 style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pink),
+                                    fontSize: 30,
+                                    color: Colors.red),
                               ),
                               Buttonnotes(context, "IMqunit5")
                             ],
@@ -681,14 +681,15 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                     //     adSize: AdmobBannerSize.BANNER),
                     Box(),
                     Container(
-                      color: Colors.blueGrey,
+                      height: 70,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
-                            "DAA",
+                            "   DAA",
                             style: TextStyle(
                                 fontFamily: "Dancing",
-                                fontSize: 40,
+                                fontSize: 30,
                                 fontWeight: FontWeight.bold),
                           ),
                           mycontainer(20),
@@ -698,7 +699,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                     ),
                     Box(),
                     Container(
-                      color: Colors.blue,
+                      height: 70,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -715,7 +717,8 @@ class _ThirdyearquantumState extends State<Thirdyearquantum> {
                     ),
                     Box(),
                     Container(
-                      color: Colors.purple,
+                      height: 70,
+                      color: Colors.deepPurple[100],
                       child: Row(
                         children: <Widget>[
                           Text(
@@ -752,9 +755,9 @@ FloatingActionButton Buttonnotes(context, String x) {
   Random random = Random();
   int randomnumber = random.nextInt(10000);
   return FloatingActionButton(
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.yellow[100],
     heroTag: randomnumber,
-    child: Icon(Icons.arrow_forward),
+    child: Icon(Icons.arrow_forward,color: Colors.black,),
     onPressed: () {
       {
         Navigator.push(

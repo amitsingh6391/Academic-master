@@ -90,13 +90,17 @@ class _FreecoursePageState extends State<FreecoursePage> {
             },
           ),
           appBar: AppBar(
-            backgroundColor: Color(0xFF0000A0),
             title: Text(
-              "Get Paid courses free",
+              "Free Coupens for Paid Courses",
               style: TextStyle(
+                color: Colors.black,
                   fontSize: 23,
                   fontFamily: "Dancing",
                   fontWeight: FontWeight.bold),
+            ),
+            flexibleSpace: Image(
+              image: AssetImage("images/triangle-green-and-yellow-gradient-banner-vector-16145264.jpg"),
+              fit:BoxFit.cover,
             ),
             // leading: IconButton(
             //       icon: Icon(Icons.cancel, color: Colors.white, size: 50),

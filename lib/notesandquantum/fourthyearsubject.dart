@@ -7,7 +7,7 @@ import "package:Academicmaster/thirdAndfourthyearnotesandquantum/thirdAndfourthy
 
 
 import "dart:math";
-
+import 'package:google_fonts/google_fonts.dart';
 
 
 
@@ -32,12 +32,22 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
         appBar: AppBar(
           title: Text(
             "Subject",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 50,
-                fontFamily: "Dancing"),
+            style: GoogleFonts.playfairDisplay(
+        color: Colors.black,
+        fontSize: 40,
+    ),
           ),
-          backgroundColor: Color(0xFF0000A0),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Colors.red[200],
+                      Colors.blue[200]
+                    ])
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -50,14 +60,15 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    color: Colors.green,
+                    height: 70,
+                    color: Colors.lightBlue[100],
                     child: Row(
                       children: <Widget>[
                         Text(
                           "Distributed system",
                           style: TextStyle(
                               fontFamily: "Dancing",
-                              fontSize: 38,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -78,7 +89,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit1",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                         //Buttonnotes(context, "cunit1")
                         ],
                         ),
@@ -87,7 +98,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit2",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                        // Buttonnotes(context, "cunit2")
                         ],
                         ),
@@ -96,7 +107,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit3",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                         //Buttonnotes(context, "cunit3")
                         ],
                         
@@ -106,7 +117,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit4",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                        // Buttonnotes(context, "cunit4")
                         ],
                         ),
@@ -115,7 +126,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit5",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                        // Buttonnotes(context, "cunit5")
                         ],
                         ),
@@ -124,13 +135,14 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.blueAccent,
+                  height: 70,
+                  color: Colors.lightBlue[100],
                   child: Center(
                     child: Text(
                       "Artificial Intelligence",
                       style: TextStyle(
                           fontFamily: "Dancing",
-                          fontSize: 35,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -142,7 +154,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit1",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.green),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                        // Buttonnotes(context, "physicsunit1")
                         ],
                         ),
@@ -151,7 +163,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit2",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.green),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                         // Buttonnotes(context, "physicsunit1")
                         ],
                         ),
@@ -160,7 +172,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit3",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.green),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                         // Buttonnotes(context, "physicsunit3")
                         ],
                         
@@ -170,7 +182,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit4",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.green),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                         //Buttonnotes(context, "cunit4")
                         ],
                         ),
@@ -179,7 +191,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                         children: <Widget>[
                           mycontainer(70),
                           Text("unit5",
-                          style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.green),),
+                          style: TextStyle(fontSize: 30,color: Colors.red),),
                         //Buttonnotes(context, "cunit5")
                         ],
                         ),
@@ -188,14 +200,15 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.pink,
+                  height: 70,
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
                         "Cloud computing",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 40,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                      // mycontainer(70),
@@ -210,14 +223,15 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 
 
                 Container(
-                  color: Colors.yellowAccent,
+                  height: 70,
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
                         "Data comression",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 40,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       //mycontainer(10),
@@ -228,14 +242,15 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
 
                 Box(),
                 Container(
-                  color: Colors.brown,
+                  height: 70,
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
                         "Machine learning",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 40,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       //mycontainer(10),
@@ -245,7 +260,8 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.orange,
+                  height: 70,
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -262,7 +278,7 @@ class _FourthyearsubjectState extends State<Fourthyearsubject> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.purple,
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -310,11 +326,22 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
           title: Text(
             "Important questions",
             style: TextStyle(
+              color: Colors.black,
                 fontFamily: "Dancing",
-                fontSize: 32,
+                fontSize: 30,
                 fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Color(0xFF0000A0),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Colors.deepPurple[200],
+                      Colors.yellowAccent[100]
+                    ])
+            ),
+          ),
         ),
         body: SingleChildScrollView(
                   child: Container(
@@ -322,14 +349,15 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
             child: Column(
               children: <Widget>[
                 Container(
-                  color: Colors.red,
+                  height: 70,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Distributessystem",
+                        "  Distributes system",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 40,
+                            fontSize: 30,
                             fontFamily: "Dancing"),
                       ),
               
@@ -348,7 +376,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit1",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Buttonnotes(context, "Distributessystemq_unit1")
                           ],
                           ),
@@ -357,7 +385,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit2",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Buttonnotes(context, "Distributessystemq_unit2")
                           ],
                           ),
@@ -366,7 +394,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit3",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Buttonnotes(context, "Distributessystemq_unit3")
                           ],
                           
@@ -376,7 +404,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit4",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Buttonnotes(context, "Distributessystemq_unit4")
                           ],
                           ),
@@ -385,7 +413,7 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit5",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Buttonnotes(context, "Distributessystemq_unit5")
                           ],
                           ),
@@ -398,14 +426,15 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
             //  ),
                 Box(),
                 Container(
-                  color: Colors.orange,
+                  height: 70,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "cloudcomputing",
+                        "  Cloud Computing",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 40,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       //mycontainer(90),
@@ -415,11 +444,12 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.yellowAccent,
+                  height: 70,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Data comression",
+                        "  Data comression",
                         style: TextStyle(
                             fontFamily: "Dancing",
                             fontSize: 30,
@@ -432,14 +462,15 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.pink,
+                  height: 70,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
                         "Machine learning",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 40,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       //mycontainer(100),
@@ -455,7 +486,8 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                 
                 Box(),
                 Container(
-                  color: Colors.blueGrey,
+                  height: 70,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -472,7 +504,8 @@ class _FourthyearquantumState extends State<Fourthyearquantum> {
                 ),
                  Box(),
                 Container(
-                  color: Colors.blueGrey,
+                  height: 70,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -505,9 +538,9 @@ FloatingActionButton Buttonnotes(context, String x) {
   Random random = Random();
   int randomnumber = random.nextInt(10000);
   return FloatingActionButton(
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.yellow[100],
     heroTag: randomnumber,
-    child: Icon(Icons.arrow_forward),
+    child: Icon(Icons.arrow_forward,color: Colors.black,),
     onPressed: () {
       {
         Navigator.push(

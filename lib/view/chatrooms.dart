@@ -69,14 +69,18 @@ class _ChatRoomState extends State<ChatRoom> {
         resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-    backgroundColor: Color(0xFF0000A0),
+          flexibleSpace: Image(image: AssetImage("images/download 11.jpg"),
+          fit: BoxFit.cover,),
     title: Text(
       "yourfriends",
       style: TextStyle(
+        fontWeight: FontWeight.bold,
         fontFamily: "Dancing",
         fontSize: 30,
+        color: Colors.brown
       ),
     ),
+
     centerTitle: true,
     actions: [
       GestureDetector(
@@ -87,7 +91,7 @@ class _ChatRoomState extends State<ChatRoom> {
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.exit_to_app)),
+            child: Icon(Icons.exit_to_app,color: Colors.brown,)),
       ),
     ],
         ),
@@ -95,12 +99,12 @@ class _ChatRoomState extends State<ChatRoom> {
     child: chatRoomsList(),
         ),
         floatingActionButton: FloatingActionButton(
-    child: Icon(Icons.search),
+    child: Icon(Icons.search,color: Colors.orange,),
     onPressed: () {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Search()));
-    },
-        ),
+      },
+      backgroundColor: Color(0xff605959),  ),
       );
   }
 }

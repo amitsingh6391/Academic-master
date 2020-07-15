@@ -2,10 +2,10 @@ import 'package:Academicmaster/os.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import "syllabus.dart";
+import "syllabus2.dart";
 import 'notesandquantum/secondyearsubject.dart';
 import 'package:admob_flutter/admob_flutter.dart';
-import "package:Academicmaster/services/admob_service.dart";
+import "package:Academicmaster/services/admob_service.dart";  //git install hi na//thik hi
 
 
 
@@ -19,9 +19,9 @@ class _SecondyearState extends State<Secondyear> {
   Widget build(BuildContext context) {
     return MaterialApp(
 
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,//mgr vs code se link nahi hai  //github open kr 
       
-      home: Secondyearhome(),
+      home: Secondyearhome(),//merpe login bhi nahi hua hai  //account hi na//
       
     );
   }
@@ -35,15 +35,8 @@ class _SecondyearhomeState extends State<Secondyearhome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Second Year",
-          style: TextStyle(fontWeight: FontWeight.bold,
-        fontSize: 40,
-        fontFamily: "Dancing"),
-        ),
-backgroundColor: Color(0xFF0000A0),
-      ),
+
+
       
       body:Secondyearbody()
     
@@ -81,14 +74,20 @@ class _SecondyearbodyState extends State<Secondyearbody> {
     return Container(
 
         child: Container(
-    child: Column(
-      children: <Widget>[
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              Container(
+          height: 20,
+          decoration: BoxDecoration(
+              color: Colors.white
+          ),
+        ),
           Expanded(
             flex: 2,
             child: Container(
               color: Colors.white,
-              child: Image.network(
-        "https://cdn.clipart.email/00087bde1ed0feca6df779f14f73fb7b_book-clipart-gif_300-236.gif"),
+              child: Image.asset("images/1_-VK_9x-T9NfoUJ5D-tJl4w.png",)
             ),
           ),
 
@@ -107,59 +106,75 @@ class _SecondyearbodyState extends State<Secondyearbody> {
           Expanded(
             flex: 1,
             child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  border: Border.all(color:Colors.black,
+                      style: BorderStyle.solid
+                  )),
                 //color: Colors.yellow,
                 child: Row(
-        children: <Widget>[
-          Image.network(
-              "https://cdn.clipart.email/5ee45e6ab3b1ea49ea8343740b596489_clipart-books-gif-animation-clipart-books-gif-animation-_1000-1000.gif"),
-          FlatButton(
-            child: Text(
-              "Syllabus",
-              style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
-            ),
-            onPressed: (){
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>Syllabus2(),));
-            },
-          ),
-        ],
+                  children: <Widget>[
+                      Text("📚",
+                        style: TextStyle(
+                            fontSize: 80
+                        ),),
+                FlatButton(
+                  child: Text(
+                    "Syllabus",
+                    style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: (){
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>Syllabus2(),));
+                  },
                 ),
+              ],
                 ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-             // color: Colors.pink,
-              height: 100,
-             
-              child: Row(
-        children: <Widget>[
-          Image.network(
-            
-              "https://media1.giphy.com/media/l1J9HWBKLp20YfNAY/source.gif",
-              width: 170,),
-          FlatButton(
-            child: Text(
-              "Notes",
-              style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
-            ),
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Secondyearsubject(),));
-            },
-          ),
-        ],
-                ),
-
             ),
           ),
+        Expanded(
+                  flex: 1,
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color:Colors.black,
+                    style: BorderStyle.solid
+                )),
+            height: 200,
+                   // color: Colors.pink,
+
+
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.book,size: 80,color: Colors.pink,),
+                FlatButton(
+                  child: Text(
+                    "Notes",
+                    style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Secondyearsubject(),));
+                  },
+                ),
+              ],
+                      ),
+
+                  ),
+                ),
 
 
 
-          SizedBox(height:10),
+
            Expanded(
             flex: 1,
-            child: Container(
+            child: Container(decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color:Colors.black,
+                    style: BorderStyle.solid
+                )),
+              height: 200,
              // color: Colors.pink,
-              height: 100,
+
              
               child: Row(
         children: <Widget>[
@@ -167,7 +182,10 @@ class _SecondyearbodyState extends State<Secondyearbody> {
             
           //     "https://media1.giphy.com/media/l1J9HWBKLp20YfNAY/source.gif",
           //     width: 170,),
-          Icon(Icons.book,size: 100,color: Colors.pink,),
+          Text("📄",
+            style: TextStyle(
+                fontSize: 80
+            ),),
           FlatButton(
             child: Text(
               "Previous year paper",
@@ -184,22 +202,27 @@ class _SecondyearbodyState extends State<Secondyearbody> {
             ),
           ),
 
-          SizedBox(height:10),
+
 
 
           Expanded(
             flex: 1,
             child: Container(
              // color: Colors.pink,
-              height: 100,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  border: Border.all(color:Colors.black,
+                      style: BorderStyle.solid
+                  )),
+              height: 200,
              
               child: Row(
         children: <Widget>[
 
-          Image(
-           image: AssetImage("images/images (1).jpeg"),
-           width:140, 
-            ),
+          Text("🎥",
+            style: TextStyle(
+                fontSize: 80
+            ),),
           FlatButton(
             child: Text(
               "video lecture",
@@ -214,19 +237,24 @@ class _SecondyearbodyState extends State<Secondyearbody> {
 
             ),
           ),
-          SizedBox(height:10),
+
           Expanded(
             flex: 1,
 
             child: Container(
              // color: Colors.green,
-              
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  border: Border.all(color:Colors.black,
+                      style: BorderStyle.solid
+                  )),
+              height: 200,
               child: Row(
         children: <Widget>[
-          Image.network(
-              "https://cdn.dribbble.com/users/2367833/screenshots/7816190/media/b1aaf5c98510012b56422d1619dc62e8.gif",
-              width: 150,
-              height:200,),
+          Text("📑",
+            style: TextStyle(
+                fontSize: 80
+            ),),
 
           FlatButton(
             child: Text(

@@ -33,22 +33,24 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
     return Scaffold(
       appBar: AppBar(title: Text("Subject",
       style: GoogleFonts.playfairDisplay(
-      fontSize: 40),
+      fontSize: 40,color: Colors.black
       ),
-      backgroundColor: Colors.teal,),
+      ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    Colors.red[200],
+                    Colors.blue[200]
+                  ])
+          ),
+        ),),
       
       body:SingleChildScrollView(
               child: Container(
-                decoration: BoxDecoration(
-            
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Colors.teal[200],
-                
-                ],
-              ),
-            ),
+
          
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +58,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
               children: <Widget>[
                 Container(
                   width: 400,
-                  height: 100,
+                  height: 80,
                   
                   child: Center(
                     child: Text("Fourth semster",style: TextStyle(fontWeight: FontWeight.bold,
@@ -74,7 +76,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                   child: Container(
                     height: 70,
                     padding: EdgeInsets.all(20),
-                    color: Colors.green[200],
+                    color: Colors.lightBlue[100],
                     child: Row(
                       children: <Widget>[
                         Text("  *    Operating System",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -91,11 +93,11 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                             
                               DropdownButton<String>(
                                 hint: Text("                          Select unit",
-                                style: TextStyle(fontSize: 20,color: Colors.black),
+                                style: TextStyle(fontSize: 20,color: Colors.red),
                                 ),
                                 icon: Icon(Icons.arrow_drop_down,size: 44,),
                                 elevation: 10,
-                                style: TextStyle(color: Colors.teal),
+                                style: TextStyle(color: Colors.black),
                                
                                 onChanged: (String newValue){
                                   setState(() {
@@ -140,7 +142,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                                   child: Row(
                                     
                     children: <Widget>[
@@ -159,7 +161,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color:Colors.green[200],
+                  color:Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *    Microprocessor",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -178,11 +180,11 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                             
                               DropdownButton<String>(
                                 hint: Text("                          Select unit",
-                                style: TextStyle(fontSize: 20,color: Colors.black),
+                                style: TextStyle(fontSize: 20,color: Colors.red),
                                 ),
                                 icon: Icon(Icons.arrow_drop_down,size: 44,),
                                 elevation: 10,
-                                style: TextStyle(color: Colors.teal),
+                                style: TextStyle(color: Colors.black),
                                
                                 onChanged: (String newValue){
                                   setState(() {
@@ -226,7 +228,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                   height: 70,
                   padding: EdgeInsets.all(20),
                 
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                                   child: Row(
                     children: <Widget>[
                       Text("  *    Math 4",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -241,7 +243,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color:Colors.green[200],
+                  color:Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *   UHMV",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -256,7 +258,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *   CSS",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -280,7 +282,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 ),
                 Container(height: 70,
                 padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *   COA",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -294,7 +296,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
 
                 Container(height: 70,
                 padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *  Data Structure",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -308,7 +310,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color:Colors.green[200],
+                  color:Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *   Technical Communication",style:TextStyle(fontFamily: "Dancing",fontSize: 27,
@@ -321,7 +323,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *    Python",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
@@ -336,7 +338,7 @@ class _SecondyearsubjectState extends State<Secondyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text("  *   Engineering Science",style:TextStyle(fontFamily: "Dancing",fontSize: 27,
@@ -381,9 +383,20 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Imporant questions",
-      style:TextStyle(fontFamily: "Dancing",fontSize: 35,fontWeight:FontWeight.bold, ) ,
+      style:TextStyle(color: Colors.black,fontFamily: "Dancing",fontSize: 35,fontWeight:FontWeight.bold, ) ,
       ),
-      backgroundColor: Color(0xFF0000A0),),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    Colors.deepPurple[200],
+                    Colors.yellowAccent[100]
+                  ])
+          ),
+        ),
+      ),
       body:SingleChildScrollView(
               child: Container(
                 color: Colors.black12,
@@ -396,7 +409,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    color:Colors.red,
+                    color:Colors.deepPurple[100],
                     child: Row(
                       children: <Widget>[
                         Text("Operating System",style:TextStyle(fontFamily: "Dancing",fontSize: 35,
@@ -414,10 +427,10 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
 
                 
                 Container(
-                  color: Colors.blue,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("TAFL",style:TextStyle(fontFamily: "Dancing",fontSize: 50,
+                      Text("  TAFL",style:TextStyle(fontFamily: "Dancing",fontSize: 35,
                       fontWeight: FontWeight.bold),
                       ),
                       mycontainer(180),
@@ -432,7 +445,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit1",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Button(context, "taflunit1q")
                           ],
                           ),
@@ -441,7 +454,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit2 and unit 3",
-                            style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Button(context, "taflunit2and3q")
                           ],
                           ),
@@ -450,7 +463,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit4",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Button(context, "taflunit4q")
                           ],
                           
@@ -461,7 +474,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                           children: <Widget>[
                             mycontainer(70),
                             Text("unit5",
-                            style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.pink),),
+                            style: TextStyle(fontSize: 30,color: Colors.red),),
                           Button(context, "taflunit5q")
                           ],
                           ),
@@ -474,10 +487,10 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
             //  ),
                 Box(),
                 Container(
-                  color: Colors.green,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("Microprocessor",style:TextStyle(fontFamily: "Dancing",fontSize: 40,
+                      Text("  Microprocessor",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
                       fontWeight: FontWeight.bold),
                       ),
 
@@ -489,13 +502,13 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.brown,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("Math 4",style:TextStyle(fontFamily: "Dancing",fontSize: 40,
+                      Text("  Math 4",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
                       fontWeight: FontWeight.bold),
                       ),
-                      mycontainer(150),
+                      mycontainer(100),
                       Button(context,"math4q"),
                     ],
                   ),
@@ -506,39 +519,39 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
             //  ),
                 
                 Container(
-                  color: Colors.pink,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("UHMV",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
+                      Text("  UHMV",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
                       fontWeight: FontWeight.bold),
                       ),
-                      mycontainer(170),
+                      mycontainer(100),
                       Button(context,"uhmvq"),
                     ],
                   ),
                 ),
                 Box(),
                 Container(
-                  color: Colors.yellowAccent,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("CSS",style:TextStyle(fontFamily: "Dancing",fontSize: 38,
+                      Text("  CSS",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
                       fontWeight: FontWeight.bold),
                       ),
-                      mycontainer(220),
+                      mycontainer(150),
                       Button(context,"cssq"),
                     ],
                   ),
                 ),
                 Box(),
                 Container(
-                  color: Colors.orange,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("COA",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
+                      Text("  COA",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
                       fontWeight: FontWeight.bold),
                       ),
-                      mycontainer(210),
+                      mycontainer(150),
                       Button(context,"coaq"),
                     ],
                   ),
@@ -550,10 +563,10 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
             //  ),
 
                 Container(
-                  color: Colors.pinkAccent,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
-                      Text("Data Structure",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
+                      Text(" Data Structure",style:TextStyle(fontFamily: "Dancing",fontSize: 30,
                       fontWeight: FontWeight.bold),
                       ),
                       mycontainer(60),
@@ -564,7 +577,7 @@ class _SecondyearquantumState extends State<Secondyearquantum> {
                 Box(),
 
                 Container(
-                  color: Colors.redAccent,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text("Technical Communication",style:TextStyle(fontFamily: "Dancing",fontSize: 25,
@@ -600,9 +613,10 @@ FloatingActionButton Button(context, String x) {
   Random random = Random();
   int randomnumber = random.nextInt(10000);
   return FloatingActionButton(
-    backgroundColor: Colors.black,
+
+    backgroundColor: Colors.yellow[100],
     heroTag: randomnumber,
-    child: Icon(Icons.arrow_forward),
+    child: Icon(Icons.arrow_forward,color: Colors.black,),
     onPressed: () {
       {
         Navigator.push(

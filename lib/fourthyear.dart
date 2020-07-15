@@ -1,7 +1,7 @@
 import 'package:Academicmaster/notesandquantum/fourthyearsubject.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import "syllabus.dart";
+import "syllabus4.dart";
 
 import 'package:admob_flutter/admob_flutter.dart';
 import "package:Academicmaster/services/admob_service.dart";
@@ -33,18 +33,7 @@ class _FourthyearhomeState extends State<Fourthyearhome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:Text("Fourth year",style:TextStyle(
-         
-         fontSize:40,
-         fontFamily:"Dancing",
-         fontWeight:FontWeight.bold,
 
-        ),
-        
-        ),
-        backgroundColor: Color(0xFF0000A0),
-      ),
       body:Fourthyearbody() 
 
       
@@ -76,14 +65,21 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color:Colors.white,
       child: Container(
         child: Column(
           children: <Widget>[
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white
+              ),
+            ),
             Expanded(
               flex: 2,
               child: Container(
-                child: Image.network(
-                    "https://i.pinimg.com/originals/b2/28/ea/b228ea66fe3551190a3186c29d4e2c3a.gif"),
+                color: Colors.white,
+                child: Image.asset("images/1_-VK_9x-T9NfoUJ5D-tJl4w.png"),
               ),
             ),
             AdmobBanner(
@@ -93,11 +89,18 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
             Expanded(
               flex: 1,
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
                  // color: Colors.yellow,
                   child: Row(
                     children: <Widget>[
-                      Image.network(
-                          "https://cdn.clipart.email/5ee45e6ab3b1ea49ea8343740b596489_clipart-books-gif-animation-clipart-books-gif-animation-_1000-1000.gif"),
+                      Text("📚",
+                        style: TextStyle(
+                            fontSize: 100
+                        ),),
                       FlatButton(
                         child: Text(
                           "Syllabus",
@@ -114,15 +117,17 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
             Expanded(
               flex: 1,
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
                // color: Colors.pink,
                 height: 100,
                
                 child: Row(
                     children: <Widget>[
-                      Image.network(
-                        
-                          "https://media1.giphy.com/media/l1J9HWBKLp20YfNAY/source.gif",
-                          width: 170,),
+                      Icon(Icons.book,size: 100,color: Colors.pink,),
                       FlatButton(
                         child: Text(
                           "Notes",
@@ -145,13 +150,19 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
 
               child: Container(
               //  color: Colors.green,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
+                height: 100,
                 
                 child: Row(
                     children: <Widget>[
-                      Image.network(
-                          "https://cdn.dribbble.com/users/2367833/screenshots/7816190/media/b1aaf5c98510012b56422d1619dc62e8.gif",
-                          width: 150,
-                          height:200,),
+                      Text("📄",
+                        style: TextStyle(
+                            fontSize: 100
+                        ),),
 
                       FlatButton(
                         child: Text(
@@ -171,6 +182,11 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
               flex: 1,
 
              child: Container(
+               decoration: BoxDecoration(
+                   color: Colors.grey[200],
+                   border: Border.all(color:Colors.black,
+                       style: BorderStyle.solid
+                   )),
              // color: Colors.pink,
               height: 100,
              
@@ -180,7 +196,10 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
             
           //     "https://media1.giphy.com/media/l1J9HWBKLp20YfNAY/source.gif",
           //     width: 170,),
-          Icon(Icons.book,size: 100,color: Colors.pink,),
+          Text("📑",
+            style: TextStyle(
+                fontSize: 100
+            ),),
           FlatButton(
             child: Text(
               "Previous year paper",
@@ -199,7 +218,7 @@ class _FourthyearbodyState extends State<Fourthyearbody> {
           ],
         ),
       ),
-      color: Colors.black12,
+
     );
       
     

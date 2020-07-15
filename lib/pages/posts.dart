@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
-
+import 'package:google_fonts/google_fonts.dart';
 import "package:cached_network_image/cached_network_image.dart";
 
 import 'package:gallery_saver/gallery_saver.dart';
@@ -28,6 +28,7 @@ import 'package:like_button/like_button.dart';
 import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "package:Academicmaster/services/crud.dart";
+
 
 Color x = Colors.white;
 Color textcolor = Colors.black;
@@ -96,11 +97,12 @@ class _HomPageState extends State<HomPage> {
       child: Scaffold(
 
           //define a button to select the ne w post
-           drawer: NavDrawer(),
+           drawer: NavDrawer(
+           ),
           backgroundColor: x,
           floatingActionButton: FloatingActionButton(
             tooltip: "upload a new post",
-            backgroundColor: Colors.green,
+            backgroundColor: Color(0xffd6b060),
             child: Icon(Icons.add),
             onPressed: () {
               Navigator.push(context,
@@ -108,14 +110,25 @@ class _HomPageState extends State<HomPage> {
             },
           ),
           appBar: AppBar(
-            backgroundColor: Color(0xFF0000A0),
-           
-            title: Text(
-              "explore information",
-              style: TextStyle(
+
+            /*title: Text(
+              "Explore",
+              style: GoogleFonts.grenze(
                   fontSize: 25,
-                  fontFamily: "Dancing",
-                  fontWeight: FontWeight.bold),
+                color: Colors.black
+                  ),
+            ),*/
+            centerTitle: true,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[
+                        Colors.brown[200],
+                        Colors.yellow[200]
+                      ])
+              ),
             ),
             // leading: IconButton(
             //       icon: Icon(Icons.cancel, color: Colors.white, size: 50),
@@ -136,7 +149,7 @@ class _HomPageState extends State<HomPage> {
                   child: Icon(
                     Icons.brightness_2,
                     color: Colors.white,
-                    size: 40,
+                    size: 35,
                   )),
               GestureDetector(
                   onTap: () {
@@ -151,7 +164,7 @@ class _HomPageState extends State<HomPage> {
                   child: Icon(
                     Icons.brightness_4,
                     color: Colors.black,
-                    size: 40,
+                    size: 35,
                   ))
             ],
           ),

@@ -119,12 +119,9 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.greenAccent,
+      backgroundColor: Colors.white,
      // resizeToAvoidBottomInset: true,
       resizeToAvoidBottomPadding: false,
-      appBar: AppBar(title: Text("Academic master",style: TextStyle(fontWeight: FontWeight.bold),),
-      backgroundColor: Colors.greenAccent,
-      ),
       body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: SingleChildScrollView(
@@ -139,10 +136,8 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.white,
                       shape:BoxShape.circle
                     ),
-                    child: CircleAvatar(
-                      radius: 70,
-                      backgroundImage:AssetImage("images/thirdgif3.gif")
-                    ),
+                    child:Image.asset("images/download (5).jpg")
+
                  ),
                 
                 Form(
@@ -224,8 +219,8 @@ class _SignUpState extends State<SignUp> {
               borderRadius: BorderRadius.circular(30),
               gradient: LinearGradient(
                 colors: [
-                Colors.green,
-                Colors.green,
+                Colors.brown[200],
+                Colors.yellow[300],
                   ],
               )),
           width: MediaQuery.of(context).size.width,
@@ -257,7 +252,7 @@ class _SignUpState extends State<SignUp> {
             child: Text(
               "SignIn now",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.redAccent,
                   fontSize: 16,
                   decoration: TextDecoration.underline),
             ),

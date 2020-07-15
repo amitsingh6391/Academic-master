@@ -30,24 +30,25 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
           title: Text(
             "Subject",
             style: GoogleFonts.playfairDisplay(
-                color: Colors.green[100],
+                color: Colors.black,
                 fontSize: 40,
                 ),
           ),
-          backgroundColor: Colors.teal,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Colors.red[200],
+                      Colors.blue[200]
+                    ])
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Container(
-                    decoration: BoxDecoration(
-            
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Colors.teal[200],
-                
-                ],
-              ),
-            ),
+
               child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -64,7 +65,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                    Container(
                      width:250,
                      height: 70,
-                    color: Colors.green[200],
+                     color: Colors.lightBlue[100],
                     child: Row(
                       children: <Widget>[
                        
@@ -87,11 +88,11 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                             
                               DropdownButton<String>(
                                 hint: Text("                          Select unit",
-                                style: TextStyle(fontSize: 20,color: Colors.black),
+                                style: TextStyle(fontSize: 20,color: Colors.red),
                                 ),
                                 icon: Icon(Icons.arrow_drop_down,size: 44,),
                                 elevation: 10,
-                                style: TextStyle(color: Colors.teal),
+                                style: TextStyle(color: Colors.brown),
                                
                                 onChanged: (String newValue){
                                   setState(() {
@@ -142,7 +143,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                   padding: EdgeInsets.all(17),
                   width: 250,
                   height: 70,
-                  color: Colors.green[200],
+                 color: Colors.lightBlue[100],
                   
                     child: Text(
                       " *   Physics",
@@ -159,11 +160,11 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                             
                               DropdownButton<String>(
                                 hint: Text("                          Select unit",
-                                style: TextStyle(fontSize: 20,color: Colors.black),
+                                style: TextStyle(fontSize: 20,color: Colors.red),
                                 ),
                                 icon: Icon(Icons.arrow_drop_down,size: 44,),
                                 elevation: 10,
-                                style: TextStyle(color: Colors.teal),
+                                style: TextStyle(color: Colors.redAccent),
                                
                                 onChanged: (String newValue){
                                   setState(() {
@@ -208,7 +209,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                 ),
                 Container(padding: EdgeInsets.only(top:10,bottom:20,left:20,right:20),
                   height: 70,
-                  color: Colors.green[200],
+                 color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -227,9 +228,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                 ),
                 Box(),
                 Container(
-                  padding: EdgeInsets.all(20),
-                  height: 70,
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -250,7 +249,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                  color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -269,7 +268,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                 Container(
                   height: 70,
                   padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                 color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -287,8 +286,7 @@ class _FirstyearsubjectState extends State<Firstyearsubject> {
                 Box(),
                 Container(
                   height: 70,
-                  padding: EdgeInsets.all(20),
-                  color: Colors.green[200],
+                 color: Colors.lightBlue[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -331,20 +329,30 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
         appBar: AppBar(
           title: Text(
             "Important Questions",
-            style: TextStyle(
+            style: TextStyle(color: Colors.black,
                 fontFamily: "Dancing",
                 fontSize: 30,
                 fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Color(0xFF0000A0),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Colors.deepPurple[200],
+                      Colors.yellowAccent[100]
+                    ])
+            ),
+          ),
         ),
         body: SingleChildScrollView(
                   child: Container(
-                    color: Colors.black12,
+                    color: Colors.white,
             child: Column(
               children: <Widget>[
                 Container(
-                  color: Colors.red,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -365,14 +373,14 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
               //  ),
                 Box(),
                 Container(
-                  color: Colors.orange,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Physics",
+                        "    Physics",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 50,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       mycontainer(90),
@@ -382,14 +390,14 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.yellowAccent,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Chemistry",
+                        "    Chemistry",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 40,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       mycontainer(90),
@@ -399,14 +407,14 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.pink,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Math 2",
+                        "    Math 2",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 50,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       mycontainer(100),
@@ -416,14 +424,14 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.blueGrey,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
-                        "Professional english",
+                        "  Professional english",
                         style: TextStyle(
                             fontFamily: "Dancing",
-                            fontSize: 33,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold),
                       ),
                       mycontainer(20),
@@ -437,7 +445,7 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
               //  ),
                 Box(),
                 Container(
-                  color: Colors.blue,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -454,7 +462,7 @@ class _FirstyearquantumState extends State<Firstyearquantum> {
                 ),
                 Box(),
                 Container(
-                  color: Colors.purple,
+                  color: Colors.deepPurple[100],
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -487,9 +495,9 @@ FloatingActionButton Buttonnotes(context, String x) {
   Random random = Random();
   int randomnumber = random.nextInt(10000);
   return FloatingActionButton(
-    backgroundColor: Colors.black,
+    backgroundColor: Colors.yellow[200],
     heroTag: randomnumber,
-    child: Icon(Icons.arrow_forward),
+    child: Icon(Icons.arrow_forward,color: Colors.black,),
     onPressed: () {
       {
         Navigator.push(

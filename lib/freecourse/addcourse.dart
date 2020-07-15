@@ -113,15 +113,7 @@ class _CreateBlogState extends State<CreateBlog> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.cyan,
-      appBar: AppBar(
-        backgroundColor: Color(0xFF0000A0),
-        title: Text(
-          "Get Paid course in free",
-          style: TextStyle(
-              fontFamily: "Dancing", fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
+      backgroundColor: Colors.cyan[100],
       body: _isLoading
           ? Container(
               alignment: Alignment.center,
@@ -130,7 +122,7 @@ class _CreateBlogState extends State<CreateBlog> {
           : SingleChildScrollView(
               child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.cyan,
+                    color: Colors.cyan[100],
                     // gradient: LinearGradient(
                     //   colors: [Colors.black26, Colors.black45],
                     // ),
@@ -138,7 +130,7 @@ class _CreateBlogState extends State<CreateBlog> {
                   ),
                   child: Column(children: <Widget>[
                     SizedBox(
-                      height: 10,
+                      height: 40,
                     ),
                     GestureDetector(
                         onTap: () {
@@ -168,17 +160,17 @@ class _CreateBlogState extends State<CreateBlog> {
                                 height: 210,
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(colors: [
-                                      Colors.yellow,
-                                      Colors.orange,
+                                      Colors.yellow[300],
+                                      Colors.deepPurple[100],
                                     ]),
                                     borderRadius: BorderRadius.circular(50)),
                                 width: MediaQuery.of(context).size.width,
                                 child: Column(
                                   children: <Widget>[
-                                    Text("Slect image for post"),
+                                    Text("Slect image for post",style: TextStyle(fontSize: 20),),
                                     IconButton(
                                       tooltip: "take image from phone",
-                                      color: Colors.white,
+                                      color: Colors.black54,
                                       icon: Icon(Icons.image),
                                       iconSize: 70,
                                       onPressed: () {
@@ -194,7 +186,7 @@ class _CreateBlogState extends State<CreateBlog> {
                                         },
                                         tooltip: "take image from camera",
                                         icon: Icon(Icons.camera_alt),
-                                        color: Colors.white,
+                                        color: Colors.black54,
                                         iconSize: 70),
                                   ],
                                 ),
@@ -245,7 +237,7 @@ class _CreateBlogState extends State<CreateBlog> {
                     ),
                     Text(
                       "Select profile pic",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                     GestureDetector(
                         onTap: () {
@@ -275,14 +267,14 @@ class _CreateBlogState extends State<CreateBlog> {
                                 height: 100,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.black),
+                                    color: Colors.black38),
                                 //width: MediaQuery.of(context).size.width,
                                 child: Column(
                                   children: <Widget>[
                                     IconButton(
                                       tooltip: "Select ypur profile pic",
-                                      color: Colors.white,
-                                      icon: Icon(Icons.person),
+                                      color: Colors.black38,
+                                      icon: Icon(Icons.person,color: Colors.white,),
                                       iconSize: 70,
                                       onPressed: () {
                                         getIcon();
@@ -298,7 +290,7 @@ class _CreateBlogState extends State<CreateBlog> {
                           uploadBlog();
                         },
                         child: Icon(
-                          Icons.cloud_upload,
+                          Icons.cloud_upload,color: Colors.black54,
                           size: 100,
                         ))
                   ])),

@@ -4,13 +4,14 @@ import 'package:Academicmaster/pages/homepage.dart';
 import 'package:Academicmaster/selectyouryear/civilyear.dart';
 import 'package:Academicmaster/selectyouryear/eceyear.dart';
 import 'package:Academicmaster/selectyouryear/mechnicalyear.dart';
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
+import 'package:google_fonts/google_fonts.dart';
 
-
-class Branch extends StatelessWidget {
+class Branch extends StatelessWidget {//krna //kr rha open 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return WillPopScope(
       onWillPop: () {
         return showDialog(
@@ -47,10 +48,10 @@ class Branch extends StatelessWidget {
           body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            /*SizedBox(
               height: 30,
-            ),
-            Container(
+            ),*/
+            /*Container(
               height: 150,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.horizontal(),
@@ -93,13 +94,25 @@ class Branch extends StatelessWidget {
               ),
             ),
             //  Box(context),
+              */
 
             Container(
               // height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              color: Colors.white12,
+              color: Colors.black,
               child: Column(
                 children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 50, 30, 30),
+                    color: Colors.transparent,
+                    height: 160,
+                  child: Text("Select your Branch",
+                    style: GoogleFonts.grenze(
+                        textStyle: Theme.of(context).textTheme.display1,
+                        fontSize: 30,
+                        color: Colors.yellow[200]),
+                  ),
+                  ),
                   Row(
                     children: <Widget>[
                       MyContainer("Computer science", context),
@@ -140,12 +153,9 @@ class Branch extends StatelessWidget {
       width: 165,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          gradient: LinearGradient(
-            colors: [
-              Colors.greenAccent,
-              Colors.green,
-            ],
-          )),
+          border: Border.all(color: Colors.yellow,
+          width: 4),
+          color: Colors.white),
       child: GestureDetector(
         onTap: () {
           if (branch == "Computer science") {
@@ -169,7 +179,7 @@ class Branch extends StatelessWidget {
           child: Text(
             branch,
             style: TextStyle(
-                fontFamily: "Dancing", fontSize: 30, color: Colors.white),
+                fontFamily: "Dancing", fontSize: 30, color: Colors.black),
           ),
         ),
       ),
@@ -185,4 +195,5 @@ class Branch extends StatelessWidget {
 
   //define animation
 
-}
+}  //kch change ni  na krna hi is m //ok
+//nAHI
