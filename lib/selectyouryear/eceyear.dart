@@ -234,7 +234,8 @@ class _HomebodyState extends State<Homebody> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Ece4yearPage(),
-                              ));
+                              )
+                              );
                         },
                       ),
                     ),

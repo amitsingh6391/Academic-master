@@ -82,15 +82,7 @@ class _NavDrawerState extends State<NavDrawer> {
             },
             //trailing: Icon(Icons.dashboard),
           ),
-          ListTile(
-            leading: Icon(Icons.person_outline),
-            title: Text("profile"),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Profile()));
-            },
-            //trailing: Icon(Icons.dashboard),
-          ),
+         
           ListTile(
             leading: Icon(Icons.security),
             title: Text("privacy"),
@@ -329,21 +321,9 @@ class _FeedbackState extends State<Feedback> {
                 ),
               ),
               // Submit(),
-              Box(50, 50),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Submmit()));
-                },
-                child: Text("submmit", style: TextStyle(color: Colors.white)),
-                color: Colors.grey,
-              ),
+              
 
-              Container(
-                height: 200,
-                width: MediaQuery.of(context).size.width,
-                child: Text(feedbackcontroller.text),
-              )
+             
             ],
           ),
         ));

@@ -1,7 +1,9 @@
 import 'dart:math';
 
+
 import 'package:Academicmaster/pages/posts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "package:flutter/material.dart";
 import "dart:io";
@@ -17,13 +19,36 @@ class CreateBlog extends StatefulWidget {
 }
 
 class _CreateBlogState extends State<CreateBlog> {
-  String authorName, title, desc;
+  String authorName, title, desc,iconimg;
 
   File selectedImage;
   File selectedIcon;
   bool _isLoading = false;
   CrudMethods crudMethods = new CrudMethods();
   DateTime now = DateTime.now();
+
+
+   String userid;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getCurrentUser();
+
+    super.initState();
+  }
+
+
+
+   getCurrentUser() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+    print(uid);
+    setState(() {
+      userid = uid.toString();
+    });
+  }
   Future<void> getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -47,23 +72,23 @@ class _CreateBlogState extends State<CreateBlog> {
 
   //for imageicon...
 
-  Future<void> getIcon() async {
-    var icon = await ImagePicker.pickImage(source: ImageSource.gallery);
+  // Future<void> getIcon() async {
+  //   var icon = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-    cropIcon(icon);
-  }
+  //   cropIcon(icon);
+  // }
 
-  cropIcon(File icon) async {
-    File croppedIcon = await ImageCropper.cropImage(
-        sourcePath: icon.path, compressQuality: 40);
+  // cropIcon(File icon) async {
+  //   File croppedIcon = await ImageCropper.cropImage(
+  //       sourcePath: icon.path, compressQuality: 40);
 
-    setState(() {
-      selectedIcon = croppedIcon;
-    });
-  }
+  //   setState(() {
+  //     selectedIcon = croppedIcon;
+  //   });
+  // }
 
   uploadBlog() async {
-    if (selectedIcon != null && selectedImage != null) {
+    if (selectedImage != null) {
       setState(() {
         _isLoading = true;
         // print("hii");
@@ -83,39 +108,38 @@ class _CreateBlogState extends State<CreateBlog> {
 
       //for icons...
 
-      StorageReference firebaseStorageRef = FirebaseStorage.instance
-          .ref()
-          .child("posticon")
-          .child("${randomAlphaNumeric(9)}.jpg");
+      // StorageReference firebaseStorageRef = FirebaseStorage.instance
+      //     .ref()
+      //     .child("posticon")
+      //     .child("${randomAlphaNumeric(9)}.jpg");
 
-      final StorageUploadTask task = firebaseStorageRef.putFile(selectedIcon);
+      // final StorageUploadTask task = firebaseStorageRef.putFile(selectedIcon);
 
-      var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
-      print("this is url $downloadiconUrl");
+      // var downloadiconUrl = await (await task.onComplete).ref.getDownloadURL();
+      // print("this is url $downloadiconUrl");
 
       
       Map<String, dynamic> blogMap = {
         "imgUrl": downloadUrl,
-        "iconUrl": downloadiconUrl,
+        "iconUrl": iconimg,
         "authorName": authorName,
         "title": title,
         "desc": desc,
         'time': DateTime.now().millisecondsSinceEpoch,
         "posttime": DateFormat("MM-dd - kk:mm").format(now),
         "like": "0",
+        "userid":userid
        
        
       };
        
       
 
-         var rng = new Random();
-         String documentID = rng.nextInt(1000000).toString();
-         
-         await Firestore.instance.collection("blogs").document(documentID).setData({
+        
+         await Firestore.instance.collection(userid).add({
 
-        "imgUrl": downloadUrl,
-        "iconUrl": downloadiconUrl,
+  "imgUrl": downloadUrl,
+        "iconUrl":iconimg,
         "authorName": authorName,
         "title": title,
         "desc": desc,
@@ -123,7 +147,29 @@ class _CreateBlogState extends State<CreateBlog> {
         "posttime": DateFormat("MM-dd - kk:mm").format(now),
         "like": "0",
         "dislike":"0",
-        "documentID":documentID
+        
+        "userid":userid
+
+
+
+         });
+         
+
+         var rng = new Random();
+         String documentID = rng.nextInt(1000000).toString();
+         await Firestore.instance.collection("blogs").document(documentID).setData({
+
+        "imgUrl": downloadUrl,
+        "iconUrl": iconimg,
+        "authorName": authorName,
+        "title": title,
+        "desc": desc,
+        'time': DateTime.now().millisecondsSinceEpoch,
+        "posttime": DateFormat("MM-dd - kk:mm").format(now),
+        "like": "0",
+        "dislike":"0",
+        "documentID":documentID,
+        "userid":userid
            
          }).then((result){
            Navigator.push(
@@ -152,9 +198,9 @@ class _CreateBlogState extends State<CreateBlog> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.cyan,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF0000A0),
+        backgroundColor: Colors.black,
         title: Text(
           "Upload information",
           style: TextStyle(
@@ -169,7 +215,7 @@ class _CreateBlogState extends State<CreateBlog> {
           : SingleChildScrollView(
               child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.cyan,
+                    color: Colors.white,
                     // gradient: LinearGradient(
                     //   colors: [Colors.black26, Colors.black45],
                     // ),
@@ -192,7 +238,7 @@ class _CreateBlogState extends State<CreateBlog> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 margin: EdgeInsets.symmetric(horizontal: 16),
-                                height: 350,
+                               // height: 350,
                                 width: MediaQuery.of(context).size.width,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(6),
@@ -207,14 +253,14 @@ class _CreateBlogState extends State<CreateBlog> {
                                 height: 210,
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(colors: [
-                                      Colors.yellow,
-                                      Colors.orange,
+                                      Colors.black,
+                                      Colors.black,
                                     ]),
                                     borderRadius: BorderRadius.circular(50)),
                                 width: MediaQuery.of(context).size.width,
                                 child: Column(
                                   children: <Widget>[
-                                    Text("Slect image for post"),
+                                    Text("Slect image for post",style:TextStyle(color: Colors.white)),
                                     IconButton(
                                       tooltip: "take image from phone",
                                       color: Colors.white,
@@ -264,6 +310,7 @@ class _CreateBlogState extends State<CreateBlog> {
                             height: 10,
                           ),
                           TextField(
+                            maxLines: 5,
                             decoration: InputDecoration(
                               icon: Icon(
                                 Icons.description,
@@ -282,54 +329,71 @@ class _CreateBlogState extends State<CreateBlog> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "Select profile pic",
-                      style: TextStyle(color: Colors.white),
+                    // Text(
+                    //   "Select post icon ",
+                    //   style: TextStyle(color: Colors.black),
+                    // ),
+                    // GestureDetector(
+                    //     onTap: () {
+                    //       getIcon();
+                    //     },
+                    //     child: selectedIcon != null
+                    //         ? Container(
+                    //             decoration: BoxDecoration(
+                    //               gradient: LinearGradient(
+                    //                 colors: [Colors.black26, Colors.black45],
+                    //               ),
+                    //               borderRadius: BorderRadius.circular(20),
+                    //             ),
+                    //             margin: EdgeInsets.symmetric(horizontal: 16),
+                    //             height: 170,
+                    //             width: MediaQuery.of(context).size.width,
+                    //             child: ClipRRect(
+                    //               borderRadius: BorderRadius.circular(6),
+                    //               child: Image.file(
+                    //                 selectedIcon,
+                    //                 fit: BoxFit.cover,
+                    //               ),
+                    //             ),
+                    //           )
+                    //         : Container(
+                    //             margin: EdgeInsets.symmetric(horizontal: 16),
+                    //             height: 100,
+                    //             decoration: BoxDecoration(
+                    //                 shape: BoxShape.circle,
+                    //                 color: Colors.black),
+                    //             //width: MediaQuery.of(context).size.width,
+                    //             child: Column(
+                    //               children: <Widget>[
+                    //                 IconButton(
+                    //                   tooltip: "Select ypur profile pic",
+                    //                   color: Colors.white,
+                    //                   icon: Icon(Icons.person),
+                    //                   iconSize: 70,
+                    //                   onPressed: () {
+                    //                     getIcon();
+                    //                   },
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //           )),
+                    StreamBuilder(
+
+                      stream:Firestore.instance.collection("userprofile").document(userid).snapshots(),
+                      builder: (context,snapshot){
+                        if(!snapshot.hasData){
+                          print("icon not have");
+                        }
+                        var userprofile  = snapshot.data;
+                        
+                        iconimg = userprofile["profileimageurl"];
+                        return Container(
+
+                        );
+                      },
+
+
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          getIcon();
-                        },
-                        child: selectedIcon != null
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [Colors.black26, Colors.black45],
-                                  ),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                margin: EdgeInsets.symmetric(horizontal: 16),
-                                height: 170,
-                                width: MediaQuery.of(context).size.width,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: Image.file(
-                                    selectedIcon,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                margin: EdgeInsets.symmetric(horizontal: 16),
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.black),
-                                //width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  children: <Widget>[
-                                    IconButton(
-                                      tooltip: "Select ypur profile pic",
-                                      color: Colors.white,
-                                      icon: Icon(Icons.person),
-                                      iconSize: 70,
-                                      onPressed: () {
-                                        getIcon();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              )),
                     SizedBox(height: 10),
                     Text("upload post"),
                     GestureDetector(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Academicmaster/pages/posts.dart';
 import 'package:Academicmaster/view/chatrooms.dart';
 import 'package:Academicmaster/view/helper/authnicate.dart';
 import 'package:Academicmaster/view/helper/helperfunction.dart';
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
     visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: userIsLoggedIn != null
-      ? userIsLoggedIn ? ChatRoom() : Authenticate()
+      ? userIsLoggedIn ? HomPage() : Authenticate()
       : Container(
           child: Center(
             child: Authenticate(),

@@ -1,3 +1,5 @@
+
+
 import 'package:Academicmaster/firstslide.dart';
 import 'package:Academicmaster/view/chat.dart';
 
@@ -12,12 +14,17 @@ import 'package:Academicmaster/view/widgets/widget.dart';
 import "dart:io";
 import "package:flutter/material.dart";
 
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:firebase_auth/firebase_auth.dart";
+
+
 class ChatRoom extends StatefulWidget {
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  String currentuserid;
   Stream chatRooms;
 
   Widget chatRoomsList() {
@@ -46,7 +53,30 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     getUserInfogetChats();
+    getCurrentUser();
     super.initState();
+  }
+
+
+   getCurrentUser() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+    print(uid);
+    setState(() {
+      currentuserid = uid.toString();
+    });
+  }
+
+
+ offline() async{
+
+    await Firestore.instance.collection("onlinestatus").document(currentuserid).updateData({
+
+      "online":"offline"
+
+    });
+
   }
 
   getUserInfogetChats() async {
@@ -64,44 +94,71 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-    backgroundColor: Color(0xFF0000A0),
-    title: Text(
-      "yourfriends",
-      style: TextStyle(
-        fontFamily: "Dancing",
-        fontSize: 30,
-      ),
-    ),
-    centerTitle: true,
-    actions: [
-      GestureDetector(
-        onTap: () {
-          AuthService().signOut();
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => Authenticate()));
+    return WillPopScope(
+      onWillPop: () {
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirm Exit"),
+                content: Text("Are you sure you want to exit?"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("YES"),
+                    onPressed: () {
+                      offline();
+                      exit(0);
+                      
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      },
+          child: Scaffold(
+        
+          resizeToAvoidBottomPadding: false,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            
+            flexibleSpace: Image(image: AssetImage("images/livechat.jpg"),
+            fit: BoxFit.cover,),
+   
+
+      centerTitle: true,
+      // actions: [
+      //   GestureDetector(
+      //     onTap: () {
+      //       AuthService().signOut();
+      //       Navigator.pushReplacement(context,
+      //           MaterialPageRoute(builder: (context) => Authenticate()));
+      //     },
+      //     child: Container(
+      //         padding: EdgeInsets.symmetric(horizontal: 16),
+      //         child: Icon(Icons.exit_to_app,color: Colors.brown,)),
+      //   ),
+      // ],
+          ),
+          body: Container(
+            
+      child: chatRoomsList(),
+          ),
+          floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.search,color: Colors.black,),
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Search()));
         },
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.exit_to_app)),
-      ),
-    ],
+        backgroundColor: Color(0xff605959),  ),
         ),
-        body: Container(
-    child: chatRoomsList(),
-        ),
-        floatingActionButton: FloatingActionButton(
-    child: Icon(Icons.search),
-    onPressed: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Search()));
-    },
-        ),
-      );
+    );
   }
 }
 
@@ -136,6 +193,7 @@ class ChatRoomsTile extends StatelessWidget {
                   child: CircleAvatar(
                       backgroundImage: AssetImage("images/thirdgif3.gif")),
                 ),
+               
                 SizedBox(
                   width: 12,
                 ),

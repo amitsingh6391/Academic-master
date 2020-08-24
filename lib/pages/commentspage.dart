@@ -44,16 +44,18 @@ CrudMethods crudMethods = new CrudMethods();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       floatingActionButton: FloatingActionButton(onPressed: (){
+
     Firestore.instance.collection("comments").getDocuments().then((snapshot){
       for(DocumentSnapshot ds in snapshot.documents){
         ds.reference.delete();
       }
-    });
+    }
+    );
       },
       child:Icon(Icons.delete)),
-      backgroundColor: Colors.cyan,
+      backgroundColor: Colors.white,
        appBar: AppBar(
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.black,
           
           title: Text(
             "  comments ",
@@ -148,7 +150,7 @@ class CommentsTile extends StatelessWidget {
       
       color: Colors.white),
 
-      height:200,
+      
       
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -157,7 +159,7 @@ class CommentsTile extends StatelessWidget {
           
           
           Container(
-            height: 120,
+           
             // child: Text(
             //   "$comments",
             //   // textAlign: TextAlign.center,
@@ -176,7 +178,7 @@ class CommentsTile extends StatelessWidget {
             ),
           ),
           Container(
-            height: 50,
+           
             child: Text(
               "user:  $comments_by",
               style: TextStyle(

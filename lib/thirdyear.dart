@@ -1,9 +1,9 @@
-import 'package:Academicmaster/notesandquantum/thirdyearsubject.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import "syllabus.dart";
-  
-import "notesandquantum/firstyearsubject.dart";
+
+import 'package:Academicmaster/notesandquantum/thirdyearsubject.dart';
+import 'package:Academicmaster/pages/videotutriols.dart';
+import 'package:Academicmaster/syllabus3.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:admob_flutter/admob_flutter.dart';
 import "package:Academicmaster/services/admob_service.dart";
 import "package:flutter/material.dart";
@@ -34,17 +34,7 @@ class _ThirdyearhomeState extends State<Thirdyearhome> {
 
 Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        "Third year",
-        style: TextStyle(
-         // color: Colors.black,
-          fontFamily: "Dancing",
-          fontSize: 40,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      backgroundColor:Color(0xFF0000A0) ),
+
       body: Thirdyearbody(),
     );
   }
@@ -76,17 +66,23 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
     return Container(
       
       child: Container(
+        color: Colors.white,
 
         child: Column(
           children: <Widget>[
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white
+              ),
+            ),
             Expanded(
               flex: 2,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 color: Colors.white,
                 
-                child:Image.network(
-                    "https://www.animatedimages.org/data/media/53/animated-book-image-0032.gif"),
+                child:Image.asset("images/1_-VK_9x-T9NfoUJ5D-tJl4w.png",),
               )
             ),
 
@@ -98,15 +94,20 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
  
             Expanded(
               flex: 1,
-              child: Container(
+              child: Container( height: 200,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
                // color: Colors.yellow,
                 child: Row(
                   children: <Widget>[
 
-                    Image.network(
-                       "https://cdn.clipart.email/5ee45e6ab3b1ea49ea8343740b596489_clipart-books-gif-animation-clipart-books-gif-animation-_1000-1000.gif",
-                       
-                       width: 100,),
+                    Text("📚",
+                      style: TextStyle(
+                          fontSize: 80
+                      ),),
                          
                        
                     
@@ -119,7 +120,7 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
                             fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Viewpdf(),));
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Syllabus3(),));
 
                       },
                     ),
@@ -131,6 +132,12 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
             Expanded(
               flex: 1,
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
+                height: 200,
                // color: Colors.yellow,
                 child: Row(
                   children: <Widget>[
@@ -139,8 +146,11 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
                     //    "https://cdn.clipart.email/5ee45e6ab3b1ea49ea8343740b596489_clipart-books-gif-animation-clipart-books-gif-animation-_1000-1000.gif",
                        
                     //    width: 100,),
-                         
-                       Icon(Icons.book,size: 100,color: Colors.pink,),
+
+                    Text("📄",
+                      style: TextStyle(
+                          fontSize: 80
+                      ),),
                     
                     FlatButton(
                       child: Text(
@@ -164,13 +174,15 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
               flex: 1,
               child: Container(
                // color: Colors.pink,
-                height: 100,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
+                height: 200,
                 child: Row(
                   children: <Widget>[
-                    Image.network(
-                      "https://media1.giphy.com/media/l1J9HWBKLp20YfNAY/source.gif",
-                      width: 170,
-                    ),
+                    Icon(Icons.book,size: 80,color: Colors.pink,),
                     FlatButton(
                       child: Text(
                         "Notes",
@@ -190,13 +202,19 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
             Expanded(
               flex: 1,
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color:Colors.black,
+                        style: BorderStyle.solid
+                    )),
+                height: 200,
                // color: Colors.green,
                 child: Row(
                   children: <Widget>[
-                    Image.network(
-                      "https://cdn.dribbble.com/users/2367833/screenshots/7816190/media/b1aaf5c98510012b56422d1619dc62e8.gif",
-                      width: 130,
-                      height: 200,
+                  Text("📑",
+                  style: TextStyle(
+                      fontSize: 80
+                  ),
                     ),
                     FlatButton(
                       child: Text(
@@ -214,6 +232,38 @@ class _ThirdyearbodyState extends State<Thirdyearbody> {
                 ),
               ),
             ),
+             Expanded(
+            flex: 1,
+            child: Container(
+             // color: Colors.pink,
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  border: Border.all(color:Colors.black,
+                      style: BorderStyle.solid
+                  )),
+              height: 200,
+             
+              child: Row(
+        children: <Widget>[
+
+          Text("🎥",
+            style: TextStyle(
+                fontSize: 80
+            ),),
+          FlatButton(
+            child: Text(
+              "video lecture",
+              style: TextStyle(fontFamily: "Dancing", fontSize: 25,fontWeight: FontWeight.bold),
+            ),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Videotutorials(collection:"3yearvideo"),));
+            },
+          ),
+        ],
+                ),
+
+            ),
+          ),
           ],
         ),
       ),

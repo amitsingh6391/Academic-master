@@ -144,9 +144,9 @@ class _SearchState extends State<Search> {
      
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF0000A0),
+        backgroundColor: Colors.black,
         title: Text(
-          "join new friends",
+          "Find new users",
           style: TextStyle(
             fontSize: 30,
             fontFamily: "Dancing",

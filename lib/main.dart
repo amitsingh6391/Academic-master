@@ -5,6 +5,7 @@ import "dart:async";
 import "package:firebase_admob/firebase_admob.dart";
 import "package:Academicmaster/services/admob_service.dart";
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
@@ -23,8 +24,9 @@ class _TheMitianState extends State<TheMitian> {
       debugShowCheckedModeBanner: false,
 
       title: "Academic master",
-      //home:Homescreen(),
-      home: SplashScreen(),
+       home:Homescreen(),
+     // home: SplashScreen(),
+    // home:WelcomeScreen()
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:Academicmaster/services/crud.dart';
 import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:video_player/video_player.dart';
 
 
 class Oslecture extends StatelessWidget {
@@ -730,3 +731,13 @@ class _SecondyearvideoState extends State<Secondyearvideo> {
         ));
   }
 }
+
+
+
+
+
+
+
+
+
+
