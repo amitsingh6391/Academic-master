@@ -60,6 +60,7 @@
 
 // //for second year syllabus
 
+<<<<<<< HEAD
 // class Syllabus2 extends StatefulWidget {
 //   @override
 //   _Syllabus2State createState() => _Syllabus2State();
@@ -116,10 +117,14 @@
 //     );
 //   }
 // }
+=======
+
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 
 // //third year sallybus
 
 
+<<<<<<< HEAD
 // class Syllabus3 extends StatefulWidget {
 //   @override
 //   _Syllabus3State createState() => _Syllabus3State();
@@ -237,10 +242,13 @@
 // }
 
 //new code..
+=======
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 
 import "package:flutter/material.dart";
 import "package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart";
 
+<<<<<<< HEAD
 class Viewpdf extends StatefulWidget {
   @override
   _ViewpdfState createState() => _ViewpdfState();
@@ -297,3 +305,5 @@ class _ViewpdfState extends State<Viewpdf> {
     );
   }
 }
+=======
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026

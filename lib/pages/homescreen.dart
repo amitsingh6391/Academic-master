@@ -12,6 +12,11 @@ import "package:Academicmaster/view/viewmain.dart";
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
 
 
+<<<<<<< HEAD
+=======
+import "package:Academicmaster/view/viewmain.dart";
+import"package:curved_navigation_bar/curved_navigation_bar.dart";
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 
 class Homescreen extends StatefulWidget {
   @override
@@ -22,12 +27,23 @@ class _HomescreenState extends State<Homescreen> {
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   var pages = [
+<<<<<<< HEAD
     MyApp(), 
     //ChewieDemo(),
     //Branch(),
     Course(),
      ChatRoom(),
       Profilescreen()];
+=======
+   MyApp(),
+
+   HomPage(),
+
+    Branch(),
+    FreecoursePage(),
+    Aktuerp(),
+  ];
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +78,7 @@ class _HomescreenState extends State<Homescreen> {
                 )
               ],
             ),
+<<<<<<< HEAD
             Column(
               children: <Widget>[
                 SizedBox(height: 10),
@@ -72,6 +89,14 @@ class _HomescreenState extends State<Homescreen> {
                       color: Colors.white, fontWeight: FontWeight.bold),
                 )
               ],
+=======
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+
+              ),
+              title: Text("Home"),
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
             ),
             Column(
               children: <Widget>[

@@ -23,11 +23,21 @@ class _AktuerpState extends State<Aktuerp> {
   //https://erp.aktu.ac.in/WebPages/OneView/OneView.aspx
   Widget build(BuildContext context) {
     
+<<<<<<< HEAD
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: (){
 Navigator.pop(context);
+=======
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      routes: {
+        "/":(_)=>WebviewScaffold(
+          url:"https://aktu.ac.in/",
+        withZoom: true,
+        )
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
       },
       child:Icon(Icons.arrow_back,color: Colors.white,)),
       appBar: AppBar(

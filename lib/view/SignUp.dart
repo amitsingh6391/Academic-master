@@ -138,6 +138,7 @@ class _SignUpState extends State<SignUp> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
+<<<<<<< HEAD
       //  resizeToAvoidBottomInset: true,
       // resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomPadding: false,
@@ -468,6 +469,154 @@ class _SignUpState extends State<SignUp> {
              ),
           ),
       // : SafeArea(
+=======
+     // resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomPadding: false,
+      body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: SingleChildScrollView(
+                  child: Column(
+              children: [
+                //Spacer(),
+               
+                 Container(
+                   //color: Colors.white,
+                   //height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape:BoxShape.circle
+                    ),
+                    child:Image.asset("images/download (5).jpg")
+
+                 ),
+                
+                Form(
+                  key: formKey,
+                  child: Column(
+          children: [
+            TextFormField(
+              style: simpleTextStyle(),
+              controller: usernameEditingController,
+              validator: (val){
+                return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
+              },
+              decoration: textFieldInputDecoration("username"),
+            ),
+             TextFormField(
+              style: simpleTextStyle(),
+              controller: collegeEditingController,
+              validator: (val){
+                return val.isEmpty || val.length < 3 ? "Enter valid college name" : null;
+              },
+              decoration: textFieldInputDecoration("Enter your college name"),
+            ),
+            TextFormField(
+              style: simpleTextStyle(),
+              controller: yearEditingController,
+              validator: (val){
+                return val.isEmpty || val.length < 0 ? "enter a valid year" : null;
+              },
+              decoration: textFieldInputDecoration("Enter your year"),
+            ),
+            TextFormField(
+              style: simpleTextStyle(),
+              controller: branchEditingController,
+              validator: (val){
+            return val.isEmpty || val.length < 1 ? "Enter a valid branch name " : null;
+              },
+              decoration: textFieldInputDecoration("Branch"),
+            ),
+             TextFormField(
+              style: simpleTextStyle(),
+              controller: phoneEditingController,
+              validator: (val){
+                return val.isEmpty || val.length < 10 ? "enter valid phone number" : null;
+              },
+              decoration: textFieldInputDecoration("Phone number"),
+            ),
+            TextFormField(
+              controller: emailEditingController,
+              style: simpleTextStyle(),
+              validator: (val){
+                return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
+                    null : "Enter correct email";
+              },
+              decoration: textFieldInputDecoration("email"),
+            ),
+            TextFormField(
+              obscureText: true,
+              style: simpleTextStyle(),
+              decoration: textFieldInputDecoration("password"),
+              controller: passwordEditingController,
+              validator:  (val){
+                return val.length < 6 ? "Enter Password 6+ characters" : null;
+              },
+
+            ),
+          ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                GestureDetector(
+                  onTap: (){
+          singUp();
+                  },
+                  child: Container(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              gradient: LinearGradient(
+                colors: [
+                Colors.brown[200],
+                Colors.yellow[300],
+                  ],
+              )),
+          width: MediaQuery.of(context).size.width,
+          child: Text(
+            "Sign Up",
+            style: biggerTextStyle(),
+            textAlign: TextAlign.center,
+          ),
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                
+                SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+          Text(
+            "Already have an account? ",
+            style: simpleTextStyle(),
+          ),
+          GestureDetector(
+            onTap: () {
+              widget.toggleView();
+            },
+            child: Text(
+              "SignIn now",
+              style: TextStyle(
+                  color: Colors.redAccent,
+                  fontSize: 16,
+                  decoration: TextDecoration.underline),
+            ),
+          ),
+                  ],
+                ),
+                SizedBox(
+                  height: 50,
+                )
+              ],
+            ),
+        ),
+      ),
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
     );
   }
 }

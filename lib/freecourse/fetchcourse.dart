@@ -364,6 +364,7 @@ class _FreecoursePageState extends State<FreecoursePage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return Scaffold(
 
         //define a button to select the ne w post
@@ -385,6 +386,91 @@ class _FreecoursePageState extends State<FreecoursePage> {
                 fontSize: 23,
                 fontFamily: "Dancing",
                 fontWeight: FontWeight.bold),
+=======
+    return WillPopScope(
+      onWillPop: () {
+        return showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirm Exit"),
+                content: Text("Are you sure you want to exit?"),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("YES"),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("NO"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      },
+      child: Scaffold(
+
+          //define a button to select the ne w post
+          backgroundColor: x,
+          floatingActionButton: FloatingActionButton(
+            tooltip: "upload a new ece contents",
+            backgroundColor: Colors.green,
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreateBlog()));
+            },
+          ),
+          appBar: AppBar(
+            title: Text(
+              "Free Coupens for Paid Courses",
+              style: TextStyle(
+                color: Colors.black,
+                  fontSize: 23,
+                  fontFamily: "Dancing",
+                  fontWeight: FontWeight.bold),
+            ),
+            flexibleSpace: Image(
+              image: AssetImage("images/triangle-green-and-yellow-gradient-banner-vector-16145264.jpg"),
+              fit:BoxFit.cover,
+            ),
+            // leading: IconButton(
+            //       icon: Icon(Icons.cancel, color: Colors.white, size: 50),
+            //       onPressed: () {
+            //         exit(0);
+            //       }),
+            actions: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      x = Colors.white;
+                      textcolor = Colors.black;
+                    });
+                  },
+                  child: Icon(
+                    Icons.brightness_2,
+                    color: Colors.white,
+                    size: 40,
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      x = Colors.black;
+                      textcolor = Colors.white;
+                    });
+                  },
+                  child: Icon(
+                    Icons.brightness_4,
+                    color: Colors.black,
+                    size: 40,
+                  ))
+            ],
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
           ),
           // flexibleSpace: Image(
           //   //image: AssetImage("images/triangle-green-and-yellow-gradient-banner-vector-16145264.jpg"),

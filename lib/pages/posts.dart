@@ -26,7 +26,10 @@ import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
+<<<<<<< HEAD
 import 'package:flutter/services.dart';
+=======
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 import 'package:google_fonts/google_fonts.dart';
 import "package:cached_network_image/cached_network_image.dart";
 
@@ -45,6 +48,7 @@ import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "package:Academicmaster/services/crud.dart";
 import "alluserprofile.dart";
+
 
 Color x = Colors.white;
 
@@ -156,17 +160,27 @@ class _HomPageState extends State<HomPage> {
       child: Scaffold(
 
           //define a button to select the ne w post
+<<<<<<< HEAD
           drawer: NavDrawer(),
           backgroundColor: x,
           floatingActionButton: FloatingActionButton(
             tooltip: "upload a new post",
             backgroundColor: Colors.black,
+=======
+           drawer: NavDrawer(
+           ),
+          backgroundColor: x,
+          floatingActionButton: FloatingActionButton(
+            tooltip: "upload a new post",
+            backgroundColor: Color(0xffd6b060),
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
             child: Icon(Icons.add),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CreateBlog()));
             },
           ),
+<<<<<<< HEAD
           body: SafeArea(
             child: SingleChildScrollView(
               physics: ScrollPhysics(),
@@ -191,6 +205,110 @@ class _HomPageState extends State<HomPage> {
                               setState(() {
                                 x = whitescreen;
                                 textcolor = Colors.black;
+=======
+          appBar: AppBar(
+
+            /*title: Text(
+              "Explore",
+              style: GoogleFonts.grenze(
+                  fontSize: 25,
+                color: Colors.black
+                  ),
+            ),*/
+            centerTitle: true,
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[
+                        Colors.brown[200],
+                        Colors.yellow[200]
+                      ])
+              ),
+            ),
+            // leading: IconButton(
+            //       icon: Icon(Icons.cancel, color: Colors.white, size: 50),
+            //       onPressed: () {
+            //         exit(0);
+            //       }),
+            actions: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      x = Colors.white;
+                      textcolor = Colors.black;
+                      // likebydefault = Colors.black;
+                      // dislikebydefault = Colors.black;
+                     
+                    });
+                  },
+                  child: Icon(
+                    Icons.brightness_2,
+                    color: Colors.white,
+                    size: 35,
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      x = Colors.black;
+                      textcolor = Colors.white;
+                      // likebydefault = Colors.white;
+                      // dislikebydefault = Colors.white;
+                   
+                    });
+                  },
+                  child: Icon(
+                    Icons.brightness_4,
+                    color: Colors.black,
+                    size: 35,
+                  ))
+            ],
+          ),
+          body: SingleChildScrollView(
+            physics: ScrollPhysics(),
+            child: Container(
+              child: blogsStream != null
+                  ? Container(
+                      child: StreamBuilder(
+                        stream: blogsStream,
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              reverse: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              itemCount: snapshot.data.documents.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                // _updateLike = int.tryParse(
+                                //     "${snapshot.data.documents[index].data["like"].toString}");
+                                //     print(_updateLike);
+                                return Column(
+                                  children: <Widget>[
+                                    BlogsTile(
+                                      authorName: snapshot.data.documents[index]
+                                          .data['authorName'],
+                                      title: snapshot
+                                          .data.documents[index].data["title"],
+                                      description: snapshot
+                                          .data.documents[index].data['desc'],
+                                      imgUrl: snapshot
+                                          .data.documents[index].data['imgUrl'],
+                                      iconUrl: snapshot.data.documents[index]
+                                          .data['iconUrl'],
+                                      posttime: snapshot.data.documents[index]
+                                          .data["posttime"],
+                                      postid: snapshot.data.documents[index]
+                                          .data["documentID"],
+                                      postLike: snapshot
+                                          .data.documents[index].data["like"],
+                                      disLike: snapshot.data.documents[index]
+                                          .data["dislike"],
+                                        
+                                    ),
+                                  ],
+                                );
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
                               });
                             },
                             child: Icon(Icons.brightness_4, color: Colors.red)),

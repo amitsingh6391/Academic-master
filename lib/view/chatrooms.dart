@@ -94,6 +94,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return WillPopScope(
       onWillPop: () {
         return showDialog(
@@ -159,6 +160,50 @@ class _ChatRoomState extends State<ChatRoom> {
         backgroundColor: Color(0xff605959),  ),
         ),
     );
+=======
+    return Scaffold(
+      
+        resizeToAvoidBottomPadding: false,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          flexibleSpace: Image(image: AssetImage("images/download 11.jpg"),
+          fit: BoxFit.cover,),
+    title: Text(
+      "yourfriends",
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontFamily: "Dancing",
+        fontSize: 30,
+        color: Colors.brown
+      ),
+    ),
+
+    centerTitle: true,
+    actions: [
+      GestureDetector(
+        onTap: () {
+          AuthService().signOut();
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => Authenticate()));
+        },
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Icon(Icons.exit_to_app,color: Colors.brown,)),
+      ),
+    ],
+        ),
+        body: Container(
+    child: chatRoomsList(),
+        ),
+        floatingActionButton: FloatingActionButton(
+    child: Icon(Icons.search,color: Colors.orange,),
+    onPressed: () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Search()));
+      },
+      backgroundColor: Color(0xff605959),  ),
+      );
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
   }
 }
 

@@ -1,7 +1,10 @@
 
 import 'package:Academicmaster/aktuerp.dart';
 import 'package:Academicmaster/pages/homepage.dart';
+<<<<<<< HEAD
 import 'package:Academicmaster/pages/videotutriols.dart';
+=======
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';

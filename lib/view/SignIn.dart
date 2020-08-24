@@ -114,12 +114,44 @@ class _SignInState extends State<SignIn> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+<<<<<<< HEAD
       backgroundColor: Colors.white,
+=======
+      appBar: AppBar(title: Text("Academic master",
+      style: GoogleFonts.quicksand(
+          textStyle: Theme.of(context).textTheme.display1,
+          fontWeight: FontWeight.w700,
+
+          fontSize: 45,color: Color(0xffffce00)),
+
+      ),
+      centerTitle: true,
+      bottom: PreferredSize(
+        child: Text("The simplest way to success",
+        style: GoogleFonts.fondamento(fontSize: 20,color: Colors.white),),
+        preferredSize: Size.fromHeight(50.0),
+      ),
+        /*flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    Colors.green,
+                    Color(0xff2782bb)
+                  ])
+          ),
+        ),*/
+        backgroundColor: Color(0xff484d5c),
+      ),
+       backgroundColor:Colors.white,
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
       body: isLoading
           ? Container(
               child: Center(child: CircularProgressIndicator()),
             )
           : SingleChildScrollView(
+<<<<<<< HEAD
                       child: SafeArea(
                 child: Container(
                   //padding: EdgeInsets.symmetric(horizontal: 24),
@@ -132,6 +164,34 @@ class _SignInState extends State<SignIn> {
                             child: Image(
                               image: AssetImage(
                                 "images/login.png",
+=======
+                      child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    Image.network(
+                      "https://cdn.dribbble.com/users/2367833/screenshots/7816190/media/b1aaf5c98510012b56422d1619dc62e8.gif",
+                      width: 400,
+                      height: 200,
+                    ),
+                    Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          Column(
+                            children: <Widget>[
+                              TextFormField(
+                                validator: (val) {
+                                  return RegExp(
+                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                          .hasMatch(val)
+                                      ? null
+                                      : "Please Enter Correct Email";
+                                },
+                                controller: emailEditingController,
+                                style: simpleTextStyle(),
+                                decoration: textFieldInputDecoration("email"),
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
                               ),
                               height: size.height * 0.35,
                             ),
@@ -301,6 +361,7 @@ class _SignInState extends State<SignIn> {
                           ),
                         ],
                       ),
+<<<<<<< HEAD
 
                       Container(
                         height: size.height * 0.1,
@@ -354,13 +415,152 @@ class _SignInState extends State<SignIn> {
                       // ),
                     ],
                   ),
+=======
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => MyApps()));
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Text(
+                                "Forgot Password?",
+                                style: simpleTextStyle(),
+                              )),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        signIn();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            gradient: LinearGradient(
+                              colors: [
+                               // const Color(0xff007EF4),
+                               // const Color(0xff2A75BC)
+                               Colors.brown[200],
+                               Colors.yellow[300]
+                              ],
+                            )),
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          "Sign In",
+                          style: biggerTextStyle(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(vertical: 16),
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(30),
+                    //       color: Colors.white),
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child: Text(
+                    //     "Sign In with Google",
+                    //     style: TextStyle(
+                    //         fontSize: 17, color: CustomTheme.textColor),
+                    //     textAlign: TextAlign.center,
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have account? ",
+                          style: simpleTextStyle(),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            widget.toggleView();
+                          },
+                          child: Text(
+                            "Register now",
+                            style: TextStyle(
+                                color: Colors.redAccent,
+                                fontSize: 20,
+                                decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: _urllauncher,
+                        child:Text(
+                          "Privacy Policy",
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold
+                          ),
+
+                        )),
+                        FlatButton(
+                            onPressed: _terms,
+                            child:Text(
+                              "Terms And Condition",
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold
+                              ),
+
+                            )
+                        )
+                      ],
+
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(constraints: BoxConstraints(maxWidth: 300),
+                            child:
+                        Text("By continuing you agree to our terms of service and privacy policy",
+                        style: TextStyle(color: Colors.black),)
+                        ),],
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
                 ),
               ),
           ),
     );
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 _urllauncher() async {
   const url = 'https://academic-master.flycricket.io/privacy.html';
   if (await canLaunch(url)) {
@@ -369,7 +569,10 @@ _urllauncher() async {
     throw 'Could not launch $url';
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 _terms() async {
   const url = 'https://academic-master.flycricket.io/terms.html';
   if (await canLaunch(url)) {
@@ -377,4 +580,8 @@ _terms() async {
   } else {
     throw 'Could not launch $url';
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
