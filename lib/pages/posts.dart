@@ -1,65 +1,83 @@
 import 'package:Academicmaster/Bcomcourse/selectbcomyear.dart';
 import 'package:Academicmaster/Bpharmacourse/selectbpharmyear.dart';
+
 import 'package:Academicmaster/Bsccourse/selectbscyear.dart';
-import 'package:Academicmaster/aktuerp.dart';
+
 import 'package:Academicmaster/branch.dart';
+import 'package:Academicmaster/dpharmacourse/dpharmayear.dart';
 import 'package:Academicmaster/freecourse/fetchcourse.dart';
 
-import 'package:Academicmaster/pages/videotutriols.dart';
-import 'package:Academicmaster/view/helper/authnicate.dart';
+import 'package:Academicmaster/pages/commentpage.dart';
+
+import 'package:Academicmaster/services/homenotification.dart';
+import 'package:Academicmaster/services/payment.dart';
+import 'package:Academicmaster/view/groupchat/notify.dart' as notif;
+
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:Academicmaster/pages/commentspage.dart';
 
 import 'package:Academicmaster/pages/createpost.dart';
-
 import 'package:Academicmaster/services/admob_service.dart';
 
-import "package:Academicmaster/services/crud.dart";
-import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';
-import 'package:admob_flutter/admob_flutter.dart';
+
 import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
-
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
-<<<<<<< HEAD
-import 'package:flutter/services.dart';
-=======
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
-import 'package:google_fonts/google_fonts.dart';
-import "package:cached_network_image/cached_network_image.dart";
 
-import 'package:gallery_saver/gallery_saver.dart';
+import "package:cached_network_image/cached_network_image.dart";
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 import '../firstslide.dart';
-import "commentspage.dart";
+
 import "package:link_text/link_text.dart";
 
-import "package:intl/intl.dart";
-import 'package:like_button/like_button.dart';
 import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import "package:Academicmaster/services/crud.dart";
+
 import "alluserprofile.dart";
 
-
-Color x = Colors.white;
-
-Color textcolor = Colors.black;
-
-CrudMethods crudMethods = new CrudMethods();
-Color whitescreen = Colors.white;
-Color blackscreen = Colors.black;
+import 'package:velocity_x/velocity_x.dart';
 
 int newfollower;
 String currentuserid;
+
+int back;
+int words;
+String username, userprofile;
+
+class ProjectWidget extends StatelessWidget {
+  final String title;
+
+  const ProjectWidget({Key key, @required this.title}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.17,
+        width: MediaQuery.of(context).size.width * 0.65,
+        child: Card(
+          elevation: 10,
+          child: Column(children: [
+            Container(
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: MediaQuery.of(context).size.width * 0.65,
+                child: Image(image: AssetImage(title), fit: BoxFit.fill)),
+            // Text(title)
+          ]),
+        ));
+  }
+}
 
 class HomPage extends StatefulWidget {
   @override
@@ -67,40 +85,67 @@ class HomPage extends StatefulWidget {
 }
 
 class _HomPageState extends State<HomPage> {
-  CrudMethods crudMethods = new CrudMethods();
-
-  Stream blogsStream;
-
-  //now we are declare code section here
+  // CrudMethods crudMethods = new CrudMethods();
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController commentsEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   final ams = AdMobService(); //call admobclass for use fntction
 
-  //call admobclass for use fntction
-
   @override
   void initState() {
-    Admob.initialize(ams.getAdMobAppId());
+    ams.createReawrdAdAndLoad();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
 
-    crudMethods.getData().then((result) {
-      //here i get the blogs..
+        notif.Notification notification = new notif.Notification();
+        notification.showNotificationWithoutSound(message);
 
-      setState(() {
-        blogsStream = result;
-      });
-    });
+        // showMessage("Notification", "$message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        notif.Notification notification = new notif.Notification();
+        notification.showNotificationWithoutSound(message);
+
+        // showMessage("Notification", "$message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        notif.Notification notification = new notif.Notification();
+        notification.showNotificationWithoutSound(message);
+
+        // showMessage("Notification", "$message");
+      },
+    );
+
+    if (Platform.isIOS) {
+      _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: false),
+      );
+    }
+
     getCurrentUser();
 
     super.initState();
   }
 
   getCurrentUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    back = preferences.getInt('back');
+    words = preferences.getInt('words');
+
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
+
+    User user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
+    print("yes");
     print(uid);
     setState(() {
       currentuserid = uid.toString();
@@ -110,17 +155,39 @@ class _HomPageState extends State<HomPage> {
   }
 
   onlinestatus() async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("onlinestatus")
-        .document(currentuserid)
-        .setData({"online": "online"});
+        .doc(currentuserid)
+        .set({"online": "online"});
   }
 
   offline() async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("onlinestatus")
-        .document(currentuserid)
-        .updateData({"online": "offline"});
+        .doc(currentuserid)
+        .update({"online": "offline"});
+  }
+
+  showMessage(title, description) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(title),
+            content: Text(description),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: Text("Dismiss"),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -137,8 +204,11 @@ class _HomPageState extends State<HomPage> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Confirm Exit"),
-                content: Text("Are you sure you want to exit?"),
+                backgroundColor: Color(back),
+                title:
+                    Text("Confirm Exit", style: TextStyle(color: Color(words))),
+                content: Text("Are you sure you want to exit?",
+                    style: TextStyle(color: Color(words))),
                 actions: <Widget>[
                   FlatButton(
                     child: Text("YES"),
@@ -158,618 +228,259 @@ class _HomPageState extends State<HomPage> {
             });
       },
       child: Scaffold(
-
-          //define a button to select the ne w post
-<<<<<<< HEAD
-          drawer: NavDrawer(),
-          backgroundColor: x,
-          floatingActionButton: FloatingActionButton(
-            tooltip: "upload a new post",
-            backgroundColor: Colors.black,
-=======
-           drawer: NavDrawer(
-           ),
-          backgroundColor: x,
-          floatingActionButton: FloatingActionButton(
-            tooltip: "upload a new post",
-            backgroundColor: Color(0xffd6b060),
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
-            child: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CreateBlog()));
-            },
-          ),
-<<<<<<< HEAD
-          body: SafeArea(
-            child: SingleChildScrollView(
-              physics: ScrollPhysics(),
-              child: Column(children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                      child: Row(children: [
-                    Column(
-                      children: <Widget>[
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                x = blackscreen;
-                                textcolor = Colors.white;
-                              });
-                            },
-                            child: Icon(Icons.brightness_2, color: Colors.red)),
-                        SizedBox(height: 30),
-                        GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                x = whitescreen;
-                                textcolor = Colors.black;
-=======
-          appBar: AppBar(
-
-            /*title: Text(
-              "Explore",
-              style: GoogleFonts.grenze(
-                  fontSize: 25,
-                color: Colors.black
-                  ),
-            ),*/
-            centerTitle: true,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: <Color>[
-                        Colors.brown[200],
-                        Colors.yellow[200]
-                      ])
-              ),
-            ),
-            // leading: IconButton(
-            //       icon: Icon(Icons.cancel, color: Colors.white, size: 50),
-            //       onPressed: () {
-            //         exit(0);
-            //       }),
-            actions: <Widget>[
-              GestureDetector(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(80.0),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              leading: GestureDetector(
                   onTap: () {
-                    setState(() {
-                      x = Colors.white;
-                      textcolor = Colors.black;
-                      // likebydefault = Colors.black;
-                      // dislikebydefault = Colors.black;
-                     
-                    });
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NavDrawer()));
                   },
                   child: Icon(
-                    Icons.brightness_2,
-                    color: Colors.white,
-                    size: 35,
+                    Icons.menu,
+                    color: Color(words),
                   )),
-              GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      x = Colors.black;
-                      textcolor = Colors.white;
-                      // likebydefault = Colors.white;
-                      // dislikebydefault = Colors.white;
-                   
-                    });
-                  },
-                  child: Icon(
-                    Icons.brightness_4,
-                    color: Colors.black,
-                    size: 35,
-                  ))
-            ],
-          ),
-          body: SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Container(
-              child: blogsStream != null
-                  ? Container(
-                      child: StreamBuilder(
-                        stream: blogsStream,
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                              reverse: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              itemCount: snapshot.data.documents.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                // _updateLike = int.tryParse(
-                                //     "${snapshot.data.documents[index].data["like"].toString}");
-                                //     print(_updateLike);
-                                return Column(
-                                  children: <Widget>[
-                                    BlogsTile(
-                                      authorName: snapshot.data.documents[index]
-                                          .data['authorName'],
-                                      title: snapshot
-                                          .data.documents[index].data["title"],
-                                      description: snapshot
-                                          .data.documents[index].data['desc'],
-                                      imgUrl: snapshot
-                                          .data.documents[index].data['imgUrl'],
-                                      iconUrl: snapshot.data.documents[index]
-                                          .data['iconUrl'],
-                                      posttime: snapshot.data.documents[index]
-                                          .data["posttime"],
-                                      postid: snapshot.data.documents[index]
-                                          .data["documentID"],
-                                      postLike: snapshot
-                                          .data.documents[index].data["like"],
-                                      disLike: snapshot.data.documents[index]
-                                          .data["dislike"],
-                                        
-                                    ),
-                                  ],
-                                );
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
-                              });
-                            },
-                            child: Icon(Icons.brightness_4, color: Colors.red)),
-                      ],
+              flexibleSpace: Container(
+                color: Color(back),
+                height: 350,
+                width: 100,
+                child: Row(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 48.0),
+                    child: Text("     Academic Master",
+                        style: TextStyle(
+                            fontSize: size.width * 0.08,
+                            color: Color(words),
+                            fontFamily: "Dancing",
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.notification_important,
+                      size: 30,
+                      color: Color(words),
                     ),
+                    onPressed: () {
+                      RewardedVideoAd.instance..show();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Usernotification()));
+                    },
+                  ),
+                  Column(children: [
+                    SizedBox(height: 50),
+                    Text("Membership",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(words),
+                        )),
                     GestureDetector(
                       onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FreecoursePage()));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Payment()));
                       },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        // width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                            shadowColor: Colors.white,
-                            elevation: 10,
-                            margin: EdgeInsets.all(5),
-                            color: Colors.white,
-                            child: Column(
-                              children: <Widget>[
-                                // Image(
-                                //     image: NetworkImage(
-                                //         "http://stat.overdrive.in/wp-content/uploads/2020/04/BMW-R-18-1.jpg")),
-                                CircleAvatar(
-                                    radius: 45,
-                                    backgroundImage: NetworkImage(
-                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBWqp6yQrYluVo15VJZ2ZI3z2taRZcgB6fTQ&usqp=CAU")),
-
-                                Text(
-                                  "Free Courses code",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "Dancing"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      child: Icon(
+                        Icons.account_balance_wallet,
+                        size: 30,
+                        color: Color(words),
                       ),
-                    ),
-                    GestureDetector(
+                    )
+                  ])
+                ]),
+              ),
+            ),
+          ),
+          drawer: NavDrawer(),
+          backgroundColor: Color(back),
+          floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                RewardedVideoAd.instance..show();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Uploaddata()));
+              },
+              tooltip: "upload a new post",
+              backgroundColor: Color(words),
+              child: Icon(
+                Icons.add,
+                color: Color(back),
+              )),
+          body: EasyRefresh(
+            onRefresh: () {
+              setState(() {
+                print("refresh");
+              });
+            },
+            child: SingleChildScrollView(
+              // physics: ScrollPhysics(),
+
+              child: Column(children: [
+                Container(
+                  height: size.height * 0.2,
+                  child: Expanded(
+                      child: VxSwiper(
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    items: [
+                      GestureDetector(
                         onTap: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          RewardedVideoAd.instance..show();
 
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Videotutorials(
-                                      collection: "videotutorials")));
+                                  builder: (context) => Branch()));
                         },
-                        child: Container(
-                          height: MediaQuery.of(context).size.height / 6,
-                          //width: MediaQuery.of(context).size.width / 2,
-                          width: size.width * 0.4,
-                          color: Colors.black,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Card(
-                                shadowColor: Colors.black,
-                                elevation: 10,
-                                margin: EdgeInsets.all(5),
-                                color: Colors.white,
-                                child: Column(
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                        radius: 45,
-                                        backgroundImage:
-                                            AssetImage("images/video.png")),
-                                    Text("Video Courses",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "Dancing")),
-                                  ],
-                                )),
-                          ),
-                        )),
-                   
-                   
-                    GestureDetector(
-                      onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Branch()));
-
-                       
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        //width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                              shadowColor: Colors.black,
-                              elevation: 10,
-                              margin: EdgeInsets.all(5),
-                              color: Colors.white,
-                              child: Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                      radius: 45,
-                                      backgroundImage:AssetImage(
-                                          "images/btech.png")),
-                                  Text("Btech",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Dancing")),
-                                ],
-                              )),
-                        ),
+                        child: ProjectWidget(title: "images/btech.png"),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+                          RewardedVideoAd.instance..show();
 
-                    GestureDetector(
-                      onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Bscyear()));
-
-                       
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        //width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                              shadowColor: Colors.black,
-                              elevation: 10,
-                              margin: EdgeInsets.all(5),
-                              color: Colors.white,
-                              child: Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                      radius: 45,
-                                      backgroundImage:AssetImage(
-                                          "images/bse.png")),
-                                  Text("Bsc",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Dancing")),
-                                ],
-                              )),
-                        ),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Bpharmyear()));
+                        },
+                        child: ProjectWidget(title: "images/bpharma.jpg"),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+                          RewardedVideoAd.instance..show();
 
-                    GestureDetector(
-                      onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Bpharmyear()));
-
-                       
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        //width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                              shadowColor: Colors.black,
-                              elevation: 10,
-                              margin: EdgeInsets.all(5),
-                              color: Colors.white,
-                              child: Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                      radius: 45,
-                                      backgroundImage:AssetImage(
-                                          "images/bpharma.jpg")),
-                                  Text("Bpharma ",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Dancing")),
-                                ],
-                              )),
-                        ),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FreecoursePage()));
+                        },
+                        child: ProjectWidget(title: "images/freecourses.jpg"),
                       ),
-                    ),
-
-                    GestureDetector(
-                      onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Bcomyear()));
-
-                       
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        //width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                              shadowColor: Colors.black,
-                              elevation: 10,
-                              margin: EdgeInsets.all(5),
-                              color: Colors.white,
-                              child: Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                      radius: 45,
-                                      backgroundImage:AssetImage(
-                                          "images/bcom1.png")),
-                                  Text("Bcom ",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Dancing")),
-                                ],
-                              )),
-                        ),
+                      GestureDetector(
+                        onTap: () {
+                          RewardedVideoAd.instance..show();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dpharmayear()));
+                        },
+                        child: ProjectWidget(title: "images/dpharmapic.jpg"),
                       ),
-                    ),
-                     GestureDetector(
-                      onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
-
-                        var x = "https://aktu.ac.in/";
-                        var y = "Aktu Official";
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Aktuerp(link: x, bar: y)));
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        // width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                            shadowColor: Colors.black,
-                            elevation: 10,
-                            margin: EdgeInsets.all(5),
-                            color: Colors.white,
-                            child: Column(
-                              children: <Widget>[
-                                CircleAvatar(
-                                    radius: 45,
-                                    backgroundImage: NetworkImage(
-                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTAWghF0oxKuBiRjJf8jXfLTu1j2mfzA7Mtyg&usqp=CAU")),
-                                Text("Aktu Offcial",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Dancing")),
-                              ],
-                            ),
-                          ),
-                        ),
+                      GestureDetector(
+                        onTap: () => {
+                          RewardedVideoAd.instance..show(),
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // ),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Bscyear()))
+                        },
+                        child: ProjectWidget(title: "images/bse.png"),
                       ),
-                    ),
-                     GestureDetector(
-                      onTap: () {
-                        newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                      GestureDetector(
+                        onTap: () {
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+                          RewardedVideoAd.instance..show();
 
-                        var y =
-                            "https://erp.aktu.ac.in/WebPages/OneView/OneView.aspx";
-                        var x = "Check Your result";
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Aktuerp(link: y, bar: x)));
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 6,
-                        //width: MediaQuery.of(context).size.width / 2,
-                        width: size.width * 0.4,
-                        color: Colors.black,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Card(
-                              shadowColor: Colors.black,
-                              elevation: 10,
-                              margin: EdgeInsets.all(5),
-                              color: Colors.white,
-                              child: Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                      radius: 45,
-                                      backgroundImage: NetworkImage(
-                                          "https://akm-img-a-in.tosshub.com/sites/btmt/images/stories/bseb_class_10_result_660_120620033728.jpg")),
-                                  Text("Result ",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Dancing")),
-                                ],
-                              )),
-                        ),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Bcomyear()));
+                        },
+                        child: ProjectWidget(title: "images/bcom1.png"),
                       ),
+                    ],
+                    height: 120,
+                    viewportFraction: context.isMobile ? 0.75 : 0.4,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(
+                      seconds: 3,
                     ),
-                  ])),
+                    autoPlayAnimationDuration: 1.seconds,
+                  )),
                 ),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("userprofile")
+                      .doc(currentuserid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Text("", style: TextStyle(color: Color(words)));
+                    }
 
-               
+                    var Profiledetail = snapshot.data;
+                    print("username set ------------********* $username");
 
-                Container(
-                  child: StreamBuilder(
-                      stream: Firestore.instance
-                          .collection("videoupload")
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        return ListView.builder(
-                            reverse: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: snapshot.data.documents.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              // _updateLike = int.tryParse(
-                              //     "${snapshot.data.documents[index].data["like"].toString}");
-                              //     print(_updateLike);
-                              return Column(
-                                children: <Widget>[
-                                  Videotile(
-                                    // url: "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4"
-                                    url: snapshot
-                                        .data.documents[index].data['url'],
+                    username = Profiledetail["userName"];
+                    print("username set ------------********* $username");
+                    userprofile = Profiledetail["profileimageurl"];
 
-                                    title: snapshot
-                                        .data.documents[index].data["title"],
-                                  ),
-                                ],
-                              );
-                            });
-                      }),
+                    return Text("");
+                  },
                 ),
-
-                AdmobBanner(
-            adUnitId:"ca-app-pub-5023637575934146/2815076541",
-             adSize: AdmobBannerSize.LEADERBOARD
-             ),
-
-                Container(
-                  child: blogsStream != null
-                      ? Container(
-                          child: StreamBuilder(
-                            stream: blogsStream,
-                            builder: (context, snapshot) {
-                              return ListView.builder(
-                                  reverse: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  itemCount: snapshot.data.documents.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    // _updateLike = int.tryParse(
-                                    //     "${snapshot.data.documents[index].data["like"].toString}");
-                                    //     print(_updateLike);
-                                    return Column(
-                                      children: <Widget>[
-                                        BlogsTile(
-                                          authorName: snapshot
-                                              .data
-                                              .documents[index]
-                                              .data['authorName'],
-                                          title: snapshot.data.documents[index]
-                                              .data["title"],
-                                          description: snapshot.data
-                                              .documents[index].data['desc'],
-                                          imgUrl: snapshot.data.documents[index]
-                                              .data['imgUrl'],
-                                          iconUrl: snapshot.data
-                                              .documents[index].data['iconUrl'],
-                                          posttime: snapshot
-                                              .data
-                                              .documents[index]
-                                              .data["posttime"],
-                                          postid: snapshot.data.documents[index]
-                                              .data["documentID"],
-                                          postLike: snapshot.data
-                                              .documents[index].data["like"],
-                                          disLike: snapshot.data
-                                              .documents[index].data["dislike"],
-                                          userid: snapshot.data.documents[index]
-                                              .data["userid"],
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                          ),
-                        )
-                      : Container(
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator(),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("blogs")
+                      .orderBy("time")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Column(children: [
+                        CircularProgressIndicator(
+                          backgroundColor: Color(words),
                         ),
+                        Text("Loading", style: TextStyle(color: Color(words)))
+                      ]);
+                    }
+
+                    return ListView.builder(
+                        reverse: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: snapshot.data.documents.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Posttile(
+                            authorName: snapshot.data.documents[index]
+                                .data()['authorName'],
+                            title:
+                                snapshot.data.documents[index].data()["title"],
+                            imgUrl:
+                                snapshot.data.documents[index].data()['imgUrl'],
+                            iconUrl: snapshot.data.documents[index]
+                                .data()['iconUrl'],
+                            posttime: snapshot.data.documents[index]
+                                .data()["posttime"],
+                            postid: snapshot.data.documents[index]
+                                .data()["documentID"],
+                            userid:
+                                snapshot.data.documents[index].data()["userid"],
+                          );
+                        });
+                  },
                 ),
               ]),
             ),
@@ -778,66 +489,24 @@ class _HomPageState extends State<HomPage> {
   }
 }
 
-class BlogsTile extends StatefulWidget {
-  String title,
-      description,
-      imgUrl,
-      iconUrl,
-      authorName,
-      posttime,
-      postid,
-      postLike,
-      disLike,
-      userid;
+class Posttile extends StatefulWidget {
+  String title, imgUrl, iconUrl, authorName, posttime, postid, userid;
 
-  BlogsTile({
+  Posttile({
     @required this.imgUrl,
     @required this.iconUrl,
     @required this.title,
-    @required this.description,
     @required this.authorName,
     @required this.posttime,
-    @required this.postLike,
     @required this.postid,
-    @required this.disLike,
     @required this.userid,
   });
 
   @override
-  _BlogsTileState createState() => _BlogsTileState();
+  _PosttileState createState() => _PosttileState();
 }
 
-class _BlogsTileState extends State<BlogsTile> {
-  BuildContext context;
-
-  DatabaseMethods databaseMethods = new DatabaseMethods();
-
-  TextEditingController commentsEditingController = new TextEditingController();
-
-  QuerySnapshot searchResultSnapshot;
-
-  CrudMethods crudMethods = new CrudMethods();
-  DateTime now = DateTime.now();
-
-  var url;
-  passtwouserprofile() {}
-
-  addcomment() async {
-    if (commentsEditingController.text.isNotEmpty) {
-      Map<String, dynamic> postcomments = {
-        "comments_by": Constants.myName,
-        "comments": commentsEditingController.text,
-        'time': DateTime.now().millisecondsSinceEpoch,
-        "commenttime": DateFormat("yyyy-MM-dd - kk:mm").format(now)
-      };
-
-      crudMethods.addcomments(postcomments).then((result) {});
-      //Navigator.push(context,MaterialPageRoute(builder:(context)=>Comments()));
-    } else {
-      print("no data");
-    }
-  }
-
+class _PosttileState extends State<Posttile> {
   launchurl() async {
     const url = "https://abesit.in/library/question-paper-bank/";
     if (await canLaunch(url)) {
@@ -847,38 +516,10 @@ class _BlogsTileState extends State<BlogsTile> {
     }
   }
 
-  final ams = AdMobService(); //call admobclass from services
-
-  @override
-  void initState() {
-    //intilazied the appid
-    super.initState();
-    Admob.initialize(ams.getAdMobAppId());
-  }
-
-  final dbref = Firestore.instance;
-  void updatepost(String newlike) async {
-    await dbref.collection("blogs").document(widget.postid).updateData({
-      "like": newlike,
-      "dislike": widget.disLike,
-      "imgUrl": widget.imgUrl,
-      "iconUrl": widget.iconUrl,
-      "authorName": widget.authorName,
-      "title": widget.title,
-      "desc": widget.description,
-      'time': DateTime.now().millisecondsSinceEpoch,
-      "posttime": DateFormat("MM-dd - kk:mm").format(now),
-      "documentID": widget.postid
-    });
-
-    print("ok");
-    print(widget.postid);
-  }
-
-//increase foolowers
+  final dbref = FirebaseFirestore.instance;
 
   void updatefollower(int newfollower) async {
-    await dbref.collection("userprofile").document(widget.userid).updateData({
+    await dbref.collection("userprofile").doc(widget.userid).update({
       "follower": newfollower,
     });
 
@@ -890,7 +531,7 @@ class _BlogsTileState extends State<BlogsTile> {
   //now increase following..
 
   void updatefollowing(int newfollowing) async {
-    await dbref.collection("userprofile").document(currentuserid).updateData({
+    await dbref.collection("userprofile").doc(currentuserid).update({
       "following": newfollowing,
     });
 
@@ -899,37 +540,14 @@ class _BlogsTileState extends State<BlogsTile> {
   }
 
   void deletepost() async {
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("blogs")
-        .document(widget.postid)
+        .doc(widget.postid)
         .delete();
 
     print("ok");
     print("delete");
   }
-
-//update for dislike....
-
-  void updatedislike(String newdislike) async {
-    await dbref.collection("blogs").document(widget.postid).updateData({
-      "like": widget.postLike,
-      "dislike": newdislike,
-      "imgUrl": widget.imgUrl,
-      "iconUrl": widget.iconUrl,
-      "authorName": widget.authorName,
-      "title": widget.title,
-      "desc": widget.description,
-      'time': DateTime.now().millisecondsSinceEpoch,
-      "posttime": DateFormat("MM-dd - kk:mm").format(now),
-      "documentID": widget.postid
-    });
-
-    print("ok");
-    print(widget.postid);
-  }
-
-  Color likecolor = Colors.brown;
-  Color dislikecolor = Colors.brown;
 
   bool follow = false;
 
@@ -984,405 +602,28 @@ class _BlogsTileState extends State<BlogsTile> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // height: 670,
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: <Widget>[
-          StreamBuilder(
-            stream: Firestore.instance
-                .collection("userprofile")
-                .document(widget.userid)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                print("load");
-              }
-              var data = snapshot.data;
-              prefollower = data["follower"];
-              userprofilepic = data["profileimageurl"];
-              print(data["follower"]);
+//for videoplayer
 
-              return Container(
-//child:Image(image:NetworkImage(userprofilepic),
-                  // )
-                  );
-            },
-          ),
-
-          StreamBuilder(
-            stream: Firestore.instance
-                .collection("userprofile")
-                .document(currentuserid)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                print("load");
-              }
-              var data = snapshot.data;
-              prefollowing = data["following"];
-
-              print(data["following"]);
-              print(userprofilepic);
-
-              return Container();
-            },
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (conetxt) =>
-                          Alluserprofile(userid: widget.userid)));
-            },
-            child: Container(
-              child: Row(children: [
-                // CircleAvatar(
-                //   radius: 30,
-                //   child: Image(image:NetworkImage(userprofilepic))),
-                ClipOval(
-                    child: CachedNetworkImage(
-                        imageUrl: widget.iconUrl,
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover)),
-                SizedBox(width: 10),
-                Text(widget.authorName,
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Dancing",
-                        color: textcolor)),
-                SizedBox(width: 5),
-                StreamBuilder(
-                    stream: Firestore.instance
-                        .collection("onlinestatus")
-                        .document(widget.userid)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        print("load");
-                      }
-                      var data = snapshot.data;
-
-                      var st = data["online"];
-                      print(st);
-                      bool y = false;
-                      if (st == "online") {
-                        y = true;
-                      } else {
-                        y = false;
-                      }
-
-                      return Container(
-                          child: Row(children: <Widget>[
-                        Text(st, style: TextStyle(color: textcolor)),
-                        SizedBox(width: 10),
-                        Container(
-                            child: y != false
-                                ? CircleAvatar(
-                                    radius: 10, backgroundColor: Colors.green)
-                                : CircleAvatar(
-                                    radius: 10, backgroundColor: Colors.black))
-                      ]));
-                    }),
-              ] // fontWeight: FontWeight
-                  ),
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              SizedBox(width: 50),
-              GestureDetector(
-                onTap: () {
-                  if (widget.userid != currentuserid) {
-                    _showDialog(context);
-
-                    // print(widget.follower);
-                    int x = prefollower + 1;
-                    int y = prefollowing + 1;
-                    print(x);
-                    setState(() {
-                      follow = true;
-                    });
-
-                    updatefollower(x);
-                    updatefollowing(y);
-                  } else {
-                    _showDialogwhensame(context);
-                  }
-                },
-                child: Container(
-                  // color:Colors.green,
-                  child: follow
-                      ? Text(
-                          "Following",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Dancing",
-                              color: Colors.green),
-                        )
-                      : Text(
-                          "Follow",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Dancing",
-                              color: Colors.green),
-                        ),
-                ),
-              ),
-              SizedBox(width: 10),
-              Container(
-                  child: follow
-                      ? Image(
-                          height: 20,
-                          width: 20,
-                          image: AssetImage("images/correct.png"))
-                      : Container())
-            ],
-          ),
-          SizedBox(height: 10),
-          Container(
-            //height: 125,
-            width: MediaQuery.of(context).size.width,
-            child: LinkText(
-              text: widget.title,
-              textStyle: TextStyle(
-                  fontSize: 17,
-                  fontFamily: "Dancing",
-                  //fontWeight: FontWeight.w500,
-                  color: textcolor),
-            ),
-          ),
-
-          SizedBox(height: 10),
-
-          Container(
-            //  height: 375,
-            width: MediaQuery.of(context).size.width,
-            child: PinchZoomImage(
-              image: Image.network(widget.imgUrl),
-              zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
-              hideStatusBarWhileZooming: true,
-              onZoomStart: () {
-                print('Zoom started');
-              },
-              onZoomEnd: () {
-                print('Zoom finished');
-              },
-            ),
-          ),
-
-          Container(
-              child: Row(
-            children: <Widget>[
-              SizedBox(width: 10),
-              IconButton(
-                  icon: Icon(
-                    Icons.thumb_up,
-                    size: 40,
-                  ),
-                  color: likecolor,
-                  onPressed: () {
-                    var x = int.parse(widget.postLike);
-                    x = x + 1;
-                    String newlike;
-                    newlike = x.toString();
-                    setState(() {
-                      updatepost(newlike);
-                      //likebydefault = Colors.blue;
-                      likecolor = Colors.blue;
-                    });
-                    // likecolor = Colors.blue;
-                  }),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                widget.postLike,
-                style: TextStyle(
-                    fontSize: 20,
-                    color: textcolor,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              IconButton(
-                  icon: Icon(
-                    Icons.thumb_down,
-                    size: 40,
-                  ),
-                  color: dislikecolor,
-                  onPressed: () {
-                    var x = int.parse(widget.disLike);
-                    x = x + 1;
-                    String newdislike;
-                    newdislike = x.toString();
-                    setState(() {
-                      updatedislike(newdislike);
-                    });
-                    dislikecolor = Colors.red;
-                  }),
-              SizedBox(width: 15),
-              Text(
-                widget.disLike,
-                style: TextStyle(
-                    fontSize: 20,
-                    color: textcolor,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(width: 85),
-              IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    size: 30,
-                    color: Colors.red,
-                  ),
-                  onPressed: () {
-                    if (widget.userid == currentuserid) {
-                      deletepost();
-                    } else {
-                      print("no delete");
-                    }
-                  })
-            ],
-          )),
-
-          Container(
-            // padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: commentsEditingController,
-                    style: TextStyle(
-                        color: textcolor, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                        hintText: "Do comments ...",
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: textcolor, width: 3)),
-                        hintStyle: TextStyle(
-                          color: textcolor,
-                          fontSize: 16,
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: textcolor),
-                        )),
-                  ),
-                ),
-                Container(
-                  //s  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(40)),
-                  //color:Colors.red,
-                  child: IconButton(
-                    tooltip: "share post with your friends",
-                    icon: Icon(
-                      Icons.share,
-                    ),
-                    //color: Colors.white,
-                    iconSize: 30,
-                    onPressed: () async =>
-                        await _shareImageFromUrl(widget.imgUrl),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    addcomment();
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (conetxt) => Comments()));
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              Colors.pink,
-                              Colors.yellow,
-                            ],
-                            begin: FractionalOffset.topLeft,
-                            end: FractionalOffset.bottomRight),
-                        borderRadius: BorderRadius.circular(40)),
-                    padding: EdgeInsets.all(12),
-                    child: Icon(Icons.send),
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          // AdmobBanner(
-          //     adUnitId: "ca-app-pub-5023637575934146/5339692753",
-          //     //adUnitId:"ca-app-pub-3940256099942544/6300978111",
-          //     adSize: AdmobBannerSize.BANNER),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _shareImageFromUrl(String imgURL) async {
-    try {
-      var request = await HttpClient().getUrl(Uri.parse(imgURL));
-      var response = await request.close();
-      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-      await Share.file('Academic master', 'amlog.jpg', bytes, 'image/jpg');
-    } catch (e) {
-      print('error: $e');
-    }
-  }
-
-  Future<void> _saveNetworkImage(String imgUrl) async {
-    String path =
-        "https://image.shutterstock.com/image-photo/montreal-canada-july-11-2019-600w-1450023539.jpg";
-
-    try {
-      GallerySaver.saveImage(path).then(
-        (bool success) {
-          // // setState(() {
-          // //   print('Image is saved');
-          // // },
-          // );
-          print("complete");
-          print(imgUrl);
-        },
-      );
-    } catch (e) {
-      print("amit $e");
-    }
-  }
-}
-
-class Videotile extends StatefulWidget {
-  String url, title;
-  Videotile({@required this.url, @required this.title});
-  @override
-  _BlogstileState createState() => _BlogstileState();
-}
-
-class _BlogstileState extends State<Videotile> {
   VideoPlayerController _videoPlayerController1;
 
   ChewieController _chewieController;
+  final ams = AdMobService();
 
   @override
   void initState() {
+    print(
+        "its user name ----------->>>>>>>>> $username   and **********8 $userprofile");
+    ams.createReawrdAdAndLoad();
     super.initState();
-    _videoPlayerController1 = VideoPlayerController.network(widget.url);
+    _videoPlayerController1 = VideoPlayerController.network(widget.imgUrl);
 
     _chewieController = ChewieController(
+      //fullScreenByDefault: true,
       videoPlayerController: _videoPlayerController1,
-      aspectRatio: 3 / 2,
+      aspectRatio: 3 / 3,
+
       autoPlay: false,
-      looping: true,
+      looping: false,
       // Try playing around with some of these other options:
 
       // showControls: false,
@@ -1397,6 +638,15 @@ class _BlogstileState extends State<Videotile> {
       ),
       autoInitialize: true,
     );
+
+    setnameandpic();
+  }
+
+  setnameandpic() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    preferences.setString("name", username);
+    preferences.setString("profilepic", userprofile);
   }
 
   @override
@@ -1409,29 +659,228 @@ class _BlogstileState extends State<Videotile> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          color: Colors.black,
-          child: Card(
-            color: Colors.black,
-            elevation: 10,
-            child: Chewie(
-              controller: _chewieController,
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (conetxt) =>
+                            Alluserprofile(userid: widget.userid)));
+              },
+              child: Container(
+                child: Row(children: [
+                  // CircleAvatar(
+                  //   radius: 30,
+                  //   child: Image(image:NetworkImage(userprofilepic))),
+                  ClipOval(
+                      child: CachedNetworkImage(
+                          imageUrl: widget.iconUrl,
+                          height: 50,
+                          width: 50,
+                          fit: BoxFit.cover)),
+                  SizedBox(width: 10),
+                  Text(widget.authorName,
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Dancing",
+                          color: Color(words))),
+                  SizedBox(width: 5),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("onlinestatus")
+                          .doc(widget.userid)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          print("load");
+                        }
+                        var data = snapshot.data;
+
+                        var st = data["online"];
+                        print(st);
+                        bool y = false;
+                        if (st == "online") {
+                          y = true;
+                        } else {
+                          y = false;
+                        }
+
+                        return Container(
+                            child: Row(children: <Widget>[
+                          Text(st,
+                              style: TextStyle(
+                                  //  color: textcolor
+                                  )),
+                          SizedBox(width: 10),
+                          Container(
+                              child: y != false
+                                  ? CircleAvatar(
+                                      radius: 10, backgroundColor: Colors.green)
+                                  : CircleAvatar(
+                                      radius: 10, backgroundColor: Colors.red))
+                        ]));
+                      }),
+                ] // fontWeight: FontWeight
+                    ),
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 10),
-        LinkText(
-          text: widget.title,
-          textStyle: TextStyle(
-              fontSize: 17,
-              fontFamily: "Dancing",
-              //fontWeight: FontWeight.w500,
-              color: textcolor),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
+            Row(
+              children: <Widget>[
+                SizedBox(width: 50),
+                GestureDetector(
+                  onTap: () {
+                    if (widget.userid != currentuserid) {
+                      _showDialog(context);
+
+                      // print(widget.follower);
+                      int x = prefollower + 1;
+                      int y = prefollowing + 1;
+                      print(x);
+                      setState(() {
+                        follow = true;
+                      });
+
+                      updatefollower(x);
+                      updatefollowing(y);
+                    } else {
+                      _showDialogwhensame(context);
+                    }
+                  },
+                  child: Container(
+                    // color:Colors.green,
+                    child: follow
+                        ? Text(
+                            "Following",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Dancing",
+                                color: Colors.green),
+                          )
+                        : Text(
+                            "Follow",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Dancing",
+                                color: Colors.green),
+                          ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Container(
+                    child: follow
+                        ? Image(
+                            height: 20,
+                            width: 20,
+                            image: AssetImage("images/correct.png"))
+                        : Container())
+              ],
+            ),
+            SizedBox(height: 10),
+            Container(
+              //height: 125,
+              width: MediaQuery.of(context).size.width,
+              child: LinkText(
+                text: widget.title,
+                textStyle: TextStyle(
+                    fontSize: 17,
+                    fontFamily: "Dancing",
+                    //fontWeight: FontWeight.w500,
+                    color: Color(words)),
+              ),
+            ),
+            SizedBox(height: 10),
+            widget.imgUrl.contains("video")
+                ? Container(
+                    color: Colors.black,
+                    child: Card(
+                      color: Colors.black,
+                      elevation: 10,
+                      child: Chewie(
+                        controller: _chewieController,
+                      ),
+                    ),
+                  )
+                : Container(
+                    //  height: 375,
+                    width: MediaQuery.of(context).size.width,
+                    child: PinchZoomImage(
+                      image: Image.network(widget.imgUrl),
+                      zoomedBackgroundColor: Color.fromRGBO(240, 240, 240, 1.0),
+                      hideStatusBarWhileZooming: true,
+                      onZoomStart: () {
+                        print('Zoom started');
+                      },
+                      onZoomEnd: () {
+                        print('Zoom finished');
+                      },
+                    ),
+                  ),
+            Container(
+                child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Comment",
+                      style: TextStyle(
+                        color: Color(words),
+                      )),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    RewardedVideoAd.instance..show();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Comment(
+                                postid: widget.postid,
+                                posturl: widget.imgUrl,
+                                description: widget.title)));
+                  },
+                  child: Icon(Icons.question_answer,
+                      size: 35, color: Color(words)),
+                ),
+                SizedBox(width: 20),
+                IconButton(
+                  icon: Icon(Icons.share_sharp, color: Color(words)),
+                  onPressed: () async =>
+                      await _shareImageFromUrl(widget.imgUrl),
+                ), // IconButton(
+
+                SizedBox(width: 85),
+                IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      size: 30,
+                      color: Colors.red,
+                    ),
+                    onPressed: () {
+                      if (widget.userid == currentuserid) {
+                        deletepost();
+                      } else {
+                        print("no delete");
+                      }
+                    })
+              ],
+            )),
+          ],
+        ));
+  }
+}
+
+Future<void> _shareImageFromUrl(String imgURL) async {
+  try {
+    var request = await HttpClient().getUrl(Uri.parse(imgURL));
+    var response = await request.close();
+    Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+    await Share.file('Academic master', 'amlog.jpg', bytes, 'image/jpg');
+  } catch (e) {
+    print('error: $e');
   }
 }

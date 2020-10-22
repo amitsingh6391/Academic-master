@@ -6,21 +6,16 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:Academicmaster/firstyear.dart';
 
-import "package:Academicmaster/secondyear.dart";
-
-import "package:Academicmaster/thirdyear.dart";
-
-import "package:Academicmaster/fourthyear.dart";
 import "package:Academicmaster/services/admob_service.dart";
 import "package:firebase_admob/firebase_admob.dart";
-
-import 'package:admob_flutter/admob_flutter.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import "package:Academicmaster/ecedata/ece2yearfetchdata.dart";
 import "package:Academicmaster/ecedata/ece3yearfetchdata.dart";
 import "package:Academicmaster/ecedata/ece4yearfetchdata.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
+int back, words;
 
 class Eceyear extends StatefulWidget {
   @override
@@ -29,10 +24,27 @@ class Eceyear extends StatefulWidget {
 
 class _EceyearState extends State<Eceyear> {
   @override
+  void initState() {
+    //intilazied the appid
+    getmode();
+    super.initState();
+    // AdMobService.showHomeBannerAd();
+  }
+
+  getmode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      back = preferences.getInt('back');
+      words = preferences.getInt('words');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(back),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, size: 50, color: Colors.blue),
             onPressed: () {
@@ -40,7 +52,7 @@ class _EceyearState extends State<Eceyear> {
             },
           )),
       body: Homebody(),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(back),
     );
   }
 }
@@ -51,27 +63,27 @@ class Homebody extends StatefulWidget {
 }
 
 class _HomebodyState extends State<Homebody> {
-  final ams = AdMobService(); //call admobclass for use fntction
+   final ams = AdMobService(); //call admobclass for use fntction
 
   @override
   void initState() {
     //intilazied the appid
+     ams.createReawrdAdAndLoad();
     super.initState();
-    Admob.initialize(ams.getAdMobAppId());
   }
 
   @override
   Widget build(BuildContext context) {
-    InterstitialAd newTripAd =
-        ams.getnewTripInterstitial(); //first save in the variablesto use adds
+    // InterstitialAd newTripAd =
+    //     ams.getnewTripInterstitial(); //first save in the variablesto use adds
 
-    newTripAd.load();
+    // newTripAd.load();
 
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Card(
-              color: Colors.white,
+              color: Color(back),
               elevation: 10,
               child: Container(
                   height: 200,
@@ -82,9 +94,6 @@ class _HomebodyState extends State<Homebody> {
             Row(
               children: <Widget>[Container(height: 10)],
             ),
-            AdmobBanner(
-                adUnitId: ams.getBannerAdId(), 
-                adSize: AdmobBannerSize.BANNER),
             Row(
               children: <Widget>[
                 Container(
@@ -92,7 +101,7 @@ class _HomebodyState extends State<Homebody> {
                     width: 360,
                     child: Text("Select your year :",
                         style: GoogleFonts.lemonada(
-                            color: Color(0xFF386a8c), fontSize: 30)))
+                            color: Color(words), fontSize: 30)))
               ],
             ),
             Container(
@@ -105,12 +114,14 @@ class _HomebodyState extends State<Homebody> {
                       width: 180,
                       child: OutlineButton(
                         onPressed: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+
+                          RewardedVideoAd.instance..show();
 
                           Navigator.push(
                               context,
@@ -130,7 +141,7 @@ class _HomebodyState extends State<Homebody> {
                               textAlign: TextAlign.center,
                               style: GoogleFonts.caveatBrush(
                                 fontSize: 34,
-                                color: Colors.black,
+                                color: Color(words),
                               ),
                             )),
                       ),
@@ -152,17 +163,19 @@ class _HomebodyState extends State<Homebody> {
                             textAlign: TextAlign.center,
                             style: GoogleFonts.caveatBrush(
                               fontSize: 34,
-                              color: Colors.black,
+                              color: Color(words),
                             ),
                           ),
                         ),
                         onPressed: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+
+                          RewardedVideoAd.instance..show();
 
                           Navigator.push(
                               context,
@@ -187,16 +200,19 @@ class _HomebodyState extends State<Homebody> {
                           child: Text(
                             "Third year",
                             style: GoogleFonts.caveatBrush(
-                                fontSize: 34, color: Colors.black),
+                              fontSize: 34,
+                              color: Color(words),
+                            ),
                           ),
                         ),
                         onPressed: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+                          RewardedVideoAd.instance..show();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -220,22 +236,24 @@ class _HomebodyState extends State<Homebody> {
                           child: Text(
                             "Fourth year",
                             style: GoogleFonts.caveatBrush(
-                                fontSize: 34, color: Colors.black),
+                              fontSize: 34,
+                              color: Color(words),
+                            ),
                           ),
                         ),
                         onPressed: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+                          RewardedVideoAd.instance..show();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Ece4yearPage(),
-                              )
-                              );
+                              ));
                         },
                       ),
                     ),

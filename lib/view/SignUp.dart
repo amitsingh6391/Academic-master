@@ -1,21 +1,26 @@
-//neeraj code
+import 'dart:io';
 
+import 'package:Academicmaster/pages/homescreen.dart';
 import 'package:Academicmaster/pages/posts.dart';
 import 'package:Academicmaster/view/viewservices/auth.dart';
 import 'package:Academicmaster/view/viewservices/database.dart';
 import 'package:Academicmaster/view/widgets/widget.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import "package:flutter/material.dart";
-import "package:Academicmaster/view/chatrooms.dart";
+import "package:Academicmaster/view/SignIn.dart";
 
 import "package:Academicmaster/view/helper/helperfunction.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SignUp extends StatefulWidget {
-  final Function toggleView;
-  SignUp(this.toggleView);
-
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -28,6 +33,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController phoneEditingController = new TextEditingController();
   TextEditingController branchEditingController = new TextEditingController();
   TextEditingController yearEditingController = new TextEditingController();
+  TextEditingController refer = new TextEditingController();
 
   AuthService authService = new AuthService();
 
@@ -38,54 +44,77 @@ class _SignUpState extends State<SignUp> {
 
   String userid;
 
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  File selected1Image;
+
+  var profilemageUrl;
+  final picker = ImagePicker();
+  DateTime now = DateTime.now();
+  Future<void> getImage() async {
+    var image = await picker.getImage(source: ImageSource.gallery);
+
+    cropImage(image);
+  }
+
+  Future<void> getImagefromcamera() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    cropImage(image);
+  }
+
+  cropImage(var image) async {
+    File croppedImage = await ImageCropper.cropImage(
+        sourcePath: image.path, compressQuality: 40);
+
+    setState(() {
+      selected1Image = croppedImage;
+    });
+  }
+
   singUp() async {
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
 
-      await authService
-          .signUpWithEmailAndPassword(
+      StorageReference firebaseStorageRefe = FirebaseStorage.instance
+          .ref()
+          .child("userprofilepic")
+          .child("${randomAlphaNumeric(9)}.jpg");
+
+      final StorageUploadTask tasks =
+          firebaseStorageRefe.putFile(selected1Image);
+
+      profilemageUrl = await (await tasks.onComplete).ref.getDownloadURL();
+      print("this is url $profilemageUrl");
+
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString('name', usernameEditingController.text);
+      preferences.setString('profilepic', profilemageUrl);
+
+      await AuthService.signUp(
               emailEditingController.text, passwordEditingController.text)
-          .then((result) {
+          .then((result) async {
         if (result != null) {
-          // Map<String, String> userDataMap = {
-          //   "userEmail": emailEditingController.text,
-          // };
+          print("okie yes");
 
-          // databaseMethods.addUserInfo(userDataMap);
-
-          // HelperFunctions.saveUserLoggedInSharedPreference(true);
-
-          // HelperFunctions.saveUserEmailSharedPreference(
-          //     emailEditingController.text);
-
-          Map<String, String> userDataMap = {
-            "userName": usernameEditingController.text,
-            "userEmail": emailEditingController.text,
-            "userphonenumber": phoneEditingController.text,
-            "usercollege": collegeEditingController.text,
-            "userbranch": branchEditingController.text,
-            "useryear": yearEditingController.text,
-          };
-
-          databaseMethods.addUserInfo(userDataMap);
-
-          HelperFunctions.saveUserLoggedInSharedPreference(true);
           HelperFunctions.saveUserNameSharedPreference(
               usernameEditingController.text);
           HelperFunctions.saveUserEmailSharedPreference(
               emailEditingController.text);
-          HelperFunctions.saveUserYearSharedPreference(
-              emailEditingController.text);
-          HelperFunctions.saveUserYearSharedPreference(
-              emailEditingController.text);
-          HelperFunctions.saveBranchSharedPreference(
-              emailEditingController.text);
-          HelperFunctions.saveUserPhoneSharedPreference(
-              emailEditingController.text);
+
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setString('logedin', "yes");
+          preferences.setInt('back', 0xFF000000);
+          preferences.setInt('words', 0xFFFFFFFF);
 
           getCurrentUser();
+        } else {
+          print("result");
+          print(result);
         }
       });
     }
@@ -95,7 +124,8 @@ class _SignUpState extends State<SignUp> {
 
   getCurrentUser() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
+    //final UserCredential user = await _auth.currentUser();
+    User user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     print(uid);
     setState(() {
@@ -106,14 +136,36 @@ class _SignUpState extends State<SignUp> {
   }
 
   addnewuserprofile() async {
-    await Firestore.instance
-        .collection("userprofile")
-        .document(userid)
-        .setData({
-      "profileimageurl":
-          "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
-      // "contact": "Not provides",
-      // "username": "Abc",
+    // register fcm token
+    String fcmToken = await firebaseMessaging.getToken();
+
+    // User user = result.user;
+
+    db.collection("userstoken").doc(userid).set({
+      "email": emailEditingController.text,
+      "profilepic": profilemageUrl,
+      "username": usernameEditingController.text,
+      "fcmToken": fcmToken,
+      "userid": userid
+    });
+
+    // for topic
+    firebaseMessaging.subscribeToTopic("promotion");
+    firebaseMessaging.subscribeToTopic("news");
+    firebaseMessaging.subscribeToTopic("btech");
+    firebaseMessaging.subscribeToTopic("bpharma");
+    firebaseMessaging.subscribeToTopic("dpharma");
+    firebaseMessaging.subscribeToTopic("post");
+    firebaseMessaging.subscribeToTopic("bcom");
+    firebaseMessaging.subscribeToTopic("bse");
+    firebaseMessaging.subscribeToTopic("notice");
+    firebaseMessaging.subscribeToTopic("motivation");
+
+    // for unsubscribe
+    // firebaseMessaging.unsubscribeFromTopic("news");
+
+    await FirebaseFirestore.instance.collection("userprofile").doc(userid).set({
+      "profileimageurl": profilemageUrl,
       "bio": "None",
       "userName": usernameEditingController.text,
       "userEmail": emailEditingController.text,
@@ -121,8 +173,9 @@ class _SignUpState extends State<SignUp> {
       "usercollege": collegeEditingController.text,
       "userbranch": branchEditingController.text,
       "useryear": yearEditingController.text,
-      "follower":0,
-      "following":0,
+      "refer": refer.text,
+      "follower": 0,
+      "following": 0,
       "github": "https://github.com",
       "linkdin": "https://www.linkedin.com/home",
       "insta": "https://www.instagram.com",
@@ -130,7 +183,13 @@ class _SignUpState extends State<SignUp> {
     });
 
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomPage()));
+        context, MaterialPageRoute(builder: (context) => Homescreen()));
+  }
+
+  @override
+  void initState() {
+    //checkUserAuth();
+    super.initState();
   }
 
   @override
@@ -138,7 +197,6 @@ class _SignUpState extends State<SignUp> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-<<<<<<< HEAD
       //  resizeToAvoidBottomInset: true,
       // resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomPadding: false,
@@ -149,474 +207,397 @@ class _SignUpState extends State<SignUp> {
               ),
             )
           : SingleChildScrollView(
-                      child: SafeArea(
-                child: SafeArea(
-                  child: Container(
-                    //padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: size.height * 0.3,
-                          child: Stack(children: [
-                            Center(
-                              child: Image(
-                                image: AssetImage(
-                                  "images/signup.png",
-                                ),
-                                height: size.height * 0.35,
-                              ),
+              child: Container(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    Container(
+                      height: size.height * 0.3,
+                      child: Stack(children: [
+                        Center(
+                          child: Image(
+                            image: AssetImage(
+                              "images/signup.png",
                             ),
-                            SizedBox(width: 40),
-                            Row(children: [
-                              Image(
-                                image: AssetImage(
-                                  "images/main_top.png",
-                                ),
-                                height: 90,
-                              ),
-                            ]),
-                          ]),
-                        ),
-                        SingleChildScrollView(
-                                                  child: Container(
-                            //height: size.height * 0.69,
-                            padding: EdgeInsets.only(left: 20, right: 20),
-                            child: Form(
-                              key: formKey,
-                              child: Column(
-                              children: [
-                              
-                                Text(
-                                  "Academic Master",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Dancing",
-                                    color: Color(0xFF6F35A5),
-                                  ),
-                                ),
-                                Text(
-                                  "Academic Master",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Dancing",
-                                    color: Color(0xFF6F35A5),
-                                  ),
-                                ),
-                                
-                                
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "Create a new Account:",
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "Dancing",
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF6F35A5),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      margin: EdgeInsets.symmetric(vertical: 10),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                      ),
-                                      width: size.width * 0.8,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFFF1E6FF),
-                                        borderRadius: BorderRadius.circular(29),
-                                      ),
-                                      child: TextFormField(
-                                        validator: (val) {
-                                          return RegExp(
-                                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                                  .hasMatch(val)
-                                              ? null
-                                              : "Please Enter Correct Email";
-                                        },
-                                        controller: emailEditingController,
-                                        style: simpleTextStyle(),
-                                        // decoration: textFieldInputDecoration("email"),
-                                        decoration: InputDecoration(
-                                            icon: Icon(Icons.mail),
-                                            hintText: "Email",
-                                            border: InputBorder.none),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: size.width * 0.8,
-                                  decoration: BoxDecoration(
-                                    // color: kPrimaryLightColor,
-                                    color: Color(0xFFFF1E6FF),
-                                    borderRadius: BorderRadius.circular(29),
-                                  ),
-                                  child: TextFormField(
-                                    obscureText: true,
-                                    validator: (val) {
-                                      return val.length > 6
-                                          ? null
-                                          : "Enter Password 6+ characters";
-                                    },
-                                    style: simpleTextStyle(),
-                                    controller: passwordEditingController,
-                                    //decoration: textFieldInputDecoration("password"),
-                                    decoration: InputDecoration(
-                                        icon: Icon(Icons.remove_red_eye),
-                                        hintText: "Password",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: size.width * 0.8,
-                                  decoration: BoxDecoration(
-                                    // color: kPrimaryLightColor,
-                                    color: Color(0xFFFF1E6FF),
-                                    borderRadius: BorderRadius.circular(29),
-                                  ),
-                                  child: TextFormField(
-                                    validator: (val) {
-                                      return val.length > 3
-                                          ? null
-                                          : "Enter username 3+ char";
-                                    },
-                                    style: simpleTextStyle(),
-                                    controller: usernameEditingController,
-                                    decoration: InputDecoration(
-                                        icon: Icon(Icons.person),
-                                        hintText: "Username",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: size.width * 0.8,
-                                  decoration: BoxDecoration(
-                                    // color: kPrimaryLightColor,
-                                    color: Color(0xFFFF1E6FF),
-                                    borderRadius: BorderRadius.circular(29),
-                                  ),
-                                  child: TextFormField(
-                                    validator: (val) {
-                                      return val.length > 2
-                                          ? null
-                                          : "Enter correct college name";
-                                    },
-                                    style: simpleTextStyle(),
-                                    controller: collegeEditingController,
-                                    //decoration: textFieldInputDecoration("password"),
-                                    decoration: InputDecoration(
-                                        icon: Icon(Icons.school),
-                                        hintText: "College",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: size.width * 0.8,
-                                  decoration: BoxDecoration(
-                                    // color: kPrimaryLightColor,
-                                    color: Color(0xFFFF1E6FF),
-                                    borderRadius: BorderRadius.circular(29),
-                                  ),
-                                  child: TextFormField(
-                                    validator: (val) {
-                                      return val.length > 9
-                                          ? null
-                                          : "Enter Correct Phone number";
-                                    },
-                                    style: simpleTextStyle(),
-                                    controller: phoneEditingController,
-                                    //decoration: textFieldInputDecoration("password"),
-                                    decoration: InputDecoration(
-                                        icon: Icon(Icons.phone),
-                                        hintText: "Phone Number",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: size.width * 0.8,
-                                  decoration: BoxDecoration(
-                                    // color: kPrimaryLightColor,
-                                    color: Color(0xFFFF1E6FF),
-                                    borderRadius: BorderRadius.circular(29),
-                                  ),
-                                  child: TextFormField(
-                                    validator: (val) {
-                                      return val.length > 0
-                                          ? null
-                                          : "Enter valid year";
-                                    },
-                                    style: simpleTextStyle(),
-                                    controller: yearEditingController,
-                                    //decoration: textFieldInputDecoration("password"),
-                                    decoration: InputDecoration(
-                                        hintText: "Year",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                                 Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  width: size.width * 0.8,
-                                  decoration: BoxDecoration(
-                                    // color: kPrimaryLightColor,
-                                    color: Color(0xFFFF1E6FF),
-                                    borderRadius: BorderRadius.circular(29),
-                                  ),
-                                  child: TextFormField(
-                                    validator: (val) {
-                                      return val.length > 1
-                                          ? null
-                                          : "Enter username 3+ char";
-                                    },
-                                    style: simpleTextStyle(),
-                                    controller:branchEditingController,
-                                    decoration: InputDecoration(
-                                        
-                                        hintText: "Branch",
-                                        border: InputBorder.none),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            ),
+                            height: size.height * 0.35,
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Already have an account? ",
+                        SizedBox(width: 40),
+                        Row(children: [
+                          Image(
+                            image: AssetImage(
+                              "images/main_top.png",
+                            ),
+                            height: 90,
+                          ),
+                        ]),
+                      ]),
+                    ),
+                    SingleChildScrollView(
+                      child: Container(
+                        //height: size.height * 0.69,
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              Text(
+                                "Academic Master",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
                                   fontFamily: "Dancing",
-                                  color: Colors.deepPurpleAccent,
-                                )),
-                            GestureDetector(
-                              onTap: () {
-                                widget.toggleView();
-                              },
-                              child: Text(
-                                "SignIn now",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: "Dancing",
-                                    color: Colors.purple,
-                                    fontWeight: FontWeight.bold),
+                                  color: Color(0xFF6F35A5),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 20, right: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              singUp();
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  gradient: LinearGradient(colors: [
-                                    Color(0xFF6F35A5),
-                                    Color(0xFF6F35A5)
-                                  ])),
-                              // width: MediaQuery.of(context).size.width,
-                              child: Text(
-                                "Sign Up",
-                                //style: biggerTextStyle(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              // Text(
+                              //   "Academic Master",
+                              //   style: TextStyle(
+                              //     fontSize: 30,
+                              //     fontWeight: FontWeight.bold,
+                              //     fontFamily: "Dancing",
+                              //     color: Color(0xFF6F35A5),
+                              //   ),
+                              // ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Create a new Account:",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontFamily: "Dancing",
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF6F35A5),
+                                    ),
+                                  )
+                                ],
                               ),
-                             
-                            ),
+                              Column(
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    width: size.width * 0.8,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFFF1E6FF),
+                                      borderRadius: BorderRadius.circular(29),
+                                    ),
+                                    child: TextFormField(
+                                      validator: (val) {
+                                        return RegExp(
+                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                                .hasMatch(val)
+                                            ? null
+                                            : "Please Enter Correct Email";
+                                      },
+                                      controller: emailEditingController,
+                                      style: simpleTextStyle(),
+                                      // decoration: textFieldInputDecoration("email"),
+                                      decoration: InputDecoration(
+                                          icon: Icon(Icons.mail),
+                                          hintText: "Email",
+                                          border: InputBorder.none),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  obscureText: true,
+                                  validator: (val) {
+                                    return val.length > 6
+                                        ? null
+                                        : "Enter Password 6+ characters";
+                                  },
+                                  style: simpleTextStyle(),
+                                  controller: passwordEditingController,
+                                  //decoration: textFieldInputDecoration("password"),
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.remove_red_eye),
+                                      hintText: "Password",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  validator: (val) {
+                                    return val.length > 3
+                                        ? null
+                                        : "Enter username 3+ char";
+                                  },
+                                  style: simpleTextStyle(),
+                                  controller: usernameEditingController,
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.person),
+                                      hintText: "Username",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  validator: (val) {
+                                    return val.length > 2
+                                        ? null
+                                        : "Enter correct college name";
+                                  },
+                                  style: simpleTextStyle(),
+                                  controller: collegeEditingController,
+                                  //decoration: textFieldInputDecoration("password"),
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.school),
+                                      hintText: "College",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.phone,
+                                  validator: (val) {
+                                    return val.length > 9
+                                        ? null
+                                        : "Enter Correct Phone number";
+                                  },
+                                  style: simpleTextStyle(),
+                                  controller: phoneEditingController,
+                                  //decoration: textFieldInputDecoration("password"),
+                                  decoration: InputDecoration(
+                                      icon: Icon(Icons.phone),
+                                      hintText: "Phone Number",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  keyboardType: TextInputType.phone,
+                                  validator: (val) {
+                                    return val.length > 0
+                                        ? null
+                                        : "Enter valid year";
+                                  },
+                                  style: simpleTextStyle(),
+                                  controller: yearEditingController,
+                                  //decoration: textFieldInputDecoration("password"),
+                                  decoration: InputDecoration(
+                                      hintText: "Year",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  validator: (val) {
+                                    return val.length > 1
+                                        ? null
+                                        : "Enter username 3+ char";
+                                  },
+                                  style: simpleTextStyle(),
+                                  controller: branchEditingController,
+                                  decoration: InputDecoration(
+                                      hintText: "Branch",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                width: size.width * 0.8,
+                                decoration: BoxDecoration(
+                                  // color: kPrimaryLightColor,
+                                  color: Color(0xFFFF1E6FF),
+                                  borderRadius: BorderRadius.circular(29),
+                                ),
+                                child: TextFormField(
+                                  style: simpleTextStyle(),
+                                  controller: refer,
+                                  decoration: InputDecoration(
+                                      hintText: "refer code (ACADEMIC@6391)",
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        
+                      ),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          getImage();
+                        },
+                        child: selected1Image != null
+                            ? Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 28.0, right: 28, top: 10),
+                                child: ClipOval(
+                                  child: Image.file(selected1Image),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircleAvatar(
+                                  backgroundColor: Color(0xFFFF1E6FF),
+                                  radius: 120,
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 16),
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text("Slect profile pic",
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                        IconButton(
+                                          tooltip: "take image from phone",
+                                          color: Colors.white,
+                                          icon: Icon(Icons.image),
+                                          iconSize: 50,
+                                          onPressed: () {
+                                            getImage();
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              getImagefromcamera();
+                                            },
+                                            tooltip: "take image from camera",
+                                            icon: Icon(Icons.camera_alt),
+                                            color: Colors.white,
+                                            iconSize: 40),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Already have an account? ",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: "Dancing",
+                              color: Colors.deepPurpleAccent,
+                            )),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignIn()));
+                          },
+                          child: Text(
+                            "SignIn now",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: "Dancing",
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-             ),
-          ),
-      // : SafeArea(
-=======
-     // resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: false,
-      body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: SingleChildScrollView(
-                  child: Column(
-              children: [
-                //Spacer(),
-               
-                 Container(
-                   //color: Colors.white,
-                   //height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape:BoxShape.circle
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 50),
+                      child: Container(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            singUp();
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                gradient: LinearGradient(colors: [
+                                  Color(0xFF6F35A5),
+                                  Color(0xFF6F35A5)
+                                ])),
+                            // width: MediaQuery.of(context).size.width,
+                            child: Text(
+                              "Sign Up",
+                              //style: biggerTextStyle(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    child:Image.asset("images/download (5).jpg")
-
-                 ),
-                
-                Form(
-                  key: formKey,
-                  child: Column(
-          children: [
-            TextFormField(
-              style: simpleTextStyle(),
-              controller: usernameEditingController,
-              validator: (val){
-                return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
-              },
-              decoration: textFieldInputDecoration("username"),
-            ),
-             TextFormField(
-              style: simpleTextStyle(),
-              controller: collegeEditingController,
-              validator: (val){
-                return val.isEmpty || val.length < 3 ? "Enter valid college name" : null;
-              },
-              decoration: textFieldInputDecoration("Enter your college name"),
-            ),
-            TextFormField(
-              style: simpleTextStyle(),
-              controller: yearEditingController,
-              validator: (val){
-                return val.isEmpty || val.length < 0 ? "enter a valid year" : null;
-              },
-              decoration: textFieldInputDecoration("Enter your year"),
-            ),
-            TextFormField(
-              style: simpleTextStyle(),
-              controller: branchEditingController,
-              validator: (val){
-            return val.isEmpty || val.length < 1 ? "Enter a valid branch name " : null;
-              },
-              decoration: textFieldInputDecoration("Branch"),
-            ),
-             TextFormField(
-              style: simpleTextStyle(),
-              controller: phoneEditingController,
-              validator: (val){
-                return val.isEmpty || val.length < 10 ? "enter valid phone number" : null;
-              },
-              decoration: textFieldInputDecoration("Phone number"),
-            ),
-            TextFormField(
-              controller: emailEditingController,
-              style: simpleTextStyle(),
-              validator: (val){
-                return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                    null : "Enter correct email";
-              },
-              decoration: textFieldInputDecoration("email"),
-            ),
-            TextFormField(
-              obscureText: true,
-              style: simpleTextStyle(),
-              decoration: textFieldInputDecoration("password"),
-              controller: passwordEditingController,
-              validator:  (val){
-                return val.length < 6 ? "Enter Password 6+ characters" : null;
-              },
-
-            ),
-          ],
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: (){
-          singUp();
-                  },
-                  child: Container(
-          padding: EdgeInsets.symmetric(vertical: 16),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              gradient: LinearGradient(
-                colors: [
-                Colors.brown[200],
-                Colors.yellow[300],
-                  ],
-              )),
-          width: MediaQuery.of(context).size.width,
-          child: Text(
-            "Sign Up",
-            style: biggerTextStyle(),
-            textAlign: TextAlign.center,
-          ),
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                
-                SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-          Text(
-            "Already have an account? ",
-            style: simpleTextStyle(),
-          ),
-          GestureDetector(
-            onTap: () {
-              widget.toggleView();
-            },
-            child: Text(
-              "SignIn now",
-              style: TextStyle(
-                  color: Colors.redAccent,
-                  fontSize: 16,
-                  decoration: TextDecoration.underline),
-            ),
-          ),
                   ],
                 ),
-                SizedBox(
-                  height: 50,
-                )
-              ],
+              ),
             ),
-        ),
-      ),
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
+      // : SafeArea(
     );
   }
 }

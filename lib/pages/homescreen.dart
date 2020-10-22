@@ -1,22 +1,17 @@
-import 'package:Academicmaster/branch.dart';
 import 'package:Academicmaster/pages/course.dart';
+import 'package:Academicmaster/pages/posts.dart';
 
 import 'package:Academicmaster/pages/profilescreen.dart';
-import 'package:Academicmaster/view/chatrooms.dart';
+
+import 'package:Academicmaster/view/groupchat/groupchatroom.dart';
 
 import "package:flutter/material.dart";
 
-
-import "package:Academicmaster/view/viewmain.dart";
-
 import "package:curved_navigation_bar/curved_navigation_bar.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
-
-<<<<<<< HEAD
-=======
-import "package:Academicmaster/view/viewmain.dart";
-import"package:curved_navigation_bar/curved_navigation_bar.dart";
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
+int back;
+int words;
 
 class Homescreen extends StatefulWidget {
   @override
@@ -27,23 +22,29 @@ class _HomescreenState extends State<Homescreen> {
   int _page = 0;
   GlobalKey _bottomNavigationKey = GlobalKey();
   var pages = [
-<<<<<<< HEAD
-    MyApp(), 
-    //ChewieDemo(),
-    //Branch(),
+    HomPage(),
     Course(),
-     ChatRoom(),
-      Profilescreen()];
-=======
-   MyApp(),
-
-   HomPage(),
-
-    Branch(),
-    FreecoursePage(),
-    Aktuerp(),
+    Groupchatroom(),
+    Profilescreen(),
   ];
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
+
+  @override
+  void initState() {
+    getmode();
+    super.initState();
+  }
+
+  getmode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      back = preferences.getInt('back');
+      words = preferences.getInt('words');
+    });
+    print("hii");
+    print(back);
+    print(words);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,59 +60,62 @@ class _HomescreenState extends State<Homescreen> {
                 Icon(
                   Icons.home,
                   size: 35,
-                  color: Colors.red,
+                  color: Color(0xFF6F35A5),
                 ),
                 Text("Home",
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Color(0xFF6F35A5), fontWeight: FontWeight.bold)),
               ],
             ),
             Column(
               children: <Widget>[
                 SizedBox(height: 10),
-                Icon(Icons.book, size: 35, color: Colors.red),
+                Icon(
+                  Icons.book,
+                  size: 35,
+                  color: Color(0xFF6F35A5),
+                ),
                 Text(
                   "Study material",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Color(0xFF6F35A5),
                   ),
                 )
               ],
             ),
-<<<<<<< HEAD
             Column(
               children: <Widget>[
                 SizedBox(height: 10),
-                Icon(Icons.chat, size: 35, color: Colors.red),
+                Icon(
+                  Icons.chat,
+                  size: 35,
+                  color: Color(0xFF6F35A5),
+                ),
                 Text(
                   "Chat",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Color(0xFF6F35A5), fontWeight: FontWeight.bold),
                 )
               ],
-=======
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-
-              ),
-              title: Text("Home"),
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
             ),
             Column(
               children: <Widget>[
                 SizedBox(height: 10),
-                Icon(Icons.perm_identity, size: 35, color: Colors.red),
+                Icon(
+                  Icons.perm_identity,
+                  size: 35,
+                  color: Color(0xFF6F35A5),
+                ),
                 Text(
                   "Account",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Color(0xFF6F35A5), fontWeight: FontWeight.bold),
                 )
               ],
             ),
           ],
-          color: Colors.black,
-          buttonBackgroundColor: Colors.black,
+          color: Color(back),
+          buttonBackgroundColor: Colors.white,
           backgroundColor: Colors.white,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 600),

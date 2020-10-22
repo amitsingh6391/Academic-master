@@ -1,22 +1,20 @@
-
-
-import 'package:Academicmaster/firstslide.dart';
 import 'package:Academicmaster/view/chat.dart';
 
-import 'package:Academicmaster/view/helper/authnicate.dart';
 import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:Academicmaster/view/helper/helperfunction.dart';
-import 'package:Academicmaster/view/helper/theme.dart';
+
 import 'package:Academicmaster/view/search.dart';
-import 'package:Academicmaster/view/viewservices/auth.dart';
+
 import 'package:Academicmaster/view/viewservices/database.dart';
-import 'package:Academicmaster/view/widgets/widget.dart';
+
 import "dart:io";
 import "package:flutter/material.dart";
 
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
+int back, words;
 
 class ChatRoom extends StatefulWidget {
   @override
@@ -37,12 +35,16 @@ class _ChatRoomState extends State<ChatRoom> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return ChatRoomsTile(
-                    userName: snapshot.data.documents[index].data['chatRoomId']
+                    userName: snapshot.data.documents[index]
+                        .data()['chatRoomId']
                         .toString()
                         .replaceAll("_", "")
                         .replaceAll(Constants.myName, ""),
                     chatRoomId:
-                        snapshot.data.documents[index].data["chatRoomId"],
+                        snapshot.data.documents[index].data()["chatRoomId"],
+                    userid: snapshot.data.documents[index].data()["userid"],
+                    friendpic:
+                        snapshot.data.documents[index].data()["friendpic"],
                   );
                 })
             : Container();
@@ -54,13 +56,23 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     getUserInfogetChats();
     getCurrentUser();
+    getmode();
     super.initState();
   }
 
+  getmode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
 
-   getCurrentUser() async {
+    setState(() {
+      back = preferences.getInt('back');
+      words = preferences.getInt('words');
+    });
+  }
+
+  getCurrentUser() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
+    //final FirebaseUser user = await _auth.currentUser();
+    User user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     print(uid);
     setState(() {
@@ -68,15 +80,11 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
-
- offline() async{
-
-    await Firestore.instance.collection("onlinestatus").document(currentuserid).updateData({
-
-      "online":"offline"
-
-    });
-
+  offline() async {
+    await FirebaseFirestore.instance
+        .collection("onlinestatus")
+        .doc(currentuserid)
+        .update({"online": "offline"});
   }
 
   getUserInfogetChats() async {
@@ -94,7 +102,6 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return WillPopScope(
       onWillPop: () {
         return showDialog(
@@ -110,7 +117,6 @@ class _ChatRoomState extends State<ChatRoom> {
                     onPressed: () {
                       offline();
                       exit(0);
-                      
                     },
                   ),
                   FlatButton(
@@ -123,87 +129,66 @@ class _ChatRoomState extends State<ChatRoom> {
               );
             });
       },
-          child: Scaffold(
-        
-          resizeToAvoidBottomPadding: false,
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            
-            flexibleSpace: Image(image: AssetImage("images/livechat.jpg"),
-            fit: BoxFit.cover,),
-   
-
-      centerTitle: true,
-      // actions: [
-      //   GestureDetector(
-      //     onTap: () {
-      //       AuthService().signOut();
-      //       Navigator.pushReplacement(context,
-      //           MaterialPageRoute(builder: (context) => Authenticate()));
-      //     },
-      //     child: Container(
-      //         padding: EdgeInsets.symmetric(horizontal: 16),
-      //         child: Icon(Icons.exit_to_app,color: Colors.brown,)),
-      //   ),
-      // ],
-          ),
-          body: Container(
-            
-      child: chatRoomsList(),
-          ),
-          floatingActionButton: FloatingActionButton(
-      child: Icon(Icons.search,color: Colors.black,),
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Search()));
-        },
-        backgroundColor: Color(0xff605959),  ),
-        ),
-    );
-=======
-    return Scaffold(
-      
+      child: Scaffold(
         resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          flexibleSpace: Image(image: AssetImage("images/download 11.jpg"),
-          fit: BoxFit.cover,),
-    title: Text(
-      "yourfriends",
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontFamily: "Dancing",
-        fontSize: 30,
-        color: Colors.brown
-      ),
-    ),
-
-    centerTitle: true,
-    actions: [
-      GestureDetector(
-        onTap: () {
-          AuthService().signOut();
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => Authenticate()));
-        },
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.exit_to_app,color: Colors.brown,)),
-      ),
-    ],
+        backgroundColor: Color(back),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Container(
+                color: Color(back),
+                // height: 300,
+                width: 100,
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Color(back),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3))
+                          ]),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserScreen()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("All Users",
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  color: Color(words),
+                                  fontFamily: "Dancing",
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ])),
+          ),
         ),
-        body: Container(
-    child: chatRoomsList(),
-        ),
+        body: Container(child: chatRoomsList()),
         floatingActionButton: FloatingActionButton(
-    child: Icon(Icons.search,color: Colors.orange,),
-    onPressed: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Search()));
-      },
-      backgroundColor: Color(0xff605959),  ),
-      );
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Search()));
+            },
+            backgroundColor: Color(0xFF6F35A5)),
+      ),
+    );
   }
 }
 
@@ -211,7 +196,15 @@ class ChatRoomsTile extends StatelessWidget {
   final String userName;
   final String chatRoomId;
 
-  ChatRoomsTile({this.userName, @required this.chatRoomId});
+  final userid;
+
+  final String friendpic;
+
+  ChatRoomsTile(
+      {this.userName,
+      @required this.chatRoomId,
+      @required this.userid,
+      @required this.friendpic});
 
   @override
   Widget build(BuildContext context) {
@@ -223,45 +216,38 @@ class ChatRoomsTile extends StatelessWidget {
                 builder: (context) => Chat(
                       chatRoomId: chatRoomId,
                       userName: userName,
+                      to: userid,
+                      friendpic: friendpic,
                     )));
       },
       child: Column(
         children: <Widget>[
           Container(
-            color: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            color: Color(back),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             child: Row(
               children: [
                 Container(
-                  height: 40,
-                  width: 30,
-                  child: CircleAvatar(
-                      backgroundImage: AssetImage("images/thirdgif3.gif")),
+                  height: 80,
+                  width: 60,
+                  child: CircleAvatar(backgroundImage: NetworkImage(friendpic)),
                 ),
-               
                 SizedBox(
                   width: 12,
                 ),
                 Text(userName,
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 35,
-                        fontFamily: 'Dancing',
-                        fontWeight: FontWeight.bold))
+                      color: Color(words),
+                      fontSize: 25,
+
+                      // fontWeight: FontWeight.bold
+                    ))
               ],
             ),
           ),
-          SizedBox(
-            height: 10,
-          )
         ],
       ),
     );
   }
 }
-
-
-
-
-

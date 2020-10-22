@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 Widget appBarMain(BuildContext context) {
@@ -24,7 +22,7 @@ InputDecoration textFieldInputDecoration(String hintText) {
 }
 
 TextStyle simpleTextStyle() {
-  return TextStyle(color: Colors.black,fontSize: 16);
+  return TextStyle(color: Colors.black, fontSize: 16);
 }
 
 TextStyle biggerTextStyle() {

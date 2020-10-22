@@ -1,24 +1,23 @@
 import 'package:Academicmaster/pages/posts.dart';
-import 'package:Academicmaster/view/chatrooms.dart';
-import 'package:Academicmaster/view/forgot_password.dart';
+
+import 'package:Academicmaster/view/SignUp.dart';
+import 'package:Academicmaster/pages/homescreen.dart';
 import 'package:Academicmaster/view/helper/helperfunction.dart';
-import 'package:Academicmaster/view/helper/theme.dart';
+
 import 'package:Academicmaster/view/viewservices/auth.dart';
-import 'package:Academicmaster/view/viewservices/database.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:flutter/material.dart";
 import 'package:Academicmaster/view/widgets/widget.dart';
 
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
 
 class SignIn extends StatefulWidget {
-  final Function toggleView;
-
-  SignIn(this.toggleView);
-
   @override
   _SignInState createState() => _SignInState();
 }
@@ -30,537 +29,383 @@ class _SignInState extends State<SignIn> {
   AuthService authService = new AuthService();
 
   final formKey = GlobalKey<FormState>();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
   bool isLoading = false;
   String userid;
 
-  signIn() async {
+  @override
+  void initState() {
+    checkUserAuth();
+    super.initState();
+  }
+
+  checkUserAuth() async {
+    try {
+      User user = await auth.currentUser;
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Homescreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  signin() async {
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
+        print("yes");
       });
 
-      await authService
+      auth
           .signInWithEmailAndPassword(
-              emailEditingController.text, passwordEditingController.text)
-          .then((result) async {
-        if (result != null) {
-          QuerySnapshot userInfoSnapshot =
-              await DatabaseMethods().getUserInfo(emailEditingController.text);
+              email: emailEditingController.text,
+              password: passwordEditingController.text)
+          .then((authResult) async {
+        // register fcm token
+        String fcmToken = await firebaseMessaging.getToken();
 
-          HelperFunctions.saveUserLoggedInSharedPreference(true);
-          HelperFunctions.saveUserNameSharedPreference(
-              userInfoSnapshot.documents[0].data["userName"]);
-          HelperFunctions.saveUserEmailSharedPreference(
-              userInfoSnapshot.documents[0].data["userEmail"]);
+        User user = authResult.user;
 
-          // Navigator.pushReplacement(
-          //     context, MaterialPageRoute(builder: (context) => HomPage()));
-             getCurrentUser();
-        } else {
-          setState(() {
-            isLoading = false;
-            //show snackbar
-          });
-        }
+        db.collection("userstoken").doc(user.uid).set({
+          "email": user.email,
+          "fcmToken": fcmToken,
+          "profilepic":
+              "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
+          "username": user.email,
+          "userid": user.uid
+        });
+
+        // for topic
+        firebaseMessaging.subscribeToTopic("btech");
+        firebaseMessaging.subscribeToTopic("bpharma");
+        firebaseMessaging.subscribeToTopic("dpharma");
+        firebaseMessaging.subscribeToTopic("post");
+        firebaseMessaging.subscribeToTopic("bcom");
+        firebaseMessaging.subscribeToTopic("bse");
+        firebaseMessaging.subscribeToTopic("notice");
+        firebaseMessaging.subscribeToTopic("motivation");
+
+        // for unsubscribe
+        //firebaseMessaging.unsubscribeFromTopic("news");
+
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => UserScreen(),
+        //   ),
+        // );
+        getCurrentUser();
+      }).catchError((error) {
+        showMessage("Alert!", "Provide details");
       });
     }
   }
 
-   getCurrentUser() async {
+  showMessage(title, description) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(title),
+            content: Text(description),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: Text("Dismiss"),
+              )
+            ],
+          );
+        });
+  }
+
+  getCurrentUser() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
+
+    User user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     print(uid);
     setState(() {
       userid = uid.toString();
     });
 
-    addnewuserprofile();
-  }
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('logedin', "yes");
+    preferences.setInt('back', 0xFF000000);
+    preferences.setInt('words', 0xFFFFFFFF);
 
-
-  addnewuserprofile() async {
-    await Firestore.instance
-        .collection("userprofile")
-        .document(userid)
-        .setData({
-      "profileimageurl":
-          "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
-      // "contact": "Not provides",
-      // "username": "Abc",
-      "bio": "None",
-      "userName": "abc ",
-      "userEmail": "abc@gmail.com",
-      "userphonenumber":"1234567",
-      "usercollege": "bcd",
-      "userbranch":"none ",
-      "follower":0,
-      "following":0,
-      "useryear": "not mention",
-      "github": "https://github.com",
-      "linkdin": "https://www.linkedin.com/home",
-      "insta": "https://www.instagram.com",
-      'time': DateTime.now().millisecondsSinceEpoch,
-    });
+    HelperFunctions.saveUserNameSharedPreference(emailEditingController.text);
+    HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);
 
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => HomPage()));
+        context, MaterialPageRoute(builder: (context) => Homescreen()));
   }
-
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-<<<<<<< HEAD
       backgroundColor: Colors.white,
-=======
-      appBar: AppBar(title: Text("Academic master",
-      style: GoogleFonts.quicksand(
-          textStyle: Theme.of(context).textTheme.display1,
-          fontWeight: FontWeight.w700,
-
-          fontSize: 45,color: Color(0xffffce00)),
-
-      ),
-      centerTitle: true,
-      bottom: PreferredSize(
-        child: Text("The simplest way to success",
-        style: GoogleFonts.fondamento(fontSize: 20,color: Colors.white),),
-        preferredSize: Size.fromHeight(50.0),
-      ),
-        /*flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: <Color>[
-                    Colors.green,
-                    Color(0xff2782bb)
-                  ])
-          ),
-        ),*/
-        backgroundColor: Color(0xff484d5c),
-      ),
-       backgroundColor:Colors.white,
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
       body: isLoading
           ? Container(
               child: Center(child: CircularProgressIndicator()),
             )
           : SingleChildScrollView(
-<<<<<<< HEAD
-                      child: SafeArea(
-                child: Container(
-                  //padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: size.height * 0.3,
-                        child: Stack(children: [
-                          Center(
-                            child: Image(
-                              image: AssetImage(
-                                "images/login.png",
-=======
-                      child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Container(
                 child: Column(
                   children: [
-                    Image.network(
-                      "https://cdn.dribbble.com/users/2367833/screenshots/7816190/media/b1aaf5c98510012b56422d1619dc62e8.gif",
-                      width: 400,
-                      height: 200,
-                    ),
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          Column(
-                            children: <Widget>[
-                              TextFormField(
-                                validator: (val) {
-                                  return RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                          .hasMatch(val)
-                                      ? null
-                                      : "Please Enter Correct Email";
-                                },
-                                controller: emailEditingController,
-                                style: simpleTextStyle(),
-                                decoration: textFieldInputDecoration("email"),
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
-                              ),
-                              height: size.height * 0.35,
+                    SizedBox(height: 20),
+                    Container(
+                      height: size.height * 0.3,
+                      child: Stack(children: [
+                        Center(
+                          child: Image(
+                            image: AssetImage(
+                              "images/login.png",
                             ),
+                            height: size.height * 0.35,
                           ),
-                          SizedBox(width: 40),
-                          Row(children: [
-                            Image(
-                              image: AssetImage(
-                                "images/main_top.png",
-                              ),
-                              height: 90,
+                        ),
+                        SizedBox(width: 40),
+                        Row(children: [
+                          Image(
+                            image: AssetImage(
+                              "images/main_top.png",
                             ),
-                          ]),
+                            height: 90,
+                          ),
                         ]),
-                      ),
+                      ]),
+                    ),
 
-                      Container(
-                        height: size.height * 0.3,
-                        padding: EdgeInsets.only(left: 20, top: 30, right: 20),
-                        child: Form(
-                          key: formKey,
-                          child:SingleChildScrollView(child: Column(
-                            children: [
-
-                             
-                              Text(
-                                "Academic Master",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Dancing",
-                                  color: Color(0xFF6F35A5),
-                                ),
-                              ),
-                              Text(
-                                "A Simple way Of Success",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: "Dancing",
-                                  color: Color(0xFF6F35A5),
-                                ),
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                    ),
-                                    width: size.width * 0.8,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFFF1E6FF),
-                                      borderRadius: BorderRadius.circular(29),
-                                    ),
-                                    child: TextFormField(
-                                      validator: (val) {
-                                        return RegExp(
-                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                                .hasMatch(val)
-                                            ? null
-                                            : "Please Enter Correct Email";
-                                      },
-                                      controller: emailEditingController,
-                                      style: simpleTextStyle(),
-                                      // decoration: textFieldInputDecoration("email"),
-                                      decoration: InputDecoration(
-                                          icon: Icon(Icons.person),
-                                          hintText: "Email",
-                                          border: InputBorder.none),
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 5),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                width: size.width * 0.8,
-                                decoration: BoxDecoration(
-                                  // color: kPrimaryLightColor,
-                                  color: Color(0xFFFF1E6FF),
-                                  borderRadius: BorderRadius.circular(29),
-                                ),
-                                child: TextFormField(
-                                  obscureText: true,
-                                  validator: (val) {
-                                    return val.length > 6
-                                        ? null
-                                        : "Enter Password 6+ characters";
-                                  },
-                                  style: simpleTextStyle(),
-                                  controller: passwordEditingController,
-                                  //decoration: textFieldInputDecoration("password"),
-                                  decoration: InputDecoration(
-                                      icon: Icon(Icons.remove_red_eye),
-                                      hintText: "Password",
-                                      border: InputBorder.none),
-                                ),
-                              ),
-                              //SizedBox(height:20),
-
-                             
-                            ],
-                        )),
-                        ),
-                      ),
-
-                      Container(
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Row(
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {
-                                signIn();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 16),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF6F35A5),
-                                        Color(0xFF6F35A5)
-                                      ],
-                                    )),
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: Text("Sign In",
-                                    //style: biggerTextStyle(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    )),
+                    Container(
+                      height: size.height * 0.35,
+                      padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+                      child: Form(
+                        key: formKey,
+                        child: SingleChildScrollView(
+                            child: Column(
+                          children: [
+                            Text(
+                              "Academic Master",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Dancing",
+                                color: Color(0xFF6F35A5),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Don't have account? ",
-                              //style: simpleTextStyle(),
+                            Text(
+                              "A Simple way Of Success",
                               style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: "Dancing",
-                                  color: Colors.deepPurpleAccent,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(width: 5),
+                                fontSize: 15,
+                                fontFamily: "Dancing",
+                                color: Color(0xFF6F35A5),
+                              ),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  width: size.width * 0.8,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFFF1E6FF),
+                                    borderRadius: BorderRadius.circular(29),
+                                  ),
+                                  child: TextFormField(
+                                    validator: (val) {
+                                      return RegExp(
+                                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                              .hasMatch(val)
+                                          ? null
+                                          : "Please Enter Correct Email";
+                                    },
+                                    controller: emailEditingController,
+                                    style: simpleTextStyle(),
+                                    // decoration: textFieldInputDecoration("email"),
+                                    decoration: InputDecoration(
+                                        icon: Icon(Icons.person),
+                                        hintText: "Email",
+                                        border: InputBorder.none),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10,
+                              ),
+                              width: size.width * 0.8,
+                              decoration: BoxDecoration(
+                                // color: kPrimaryLightColor,
+                                color: Color(0xFFFF1E6FF),
+                                borderRadius: BorderRadius.circular(29),
+                              ),
+                              child: TextFormField(
+                                obscureText: true,
+                                validator: (val) {
+                                  return val.length > 6
+                                      ? null
+                                      : "Enter Password 6+ characters";
+                                },
+                                style: simpleTextStyle(),
+                                controller: passwordEditingController,
+                                //decoration: textFieldInputDecoration("password"),
+                                decoration: InputDecoration(
+                                    icon: Icon(Icons.remove_red_eye),
+                                    hintText: "Password",
+                                    border: InputBorder.none),
+                              ),
+                            ),
+                            //SizedBox(height:20),
+                          ],
+                        )),
+                      ),
+                    ),
+
+                    Container(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        children: <Widget>[
                           GestureDetector(
                             onTap: () {
-                              widget.toggleView();
+                              signin();
                             },
-                            child: Text("Register now",
-                                style: TextStyle(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF6F35A5),
+                                      Color(0xFF6F35A5)
+                                    ],
+                                  )),
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Text("Sign In",
+                                  //style: biggerTextStyle(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                     fontSize: 20,
-                                    fontFamily: "Dancing",
-                                    color: Colors.purpleAccent,
-                                    fontWeight: FontWeight.bold)),
+                                  )),
+                            ),
                           ),
                         ],
                       ),
-<<<<<<< HEAD
+                    ),
 
-                      Container(
-                        height: size.height * 0.1,
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Row(
-                          children: <Widget>[
-                            Card(
-                              child: FlatButton(
-                                  onPressed: _urllauncher,
-                                  child: Text(
-                                    "Privacy Policy",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            ),
-                            Card(
-                              child: FlatButton(
-                                  onPressed: _terms,
-                                  child: Text(
-                                    "Terms & Condition",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(left: 35, right: 25),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                                constraints: BoxConstraints(maxWidth: 300),
-                                child: Text(
-                                    "By continuing you agree to our terms of service and privacy policy",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: "Dancing",
-                                      color: Colors.black,
-                                    ))),
-                          ],
-                        ),
-                      ),
-                      // SizedBox(
-                      //   height: 50,
-                      // ),
-                    ],
-                  ),
-=======
-                    ),
                     SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => MyApps()));
-                          },
-                          child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              child: Text(
-                                "Forgot Password?",
-                                style: simpleTextStyle(),
-                              )),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        signIn();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: LinearGradient(
-                              colors: [
-                               // const Color(0xff007EF4),
-                               // const Color(0xff2A75BC)
-                               Colors.brown[200],
-                               Colors.yellow[300]
-                              ],
-                            )),
-                        width: MediaQuery.of(context).size.width,
-                        child: Text(
-                          "Sign In",
-                          style: biggerTextStyle(),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    // Container(
-                    //   padding: EdgeInsets.symmetric(vertical: 16),
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(30),
-                    //       color: Colors.white),
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: Text(
-                    //     "Sign In with Google",
-                    //     style: TextStyle(
-                    //         fontSize: 17, color: CustomTheme.textColor),
-                    //     textAlign: TextAlign.center,
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: 16,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Don't have account? ",
-                          style: simpleTextStyle(),
-                        ),
+                        Text("Don't have account? ",
+                            //style: simpleTextStyle(),
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "Dancing",
+                                color: Colors.deepPurpleAccent,
+                                fontWeight: FontWeight.bold)),
+                        SizedBox(width: 5),
                         GestureDetector(
                           onTap: () {
-                            widget.toggleView();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUp()));
                           },
-                          child: Text(
-                            "Register now",
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontSize: 20,
-                                decoration: TextDecoration.underline),
-                          ),
+                          child: Text("Register now",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: "Dancing",
+                                  color: Colors.purpleAccent,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: _urllauncher,
-                        child:Text(
-                          "Privacy Policy",
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold
+
+                    Container(
+                      height: size.height * 0.1,
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        children: <Widget>[
+                          Card(
+                            child: FlatButton(
+                                onPressed: _urllauncher,
+                                child: Text(
+                                  "Privacy Policy",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                )),
                           ),
-
-                        )),
-                        FlatButton(
-                            onPressed: _terms,
-                            child:Text(
-                              "Terms And Condition",
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold
-                              ),
-
-                            )
-                        )
-                      ],
-
+                          Card(
+                            child: FlatButton(
+                                onPressed: _terms,
+                                child: Text(
+                                  "Terms & Condition",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          )
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        Container(constraints: BoxConstraints(maxWidth: 300),
-                            child:
-                        Text("By continuing you agree to our terms of service and privacy policy",
-                        style: TextStyle(color: Colors.black),)
-                        ),],
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(left: 35, right: 25),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                              constraints: BoxConstraints(maxWidth: 300),
+                              child: Text(
+                                  "By continuing you agree to our terms of service and privacy policy",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "Dancing",
+                                    color: Colors.black,
+                                  ))),
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      height: 50,
-                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    // ),
                   ],
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
                 ),
               ),
-          ),
+            ),
     );
   }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 _urllauncher() async {
   const url = 'https://academic-master.flycricket.io/privacy.html';
   if (await canLaunch(url)) {
@@ -569,10 +414,7 @@ _urllauncher() async {
     throw 'Could not launch $url';
   }
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
 _terms() async {
   const url = 'https://academic-master.flycricket.io/terms.html';
   if (await canLaunch(url)) {
@@ -580,8 +422,225 @@ _terms() async {
   } else {
     throw 'Could not launch $url';
   }
-<<<<<<< HEAD
 }
-=======
+
+//homscreenalluserswill be here...
+
+class UserScreen extends StatefulWidget {
+  @override
+  _UserScreenState createState() => _UserScreenState();
 }
->>>>>>> 4f0c51ecc146e33bca79cdc6bdd63a1057dcb026
+
+class _UserScreenState extends State<UserScreen> {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  List<DocumentSnapshot> users;
+
+  @override
+  void initState() {
+    fetchUsers();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        showMessage("Notification", "$message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        showMessage("Notification", "$message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        showMessage("Notification", "$message");
+      },
+    );
+
+    if (Platform.isIOS) {
+      _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: false),
+      );
+    }
+
+    super.initState();
+  }
+
+  fetchUsers() async {
+    QuerySnapshot snapshot = await db.collection("userstoken").get();
+    setState(() {
+      users = snapshot.docs;
+    });
+  }
+
+  showMessage(title, description) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(title),
+            content: Text(description),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(ctx);
+                },
+                child: Text("Dismiss"),
+              )
+            ],
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Home",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((a) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SignIn(),
+                  ),
+                );
+              });
+            },
+          ),
+        ],
+      ),
+      body: Container(
+        child: users != null
+            ? ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return Container(
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text(users[index]
+                            .data()["email"]
+                            .toString()
+                            .substring(0, 1)),
+                      ),
+                      title: Text(users[index].data()["email"]),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                NotificationScreen(to: users[index]),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+                itemCount: users.length,
+              )
+            : CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+//notification screen
+
+class NotificationScreen extends StatefulWidget {
+  final DocumentSnapshot to;
+
+  NotificationScreen({
+    @required this.to,
+  });
+
+  @override
+  _NotificationScreenState createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends State<NotificationScreen> {
+  TextEditingController _messageController = TextEditingController();
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
+  fetchUser() async {
+    User u = await auth.currentUser;
+    setState(() {
+      user = u;
+    });
+  }
+
+  handleInput(String input) {
+    print(input);
+
+    db
+        .collection("userstoken")
+        .doc(widget.to.id)
+        .collection("notifications")
+        .add({
+      "message": input,
+      "title": user.email,
+      "date": FieldValue.serverTimestamp()
+    }).then((doc) {
+      _messageController.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.to.data()["email"]),
+      ),
+      body: Container(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                child: TextField(
+                  controller: _messageController,
+                  decoration: InputDecoration(
+                    hintText: "Write message here",
+                  ),
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: handleInput(_messageController.text),
+                ),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  handleInput(_messageController.text);
+                },
+                child: Icon(Icons.send),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

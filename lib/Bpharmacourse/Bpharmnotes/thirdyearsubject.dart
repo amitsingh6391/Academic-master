@@ -1,12 +1,8 @@
 import 'package:Academicmaster/notesandquantum/Subjectwebview.dart';
+import 'package:Academicmaster/notesandquantum/firstyearsubject.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:admob_flutter/admob_flutter.dart';
-import "package:Academicmaster/services/admob_service.dart";
-
-import "dart:math";
-//import "package:Academicmaster/thirdAndfourthyearnotesandquantum/thirdAndfourthyearnotes.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +13,6 @@ class Bpharm3yearsubject extends StatefulWidget {
 
 class _Bpharm3yearsubjectState extends State<Bpharm3yearsubject> {
   String dropdownValue = 'unit1';
-  final ams = AdMobService(); //call admobclass from services
 
   @override
   void initState() {
@@ -47,7 +42,7 @@ class _Bpharm3yearsubjectState extends State<Bpharm3yearsubject> {
             children: <Widget>[
               Container(
                 child: StreamBuilder(
-                    stream: Firestore.instance
+                    stream: FirebaseFirestore.instance
                         .collection("Bpharm3yearnotes")
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -62,9 +57,10 @@ class _Bpharm3yearsubjectState extends State<Bpharm3yearsubject> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Subjecttile(
-                              subjectname: snapshot
-                                  .data.documents[index].data['subjectname'],
-                              link: snapshot.data.documents[index].data["link"],
+                              subjectname: snapshot.data.documents[index]
+                                  .data()['subjectname'],
+                              link:
+                                  snapshot.data.documents[index].data()["link"],
                             );
                           });
                     }),
@@ -83,7 +79,7 @@ class Bpharm3yearpaper extends StatefulWidget {
 }
 
 class _Bpharm3yearpaperState extends State<Bpharm3yearpaper> {
-  final ams = AdMobService(); //call admobclass from services
+  //final ams = AdMobService(); //call admobclass from services
 
   @override
   void initState() {
@@ -96,7 +92,7 @@ class _Bpharm3yearpaperState extends State<Bpharm3yearpaper> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF6F35A5),
           title: Text(
             "Previous Paper",
             style: TextStyle(
@@ -112,7 +108,7 @@ class _Bpharm3yearpaperState extends State<Bpharm3yearpaper> {
           child: Column(children: <Widget>[
             Container(
               child: StreamBuilder(
-                  stream: Firestore.instance
+                  stream: FirebaseFirestore.instance
                       .collection("Bpharm3paper")
                       .snapshots(),
                   builder: (context, snapshot) {
@@ -127,86 +123,14 @@ class _Bpharm3yearpaperState extends State<Bpharm3yearpaper> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return Subjecttile(
-                            subjectname: snapshot
-                                .data.documents[index].data['subjectname'],
-                            link: snapshot.data.documents[index].data["link"],
+                            subjectname: snapshot.data.documents[index]
+                                .data()['subjectname'],
+                            link: snapshot.data.documents[index].data()["link"],
                           );
                         });
                   }),
             ),
           ]),
         )));
-  }
-}
-
-class Subjecttile extends StatefulWidget {
-  final String subjectname, link;
-  Subjecttile({@required this.subjectname, @required this.link});
-  @override
-  _SubjecttileState createState() => _SubjecttileState();
-}
-
-class _SubjecttileState extends State<Subjecttile> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 80,
-            color: Colors.yellow,
-            child: Card(
-                elevation: 10,
-                color: Colors.black,
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      widget.subjectname,
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    SizedBox(width: 5),
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: GestureDetector(
-                          onTap: () {
-                            var x = widget.link;
-
-                            var y = widget.subjectname;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Subjectwebview(link: x, bar: y)));
-                          },
-                          child:
-                              Icon(Icons.arrow_forward, color: Colors.black)),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          urllauncher(widget.link);
-                        },
-                        child: Icon(Icons.file_download,
-                            color: Colors.white, size: 20))
-                  ],
-                )),
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-urllauncher(String link) async {
-  var url = link;
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
   }
 }

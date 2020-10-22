@@ -1,16 +1,17 @@
 import 'package:Academicmaster/aktuerp.dart';
 import 'package:Academicmaster/pages/homescreen.dart';
-import 'package:Academicmaster/view/forgot_password.dart';
+
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import "package:Academicmaster/view/viewmain.dart";
 import 'package:url_launcher/url_launcher.dart';
 import "Loginscreen/loginscreen.dart";
 
-import "branch.dart";
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+
+int walls, fonts;
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -29,89 +30,180 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 
   @override
+  void initState() {
+    //intilazied the appid
+    super.initState();
+    getmode();
+  }
+
+  getmode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      walls = preferences.getInt('back');
+      fonts = preferences.getInt('words');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: <Widget>[
           DrawerHeader(
             child: Center(
-              child: Text(
+                child: Column(children: [
+              Text(
                 "Academic Master",
                 style: GoogleFonts.caveat(
-                    fontWeight: FontWeight.bold, fontSize: 40),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                    color: Color(fonts)),
               ),
-            ),
+              Text(
+                "A new way of Learning",
+                style: GoogleFonts.caveat(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Color(fonts)),
+              ),
+            ])),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF00fd80), Color(0xFF00068b)],
+                colors: [
+                  Color(walls),
+                  Color(walls),
+                ],
               ),
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.info),
-            title: Text("About"),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => About(context),
-                  ));
-            },
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(Icons.info, color: Color(fonts)),
+              title: Text("About", style: TextStyle(color: Color(fonts))),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => About(context),
+                    ));
+              },
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.star),
-            title: Text("Rate us"),
-            onTap: () {
-              
-              launchurl();
-            },
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(Icons.star, color: Color(fonts)),
+              title: Text(
+                "Rate us",
+                style: TextStyle(color: Color(fonts)),
+              ),
+              onTap: () {
+                launchurl();
+              },
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.share),
-            title: Text("Share"),
-            onTap: () {
-              sharelink();
-            },
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(Icons.share, color: Color(fonts)),
+              title: Text(
+                "Share",
+                style: TextStyle(color: Color(fonts)),
+              ),
+              onTap: () {
+                sharelink();
+              },
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.feedback),
-            title: Text("Feedback"),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Feedback()));
-            },
-            //trailing: Icon(Icons.dashboard),
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(Icons.security, color: Color(fonts)),
+              title: Text(
+                "privacy",
+                style: TextStyle(color: Color(fonts)),
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Privacy()));
+              },
+              //trailing: Icon(Icons.dashboard),
+            ),
           ),
-         
-          ListTile(
-            leading: Icon(Icons.security),
-            title: Text("privacy"),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Privacy()));
-            },
-            //trailing: Icon(Icons.dashboard),
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(Icons.update, color: Color(fonts)),
+              title: Text(
+                "Update app",
+                style: TextStyle(color: Color(fonts)),
+              ),
+              onTap: () {
+                launchurl();
+              },
+            ),
           ),
-           ListTile(
-            leading: Icon(Icons.update),
-            title: Text("Update app"),
-            onTap: () {
-              
-              launchurl();
-            },)
-
-
-
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(Icons.brightness_4, color: Color(fonts)),
+              title: Text(
+                "Dark mode",
+                style: TextStyle(color: Color(fonts)),
+              ),
+              onTap: () {
+                modedark();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Homescreen()));
+              },
+            ),
+          ),
+          Container(
+            color: Color(walls),
+            child: ListTile(
+              leading: Icon(
+                Icons.brightness_2_outlined,
+                color: Color(fonts),
+              ),
+              title: Text(
+                "Light mode",
+                style: TextStyle(color: Color(fonts)),
+              ),
+              onTap: () {
+                modelight();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Homescreen()));
+              },
+            ),
+          ),
+          Container(
+            color: Color(walls),
+            height: 200,
+          )
         ],
       ),
     );
   }
 }
 
+modedark() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setInt('back', 0xFF000000);
+  preferences.setInt('words', 0xFFFFFFFF);
+}
+
+modelight() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setInt('back', 0xFFFFFFFF);
+  preferences.setInt('words', 0xFF000000);
+}
+
 Future<void> sharelink() async {
   try {
     Share.text(
-        'Academic Maste',
+        'Academic Master',
         'https://play.google.com/store/apps/details?id=com.academic.master',
         'text/plain');
   } catch (e) {
@@ -151,51 +243,48 @@ class _AboutState extends State<About> {
     return WillPopScope(
       onWillPop: () async => true,
       child: Scaffold(
+        backgroundColor: Color(walls),
         appBar: AppBar(
-          backgroundColor: Color(0xFF8cc8fa),
+          backgroundColor: Color(walls),
           title: Text("About Us ",
               style: GoogleFonts.novaMono(
-                color: Colors.black,
+                color: Color(fonts),
                 fontSize: 40,
               )),
         ),
         body: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Color(0xFF8cc8fa),
-                ],
-              ),
-            ),
+            color: Color(walls),
+            // decoration: BoxDecoration(),
             child: Column(
               children: <Widget>[
-                Container(
-                  height: 10,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                        "Academic Master is students most loved learning app . We are on a mission for enable learning, the missing part of indian education system.\nAcademic Master for android has a user-friendly, intuitive interface for notes, video lectures, syllabus, previous year papers, ebooks, free video courses and internships offers,Academic master offers following features :\n \n -👨🏻‍🎓 Read notes and watch lectures of different colleges and professors to ensure that you may get every topic cleared.\n -📚 Access curriculum books prescribed in your syllabus from top authors. \n -📑 Previous year question papers for the subjects of every branch, year, and courses. \n -🗣️ Interact with your peers and seniors, see what they are unto in their careers. \n -👨🏻‍🎓 Apply to top internships and accelerate your careers. \n -📑Share your well-written notes and become 🌟 star of your Academic master.",
+                        style: TextStyle(color: Color(fonts))),
+                  )),
                 ),
-                Text(
-                    " Founded in 2020 Academic Master  provides a platform that helps each and every student to learn .  Inside our app we have tried to cover all the notes and important question regarding to your examination in our reach ",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Text(
-                    " * you can also chat with your friends  in chat section  and ask your querries, our response team will try to respond ",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Text(
-                    "*  videos are provided for your convinience we have tried our best  to give you  a better platform to study free of cost",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Container(
-                  height: 10,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                        "We the community of learners ensure you to provide best study material from top sources. Connect with us and get a chance to represent your college in the community and share your learnings.Receive gratitude and love from learners. We can all contribute in different ways to help one other succeed!",
+                        style: TextStyle(color: Color(fonts))),
+                  )),
                 ),
                 Container(
                     height: 36,
                     child: Row(children: <Widget>[
-                      Text("Created by:",
+                      Text("Offered BY: ",
                           style: GoogleFonts.bitter(
-                              fontSize: 30,
-                              color: Colors.blueAccent,
+                              fontSize: 20,
+                              color: Color(0xFF6F35A5),
                               fontWeight: FontWeight.bold)),
                     ])),
                 Container(
@@ -203,39 +292,37 @@ class _AboutState extends State<About> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Amit Singh",
+                          "AmitAPPS INC. ",
                           style: GoogleFonts.indieFlower(
-                              fontSize: 27, fontWeight: FontWeight.bold),
+                              color: Color(fonts),
+                              fontSize: 27,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          "Neeraj Gailakoti",
-                          style: GoogleFonts.indieFlower(
-                              fontSize: 27, fontWeight: FontWeight.bold),
-                        )
                       ],
                     )),
                 Container(
-                    height: 200,
                     child: Row(children: [
-                      Text(
-                        "Contact us",
-                        style: GoogleFonts.indieFlower(
-                            fontSize: 40, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-
-                          contact();
-                        },
-                        child: Icon(
-                          Icons.mail,
-                          size: 40,
-                        ),
-                      )
-                    ]))
+                  Text(
+                    "Contact us",
+                    style: GoogleFonts.indieFlower(
+                        color: Color(fonts),
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      contact();
+                    },
+                    child: Icon(
+                      Icons.mail,
+                      color: Color(fonts),
+                      size: 40,
+                    ),
+                  )
+                ]))
               ],
             ),
           ),
@@ -272,11 +359,11 @@ class _FeedbackState extends State<Feedback> {
         actions: <Widget>[
           RaisedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyApp(),
-                    ));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => MyApp(),
+                //     ));
                 // Navigator.pop(context);
               },
               child: Text("ok"))
@@ -321,9 +408,6 @@ class _FeedbackState extends State<Feedback> {
                 ),
               ),
               // Submit(),
-              
-
-             
             ],
           ),
         ));

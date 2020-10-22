@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,9 +6,7 @@ import "dart:io";
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:image_cropper/image_cropper.dart';
-import "package:intl/intl.dart";
-//import 'package:Academicmaster/categorywiseproduct/bikeandcycle.dart';
-import 'package:Academicmaster/pages/profilescreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UploaduserProfile extends StatefulWidget {
   @override
@@ -21,8 +17,6 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
   String userid;
   @override
   void initState() {
-    // TODO: implement initState
-
     getCurrentUser();
 
     super.initState();
@@ -30,7 +24,8 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
 
   getCurrentUser() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseUser user = await _auth.currentUser();
+    // final FirebaseUser user = await _auth.currentUser();
+    User user = await FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     print(uid);
     setState(() {
@@ -38,10 +33,19 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
     });
   }
 
-  String username, bio,userEmail,userbranch,userphonenumber,useryear,usercollege, github,insta,linkdin;
+  String username,
+      bio,
+      userEmail,
+      userbranch,
+      userphonenumber,
+      useryear,
+      usercollege,
+      github,
+      insta,
+      linkdin;
 
   File selected1Image;
-  File selected2Image;
+
   bool _isLoading = false;
   final picker = ImagePicker();
   DateTime now = DateTime.now();
@@ -69,7 +73,7 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
   //for imageicon...
 
   uploadBlog() async {
-    if (selected1Image != null && username !=null && bio !=null ) {
+    if (selected1Image != null && username != null && bio != null) {
       setState(() {
         _isLoading = true;
         // print("hii");
@@ -87,24 +91,27 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
       var profilemageUrl = await (await tasks.onComplete).ref.getDownloadURL();
       print("this is url $profilemageUrl");
 
-      await Firestore.instance
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString('profilepic', profilemageUrl);
+
+      preferences.setString('name', username);
+
+      await FirebaseFirestore.instance
           .collection("userprofile")
-          .document(userid)
-          .updateData({
+          .doc(userid)
+          .update({
         "profileimageurl": profilemageUrl,
-        "insta":insta,
-        "github":github,
-        "linkdin":linkdin,
+        "insta": insta,
+        "github": github,
+        "linkdin": linkdin,
         "userName": username,
-        "userEmail":userEmail,
-        "userbranch":userbranch,
-        "userphonenumber":userphonenumber,
-        "usercollege":usercollege,
-        
-        "useryear":useryear,      
+        "userEmail": userEmail,
+        "userbranch": userbranch,
+        "userphonenumber": userphonenumber,
+        "usercollege": usercollege,
+        "useryear": useryear,
         "bio": bio,
         'time': DateTime.now().millisecondsSinceEpoch,
-        
       }).then((result) {
         Navigator.pop(context);
       });
@@ -133,14 +140,13 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                         height: 10,
                       ),
                       Container(
-                        color:Colors.black,
-
+                        color: Color(0xFF6F35A5),
                         height: 50,
                         child: Card(
-                          color:Colors.black,
+                            color: Color(0xFF6F35A5),
                             child: Text("Update Account details",
                                 style: TextStyle(
-                                  color:Colors.white,
+                                    color: Colors.white,
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold))),
                       ),
@@ -164,8 +170,7 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                               SizedBox(
                                 height: 10,
                               ),
-
-                               TextField(
+                              TextField(
                                 decoration: InputDecoration(
                                   labelText: "your email",
                                   hintText: "Your Email",
@@ -180,7 +185,7 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                               SizedBox(
                                 height: 10,
                               ),
-                               TextField(
+                              TextField(
                                 decoration: InputDecoration(
                                   labelText: "your college",
                                   hintText: "Your College",
@@ -195,7 +200,7 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                               SizedBox(
                                 height: 10,
                               ),
-                               TextField(
+                              TextField(
                                 decoration: InputDecoration(
                                   labelText: "Your branch",
                                   hintText: "Your Branch",
@@ -210,7 +215,7 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                               SizedBox(
                                 height: 10,
                               ),
-                               TextField(
+                              TextField(
                                 decoration: InputDecoration(
                                   labelText: "Your Year",
                                   hintText: "Your Year",
@@ -225,8 +230,6 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                               SizedBox(
                                 height: 10,
                               ),
-                              
-                              
                               Container(
                                 // width: 100,
                                 margin: EdgeInsets.all(12),
@@ -246,78 +249,71 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                                   // style: TextStyle(fontSize: 20,height: 3),
                                 ),
                               ),
-                              
                               SizedBox(height: 10),
-                             Column(
-                               children:[
-
-                                  TextField(
-                                maxLines:2,
-                                decoration: InputDecoration(
-                                  labelText: "insta profile link(optional)",
-                                  hintText: "insta profile link(Optional)",
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.black)),
+                              Column(children: [
+                                TextField(
+                                  maxLines: 2,
+                                  decoration: InputDecoration(
+                                    labelText: "insta profile link(optional)",
+                                    hintText: "insta profile link(Optional)",
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                  ),
+                                  onChanged: (val) {
+                                    insta = val;
+                                  },
                                 ),
-                                onChanged: (val) {
-                                  insta = val;
-                                },
-                              ),
-                               TextField(
-                                maxLines:2,
-                                decoration: InputDecoration(
-                                  labelText: "Github profile link(optional)",
-                                  hintText: "Github profile link(Optional)",
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.black)),
+                                TextField(
+                                  maxLines: 2,
+                                  decoration: InputDecoration(
+                                    labelText: "Github profile link(optional)",
+                                    hintText: "Github profile link(Optional)",
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                  ),
+                                  onChanged: (val) {
+                                    github = val;
+                                  },
                                 ),
-                                onChanged: (val) {
-                                  github = val;
-                                },
-                              ),
-                               TextField(
-                                maxLines:2,
-                                decoration: InputDecoration(
-                                  labelText: "Linkdin profile link(optional)",
-                                  hintText: "Linkdin profile link(Optional)",
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.black)),
+                                TextField(
+                                  maxLines: 2,
+                                  decoration: InputDecoration(
+                                    labelText: "Linkdin profile link(optional)",
+                                    hintText: "Linkdin profile link(Optional)",
+                                    border: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                  ),
+                                  onChanged: (val) {
+                                    linkdin = val;
+                                  },
                                 ),
-                                onChanged: (val) {
-                                  linkdin = val;
-                                },
-                              ),
-
-
-                               ]
-                             )
+                              ])
                             ],
                           ),
                         ),
                       ),
-
                       GestureDetector(
                           onTap: () {
                             getImage();
                           },
                           child: selected1Image != null
                               ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  child: Image.file(
-                                    selected1Image,
-                                    fit: BoxFit.fill,
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    child: Image.file(
+                                      selected1Image,
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
-                                ),
-                              )
+                                )
                               : Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: CircleAvatar(
                                     radius: 120,
-                                                                      child: Container(
+                                    child: Container(
                                       margin:
                                           EdgeInsets.symmetric(horizontal: 16),
                                       height: 200,
@@ -359,8 +355,6 @@ class _UploaduserProfileState extends State<UploaduserProfile> {
                                     ),
                                   ),
                                 )),
-                     
-                               
                       SizedBox(height: 20),
                       SizedBox(height: 10),
                       Text("upload Profile"),

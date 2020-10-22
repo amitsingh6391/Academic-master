@@ -4,8 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:url_launcher/url_launcher.dart';
 
-
-
 class Videotutorials extends StatefulWidget {
   final String collection;
   Videotutorials({@required this.collection});
@@ -14,7 +12,7 @@ class Videotutorials extends StatefulWidget {
 }
 
 class _VideotutorialsState extends State<Videotutorials> {
-  final ams = AdMobService(); //call admobclass from services
+  //final ams = AdMobService(); //call admobclass from services
 
   @override
   void initState() {
@@ -26,9 +24,9 @@ class _VideotutorialsState extends State<Videotutorials> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF6F35A5),
           title: Text(
             "Video Tutorials",
             style: TextStyle(
@@ -39,15 +37,13 @@ class _VideotutorialsState extends State<Videotutorials> {
           ),
         ),
         body: SafeArea(
-                  child: SingleChildScrollView(
+          child: SingleChildScrollView(
               child: Container(
             color: Colors.white,
             child: Column(children: <Widget>[
-
-              
               Container(
                 child: StreamBuilder(
-                    stream: Firestore.instance
+                    stream: FirebaseFirestore.instance
                         .collection(widget.collection)
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -57,30 +53,36 @@ class _VideotutorialsState extends State<Videotutorials> {
                       return ListView.builder(
                           reverse: true,
                           physics: NeverScrollableScrollPhysics(),
-                         // padding: EdgeInsets.symmetric(vertical: 16),
+                          // padding: EdgeInsets.symmetric(vertical: 16),
                           itemCount: snapshot.data.documents.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Videotile(
-                              subjectname: snapshot
-                                  .data.documents[index].data['coursename'],
-                              link: snapshot.data.documents[index].data["link"],
-                              thumbnail: snapshot.data.documents[index].data["thumbnail"],
-                              desc:  snapshot.data.documents[index].data["desc"],
+                              subjectname: snapshot.data.documents[index]
+                                  .data()['coursename'],
+                              link:
+                                  snapshot.data.documents[index].data()["link"],
+                              thumbnail: snapshot.data.documents[index]
+                                  .data()["thumbnail"],
+                              desc:
+                                  snapshot.data.documents[index].data()["desc"],
                             );
                           });
                     }),
               ),
             ]),
           )),
-        )
-        );
+        ));
   }
 }
 
 class Videotile extends StatefulWidget {
-  final String subjectname, link,thumbnail,desc;
-  Videotile({@required this.subjectname, @required this.link,@required this.thumbnail,@required this.desc});
+  final String subjectname, link, thumbnail, desc;
+  Videotile(
+      {@required this.subjectname,
+      @required this.link,
+      @required this.thumbnail,
+      @required this.desc});
   @override
   _VideotileState createState() => _VideotileState();
 }
@@ -93,32 +95,31 @@ class _VideotileState extends State<Videotile> {
       child: Column(
         children: <Widget>[
           Container(
-            color:Colors.white,
-width: size.width * 1,
-            child:Column(
-              children: <Widget>[
-                Stack(
-                                  children:[ 
-                                    Card(
-                    elevation: 10,
-                    shadowColor: Colors.black,
-                    
-                                    child: Container(
-                      height: MediaQuery.of(context).size.height/4,
-                       width: size.width * 0.8,
-                      child: Image(fit:BoxFit.fill,
-                        image:NetworkImage(widget.thumbnail)),
+              color: Colors.white,
+              width: size.width * 1,
+              child: Column(
+                children: <Widget>[
+                  Stack(children: [
+                    Card(
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 4,
+                        width: size.width * 0.8,
+                        child: Image(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(widget.thumbnail)),
+                      ),
                     ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(left: 120,right:50,top:70),
-                    child: CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 25,
-                    child: GestureDetector(
-                      onTap: (){
-                        var x = widget.link;
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 120, right: 50, top: 70),
+                      child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: 25,
+                          child: GestureDetector(
+                            onTap: () {
+                              var x = widget.link;
 
                               var y = widget.subjectname;
                               Navigator.push(
@@ -126,35 +127,39 @@ width: size.width * 1,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           Subjectwebview(link: x, bar: y)));
-
-                      },
-                                        child: Icon(
-                        Icons.play_circle_filled,color:Colors.black,size: 20,
-                        ),
-                    )),
-                  )
-                                  ]),
-
-                Row(
-                  children: <Widget>[
-                    Text(widget.subjectname,style:TextStyle(fontSize:20,fontWeight:FontWeight.bold,color:Colors.black) ,),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    
-                    
-                    widget.desc,
-                  style:TextStyle(fontSize:15,fontFamily: "Dancing",color:Colors.black) ,
-                  textAlign:TextAlign.left,),
-                ),
-                
-              ],
-            )
-           
-            
-          ),
+                            },
+                            child: Icon(
+                              Icons.play_circle_filled,
+                              color: Colors.black,
+                              size: 20,
+                            ),
+                          )),
+                    )
+                  ]),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        widget.subjectname,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.desc,
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "Dancing",
+                          color: Colors.black),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ],
+              )),
           SizedBox(
             height: 20,
           )

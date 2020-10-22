@@ -3,10 +3,12 @@ import 'package:Academicmaster/Bpharmacourse/Bpharmnotes/secondyearsubject.dart'
 import 'package:Academicmaster/pages/videotutriols.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:admob_flutter/admob_flutter.dart';
 import "package:Academicmaster/services/admob_service.dart";
+
+int words, back;
 
 class Bpharma2year extends StatefulWidget {
   @override
@@ -45,42 +47,50 @@ class Bpharma2yearbody extends StatefulWidget {
 class _Bpharma2yearbodyState extends State<Bpharma2yearbody> {
   //initilzed adds
 
-  final ams = AdMobService(); //call admobclass from services
+  //final ams = AdMobService(); //call admobclass from services
 
   @override
   void initState() {
     //intilazied the appid
+    getmode();
     super.initState();
-    Admob.initialize(ams.getAdMobAppId());
+  }
+
+  getmode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      back = preferences.getInt('back');
+      words = preferences.getInt('words');
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Color(back),
       child: Container(
         child: Column(
           children: <Widget>[
             Container(
               height: 20,
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(
+                color: Color(back),
+              ),
             ),
             Expanded(
                 flex: 2,
                 child: Container(
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
+                    color: Color(back),
                     child: Image.asset(
                       "images/bpharma.jpg",
                     ))),
-            AdmobBanner(
-                adUnitId: "ca-app-pub-5023637575934146/2815076541",
-                adSize: AdmobBannerSize.BANNER),
             Expanded(
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Color(back),
                     border: Border.all(
                         color: Colors.black, style: BorderStyle.solid)),
                 height: 100,
@@ -96,6 +106,7 @@ class _Bpharma2yearbodyState extends State<Bpharma2yearbody> {
                         "Notes",
                         style: TextStyle(
                             fontFamily: "Dancing",
+                            color: Color(words),
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
                       ),
@@ -115,7 +126,7 @@ class _Bpharma2yearbodyState extends State<Bpharma2yearbody> {
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Color(back),
                     border: Border.all(
                         color: Colors.black, style: BorderStyle.solid)),
                 height: 100,
@@ -133,6 +144,7 @@ class _Bpharma2yearbodyState extends State<Bpharma2yearbody> {
                       child: Text(
                         "Previous year paper",
                         style: TextStyle(
+                            color: Color(words),
                             fontFamily: "Dancing",
                             fontSize: 25,
                             fontWeight: FontWeight.bold),
@@ -155,7 +167,7 @@ class _Bpharma2yearbodyState extends State<Bpharma2yearbody> {
               child: Container(
                 // color: Colors.pink,
                 decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Color(back),
                     border: Border.all(
                         color: Colors.black, style: BorderStyle.solid)),
                 height: 200,
@@ -170,6 +182,7 @@ class _Bpharma2yearbodyState extends State<Bpharma2yearbody> {
                       child: Text(
                         "video lecture",
                         style: TextStyle(
+                            color: Color(words),
                             fontFamily: "Dancing",
                             fontSize: 25,
                             fontWeight: FontWeight.bold),

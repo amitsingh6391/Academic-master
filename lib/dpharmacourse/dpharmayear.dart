@@ -6,13 +6,13 @@ import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:flutter/cupertino.dart';
 
-
 import "package:Academicmaster/services/admob_service.dart";
 import "package:firebase_admob/firebase_admob.dart";
 
-import 'package:admob_flutter/admob_flutter.dart';
-
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+int back, words;
 
 class Dpharmayear extends StatefulWidget {
   @override
@@ -21,10 +21,27 @@ class Dpharmayear extends StatefulWidget {
 
 class _DpharmayearState extends State<Dpharmayear> {
   @override
+  void initState() {
+    //intilazied the appid
+    getmode();
+    super.initState();
+    // AdMobService.showHomeBannerAd();
+  }
+
+  getmode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      back = preferences.getInt('back');
+      words = preferences.getInt('words');
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(back),
           leading: IconButton(
             icon: Icon(Icons.arrow_back, size: 50, color: Colors.blue),
             onPressed: () {
@@ -32,7 +49,7 @@ class _DpharmayearState extends State<Dpharmayear> {
             },
           )),
       body: Homebody(),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(back),
     );
   }
 }
@@ -48,22 +65,22 @@ class _HomebodyState extends State<Homebody> {
   @override
   void initState() {
     //intilazied the appid
+    ams.createReawrdAdAndLoad();
     super.initState();
-    Admob.initialize(ams.getAdMobAppId());
   }
 
   @override
   Widget build(BuildContext context) {
-    InterstitialAd newTripAd =
-        ams.getnewTripInterstitial(); //first save in the variablesto use adds
+    // InterstitialAd newTripAd =
+    //     ams.getnewTripInterstitial(); //first save in the variablesto use adds
 
-    newTripAd.load();
+    // newTripAd.load();
 
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Card(
-              color: Colors.white,
+              color: Color(back),
               elevation: 10,
               child: Container(
                   height: 200,
@@ -74,9 +91,6 @@ class _HomebodyState extends State<Homebody> {
             Row(
               children: <Widget>[Container(height: 10)],
             ),
-            AdmobBanner(
-                adUnitId: ams.getBannerAdId(), 
-                adSize: AdmobBannerSize.BANNER),
             Row(
               children: <Widget>[
                 Container(
@@ -84,7 +98,7 @@ class _HomebodyState extends State<Homebody> {
                     width: 360,
                     child: Text("Select your year :",
                         style: GoogleFonts.lemonada(
-                            color: Color(0xFF386a8c), fontSize: 30)))
+                            color: Color(words), fontSize: 30)))
               ],
             ),
             Container(
@@ -97,12 +111,14 @@ class _HomebodyState extends State<Homebody> {
                       width: 180,
                       child: OutlineButton(
                         onPressed: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+
+                          RewardedVideoAd.instance..show();
 
                           Navigator.push(
                               context,
@@ -111,7 +127,7 @@ class _HomebodyState extends State<Homebody> {
                               ));
                         },
                         shape: StadiumBorder(),
-                        borderSide: BorderSide(color: Color(0xFF386a8c)),
+                        borderSide: BorderSide(color: Color(back)),
                         padding: EdgeInsets.all(0.0),
                         child: Container(
                             constraints: BoxConstraints(
@@ -121,9 +137,7 @@ class _HomebodyState extends State<Homebody> {
                               "First year",
                               textAlign: TextAlign.center,
                               style: GoogleFonts.caveatBrush(
-                                fontSize: 34,
-                                color: Colors.black,
-                              ),
+                                  fontSize: 34, color: Color(words)),
                             )),
                       ),
                     ),
@@ -143,18 +157,17 @@ class _HomebodyState extends State<Homebody> {
                             "Second year",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.caveatBrush(
-                              fontSize: 34,
-                              color: Colors.black,
-                            ),
+                                fontSize: 34, color: Color(words)),
                           ),
                         ),
                         onPressed: () {
-                          newTripAd.show(
-                            //show the full screen adds when second year pressed
-                            anchorType: AnchorType.bottom,
-                            anchorOffset: 0.0,
-                            horizontalCenterOffset: 0.0,
-                          );
+                          // newTripAd.show(
+                          //   //show the full screen adds when second year pressed
+                          //   anchorType: AnchorType.bottom,
+                          //   anchorOffset: 0.0,
+                          //   horizontalCenterOffset: 0.0,
+                          // );
+                          RewardedVideoAd.instance..show();
 
                           Navigator.push(
                               context,
@@ -164,8 +177,6 @@ class _HomebodyState extends State<Homebody> {
                         },
                       ),
                     ),
-                    
-                    
                   ],
                 ))
           ]))

@@ -1,10 +1,7 @@
-import 'package:Academicmaster/pages/commentspage.dart';
 import 'package:Academicmaster/services/crud.dart';
 import 'package:Academicmaster/view/helper/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:video_player/video_player.dart';
-
 
 class Oslecture extends StatelessWidget {
   @override
@@ -318,13 +315,19 @@ class _HomePageState extends State<HomePage> {
 //for a particular video we used this statefull widget
 
 class Secondyearvideo extends StatefulWidget {
-  String lecture, lecture2,lecture3,lecture4,lecture5;
-  Secondyearvideo({Key key, this.lecture, Key key2, this.lecture2,Key key3, this.lecture3,
-
-  Key key4, this.lecture4, Key key5, this.lecture5,
-
-  })
-      : super(key: key);
+  String lecture, lecture2, lecture3, lecture4, lecture5;
+  Secondyearvideo({
+    Key key,
+    this.lecture,
+    Key key2,
+    this.lecture2,
+    Key key3,
+    this.lecture3,
+    Key key4,
+    this.lecture4,
+    Key key5,
+    this.lecture5,
+  }) : super(key: key);
   @override
   _SecondyearvideoState createState() => _SecondyearvideoState();
 }
@@ -494,103 +497,79 @@ class _SecondyearvideoState extends State<Secondyearvideo> {
       return (unit2_6);
     } else if (widget.lecture2 == "lecture7,2") {
       return (unit2_7);
-    }
-    else if (widget.lecture3 == "lecture1,3") {
+    } else if (widget.lecture3 == "lecture1,3") {
       return (unit3_1);
-    }
-    else if (widget.lecture3 == "lecture2,3") {
+    } else if (widget.lecture3 == "lecture2,3") {
       return (unit3_2);
-    }
-    else if (widget.lecture3 == "lecture3,3") {
+    } else if (widget.lecture3 == "lecture3,3") {
       return (unit3_3);
-    }
-    else if (widget.lecture3 == "lecture4,3") {
+    } else if (widget.lecture3 == "lecture4,3") {
       return (unit3_4);
-    }
-    else if (widget.lecture3 == "lecture5,3") {
+    } else if (widget.lecture3 == "lecture5,3") {
       return (unit3_5);
-    }
-    else if (widget.lecture3 == "lecture6,3") {
+    } else if (widget.lecture3 == "lecture6,3") {
       return (unit3_6);
-    }
-    
-    else if (widget.lecture3 == "lecture7,3") {
+    } else if (widget.lecture3 == "lecture7,3") {
       return (unit3_7);
-    }
-    else if (widget.lecture3 == "lecture8,3") {
+    } else if (widget.lecture3 == "lecture8,3") {
       return (unit3_8);
-    }
-    else if (widget.lecture3 == "lecture9,3") {
+    } else if (widget.lecture3 == "lecture9,3") {
       return (unit3_9);
-    }
-    else if (widget.lecture3 == "lecture10,3") {
+    } else if (widget.lecture3 == "lecture10,3") {
       return (unit3_10);
-    }
-    else if (widget.lecture3 == "lecture11,3") {
+    } else if (widget.lecture3 == "lecture11,3") {
       return (unit3_11);
-    }
-    else if (widget.lecture3 == "lecture12,3") {
+    } else if (widget.lecture3 == "lecture12,3") {
       return (unit3_12);
-    }
-    else if (widget.lecture3 == "lecture13,3") {
+    } else if (widget.lecture3 == "lecture13,3") {
       return (unit3_13);
-    }
-    else if (widget.lecture3 == "lecture14,3") {
+    } else if (widget.lecture3 == "lecture14,3") {
       return (unit3_14);
-    }
-    else if (widget.lecture3 == "lecture15,3") {
+    } else if (widget.lecture3 == "lecture15,3") {
       return (unit3_15);
-    }
-    else if (widget.lecture3 == "lecture16,3") {
+    } else if (widget.lecture3 == "lecture16,3") {
       return (unit3_16);
-    }
-    else if (widget.lecture3 == "lecture17,3") {
+    } else if (widget.lecture3 == "lecture17,3") {
       return (unit3_17);
-    }
-    else if (widget.lecture3 == "lecture18,3") {
+    } else if (widget.lecture3 == "lecture18,3") {
       return (unit3_18);
-    }
-    else if (widget.lecture3 == "lecture19,3") {
+    } else if (widget.lecture3 == "lecture19,3") {
       return (unit3_19);
-    }
-    else if (widget.lecture4 == "lecture1,4") {
+    } else if (widget.lecture4 == "lecture1,4") {
       return (unit4_1);
-    }else if (widget.lecture4 == "lecture2,4") {
+    } else if (widget.lecture4 == "lecture2,4") {
       return (unit4_2);
-    }else if (widget.lecture4 == "lecture3,4") {
+    } else if (widget.lecture4 == "lecture3,4") {
       return (unit4_3);
-    }else if (widget.lecture4 == "lecture4,4") {
+    } else if (widget.lecture4 == "lecture4,4") {
       return (unit4_4);
-    }else if (widget.lecture4 == "lecture5,4") {
+    } else if (widget.lecture4 == "lecture5,4") {
       return (unit4_5);
-    }else if (widget.lecture4 == "lecture6,4") {
+    } else if (widget.lecture4 == "lecture6,4") {
       return (unit4_6);
-    }else if (widget.lecture4 == "lecture7,4") {
+    } else if (widget.lecture4 == "lecture7,4") {
       return (unit4_7);
-    }else if (widget.lecture4 == "lecture8,4") {
+    } else if (widget.lecture4 == "lecture8,4") {
       return (unit4_8);
-    }else if (widget.lecture4 == "lecture9,4") {
+    } else if (widget.lecture4 == "lecture9,4") {
       return (unit4_9);
-    }else if (widget.lecture4 == "lecture10,4") {
+    } else if (widget.lecture4 == "lecture10,4") {
       return (unit4_10);
-    }else if (widget.lecture4 == "lecture11,4") {
+    } else if (widget.lecture4 == "lecture11,4") {
       return (unit4_11);
-    }
-    
-    else if (widget.lecture5 == "lecture1,5") {
+    } else if (widget.lecture5 == "lecture1,5") {
       return (unit5_1);
-    }
-    else if (widget.lecture5 == "lecture2,5") {
+    } else if (widget.lecture5 == "lecture2,5") {
       return (unit5_2);
-    }else if (widget.lecture5 == "lecture3,5") {
+    } else if (widget.lecture5 == "lecture3,5") {
       return (unit5_3);
-    }else if (widget.lecture5 == "lecture4,5") {
+    } else if (widget.lecture5 == "lecture4,5") {
       return (unit5_4);
-    }else if (widget.lecture5 == "lecture5,5") {
+    } else if (widget.lecture5 == "lecture5,5") {
       return (unit5_5);
-    }else if (widget.lecture5 == "lecture6,5") {
+    } else if (widget.lecture5 == "lecture6,5") {
       return (unit5_6);
-    }else if (widget.lecture5 == "lecture7,5") {
+    } else if (widget.lecture5 == "lecture7,5") {
       return (unit5_7);
     }
   }
@@ -609,11 +588,9 @@ class _SecondyearvideoState extends State<Secondyearvideo> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.black12,
- appBar: AppBar(
-   backgroundColor: Colors.orange,
-   
-   
- ),
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
@@ -694,10 +671,10 @@ class _SecondyearvideoState extends State<Secondyearvideo> {
                             GestureDetector(
                               onTap: () {
                                 addcomment();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (conetxt) => Comments()));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (conetxt) => Comments()));
                               },
                               child: Container(
                                 height: 40,
@@ -731,13 +708,3 @@ class _SecondyearvideoState extends State<Secondyearvideo> {
         ));
   }
 }
-
-
-
-
-
-
-
-
-
-

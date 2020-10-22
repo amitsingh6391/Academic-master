@@ -1,9 +1,6 @@
-import 'package:Academicmaster/notesandquantum/Subjectwebview.dart';
+import 'package:Academicmaster/notesandquantum/firstyearsubject.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import "package:Academicmaster/services/admob_service.dart";
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,7 +11,7 @@ class Bpharm1yearsubject extends StatefulWidget {
 
 class _Bpharm1yearsubjectState extends State<Bpharm1yearsubject> {
   String dropdownValue = 'unit1';
-  final ams = AdMobService(); //call admobclass from services
+  //final ams = AdMobService(); //call admobclass from services
 
   @override
   void initState() {
@@ -27,7 +24,7 @@ class _Bpharm1yearsubjectState extends State<Bpharm1yearsubject> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF6F35A5),
           title: Text(
             "Subject",
             style: GoogleFonts.playfairDisplay(
@@ -44,7 +41,7 @@ class _Bpharm1yearsubjectState extends State<Bpharm1yearsubject> {
             children: <Widget>[
               Container(
                 child: StreamBuilder(
-                    stream: Firestore.instance
+                    stream: FirebaseFirestore.instance
                         .collection("Bpharm1yearnotes")
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -59,9 +56,10 @@ class _Bpharm1yearsubjectState extends State<Bpharm1yearsubject> {
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Subjecttile(
-                              subjectname: snapshot
-                                  .data.documents[index].data['subjectname'],
-                              link: snapshot.data.documents[index].data["link"],
+                              subjectname: snapshot.data.documents[index]
+                                  .data()['subjectname'],
+                              link:
+                                  snapshot.data.documents[index].data()["link"],
                             );
                           });
                     }),
@@ -80,7 +78,7 @@ class Bpharm1yearpaper extends StatefulWidget {
 }
 
 class _Bpharm1yearpaperState extends State<Bpharm1yearpaper> {
-  final ams = AdMobService(); //call admobclass from services
+  // final ams = AdMobService(); //call admobclass from services
 
   @override
   void initState() {
@@ -93,7 +91,7 @@ class _Bpharm1yearpaperState extends State<Bpharm1yearpaper> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xFF6F35A5),
           title: Text(
             "Previous Paper",
             style: TextStyle(
@@ -109,8 +107,9 @@ class _Bpharm1yearpaperState extends State<Bpharm1yearpaper> {
           child: Column(children: <Widget>[
             Container(
               child: StreamBuilder(
-                  stream:
-                      Firestore.instance.collection("Bpharm1paper").snapshots(),
+                  stream: FirebaseFirestore.instance
+                      .collection("Bpharm1paper")
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Text("Loading");
@@ -123,86 +122,14 @@ class _Bpharm1yearpaperState extends State<Bpharm1yearpaper> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return Subjecttile(
-                            subjectname: snapshot
-                                .data.documents[index].data['subjectname'],
-                            link: snapshot.data.documents[index].data["link"],
+                            subjectname: snapshot.data.documents[index]
+                                .data()['subjectname'],
+                            link: snapshot.data.documents[index].data()["link"],
                           );
                         });
                   }),
             ),
           ]),
         )));
-  }
-}
-
-class Subjecttile extends StatefulWidget {
-  final String subjectname, link;
-  Subjecttile({@required this.subjectname, @required this.link});
-  @override
-  _SubjecttileState createState() => _SubjecttileState();
-}
-
-class _SubjecttileState extends State<Subjecttile> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            height: 80,
-            color: Colors.yellow,
-            child: Card(
-                elevation: 10,
-                color: Colors.black,
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      widget.subjectname,
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    SizedBox(width: 5),
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: GestureDetector(
-                          onTap: () {
-                            var x = widget.link;
-
-                            var y = widget.subjectname;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Subjectwebview(link: x, bar: y)));
-                          },
-                          child:
-                              Icon(Icons.arrow_forward, color: Colors.black)),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          urllauncher(widget.link);
-                        },
-                        child: Icon(Icons.file_download,
-                            color: Colors.white, size: 20))
-                  ],
-                )),
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-urllauncher(String link) async {
-  var url = link;
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
   }
 }
