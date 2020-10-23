@@ -43,7 +43,7 @@ class _PaymentState extends State<Payment> {
 
   void openCheckout() {
     var options = {
-      "key": "rzp_test_1iFdsz611tIZeV",
+      "key": "rzp_live_ozPULXLDgca7CR",
       "amount": x * 100,
       "description": "Academic Master",
       "prefill": {"contact": "6677545343", "email": "amit@gmail.com"},

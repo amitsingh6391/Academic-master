@@ -13,7 +13,7 @@ buildscript {
 }
 
 allprojects {
-    repositories {
+    repositories {   //whats the problem is ?? please fix that issue
         google()
         jcenter()
     }

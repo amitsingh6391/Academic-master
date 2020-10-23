@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 
 import "package:Academicmaster/pages/homescreen.dart";
-import 'package:intro_slider/slide_object.dart';
+import 'package:intro_slider/slide_object.dart';//chech the error on conslole
 import "dart:async";
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +30,8 @@ class _TheMitianState extends State<TheMitian> {
       debugShowCheckedModeBanner: false,
       title: "Academic master",
       home: SplashScreen(),
+
+      ///what we have to do now es app running yes app is run what  next, did i fixed err no my problem is i m unable to create apk lets create apk now
     );
   }
 }

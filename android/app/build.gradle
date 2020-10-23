@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '18'
+    flutterVersionCode = '19'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '18.1'
+    flutterVersionName = '19.1'
 }
 
 apply plugin: 'com.android.application'
@@ -47,7 +47,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.academic.master"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -92,3 +92,4 @@ dependencies {
 googleServices{
     disableVersionCheck = true
 }
+apply plugin: 'com.google.gms.google-services'

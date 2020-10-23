@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:Academicmaster/pages/homescreen.dart';
-import 'package:Academicmaster/pages/posts.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import "package:flutter/material.dart";
+import "package:flutter/material.dart"; //chek it flutter analyze
 import "dart:io";
 import "package:Academicmaster/services/crud.dart";
 import 'package:image_picker/image_picker.dart';
@@ -22,8 +22,10 @@ class Uploaddata extends StatefulWidget {
   _UploaddataState createState() => _UploaddataState();
 }
 
-class _UploaddataState extends State<Uploaddata>
-    with SingleTickerProviderStateMixin {
+class _UploaddataState extends State<
+        Uploaddata> //lets hope evrything fine . i m totally wasite my 2 days
+    with
+        SingleTickerProviderStateMixin {
   TabController tabcontroller;
   @override
   void initState() {
@@ -327,7 +329,7 @@ class _CreateBlogState extends State<CreateBlog> {
                     Text("upload post", style: TextStyle(color: Color(words))),
                     GestureDetector(
                         onTap: () {
-                          uploadBlog();
+                          //  uploadBlog();
                         },
                         child: Icon(Icons.cloud_upload,
                             size: 100, color: Color(words)))
