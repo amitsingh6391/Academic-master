@@ -20,6 +20,7 @@ import 'package:Academicmaster/pages/createpost.dart';
 import 'package:Academicmaster/services/admob_service.dart';
 
 import 'package:Academicmaster/view/viewservices/database.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:chewie/chewie.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,8 +49,6 @@ import 'package:pinch_zoom_image_updated/pinch_zoom_image_updated.dart';
 
 import "alluserprofile.dart";
 
-import 'package:velocity_x/velocity_x.dart';
-
 int newfollower;
 String currentuserid;
 
@@ -57,36 +56,12 @@ int back;
 int words;
 String username, userprofile;
 
-class ProjectWidget extends StatelessWidget {
-  final String title;
-
-  const ProjectWidget({Key key, @required this.title}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.17,
-        width: MediaQuery.of(context).size.width * 0.65,
-        child: Card(
-          elevation: 10,
-          child: Column(children: [
-            Container(
-                height: MediaQuery.of(context).size.height * 0.1,
-                width: MediaQuery.of(context).size.width * 0.65,
-                child: Image(image: AssetImage(title), fit: BoxFit.fill)),
-            // Text(title)
-          ]),
-        ));
-  }
-}
-
 class HomPage extends StatefulWidget {
   @override
   _HomPageState createState() => _HomPageState();
 }
 
 class _HomPageState extends State<HomPage> {
-  // CrudMethods crudMethods = new CrudMethods();
-
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController commentsEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
@@ -228,263 +203,241 @@ class _HomPageState extends State<HomPage> {
             });
       },
       child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(80.0),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-              leading: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NavDrawer()));
-                  },
-                  child: Icon(
-                    Icons.menu,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            leading: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => NavDrawer()));
+                },
+                child: Icon(
+                  Icons.menu,
+                  color: Color(words),
+                )),
+            flexibleSpace: Container(
+              color: Color(back),
+              height: 350,
+              width: 100,
+              child: Row(children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 48.0),
+                  child: Text("     Academic Master",
+                      style: TextStyle(
+                          fontSize: size.width * 0.08,
+                          color: Color(words),
+                          fontFamily: "Dancing",
+                          fontWeight: FontWeight.bold)),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.notification_important,
+                    size: 30,
                     color: Color(words),
-                  )),
-              flexibleSpace: Container(
-                color: Color(back),
-                height: 350,
-                width: 100,
-                child: Row(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 48.0),
-                    child: Text("     Academic Master",
-                        style: TextStyle(
-                            fontSize: size.width * 0.08,
-                            color: Color(words),
-                            fontFamily: "Dancing",
-                            fontWeight: FontWeight.bold)),
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.notification_important,
+                  onPressed: () {
+                    RewardedVideoAd.instance..show();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Usernotification()));
+                  },
+                ),
+                Column(children: [
+                  SizedBox(height: 50),
+                  Text("Membership",
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Color(words),
+                      )),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Payment()));
+                    },
+                    child: Icon(
+                      Icons.account_balance_wallet,
                       size: 30,
                       color: Color(words),
                     ),
-                    onPressed: () {
-                      RewardedVideoAd.instance..show();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Usernotification()));
-                    },
-                  ),
-                  Column(children: [
-                    SizedBox(height: 50),
-                    Text("Membership",
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Color(words),
-                        )),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Payment()));
-                      },
-                      child: Icon(
-                        Icons.account_balance_wallet,
-                        size: 30,
-                        color: Color(words),
-                      ),
-                    )
-                  ])
-                ]),
-              ),
-            ),
-          ),
-          drawer: NavDrawer(),
-          backgroundColor: Color(back),
-          floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                RewardedVideoAd.instance..show();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Uploaddata()));
-              },
-              tooltip: "upload a new post",
-              backgroundColor: Color(words),
-              child: Icon(
-                Icons.add,
-                color: Color(back),
-              )),
-          body: EasyRefresh(
-            onRefresh: () {
-              setState(() {
-                print("refresh");
-              });
-            },
-            child: SingleChildScrollView(
-              // physics: ScrollPhysics(),
-
-              child: Column(children: [
-                Container(
-                  height: size.height * 0.2,
-                  child: Expanded(
-                      child: VxSwiper(
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                    items: [
-                      GestureDetector(
-                        onTap: () {
-                          RewardedVideoAd.instance..show();
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Branch()));
-                        },
-                        child: ProjectWidget(title: "images/btech.png"),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // newTripAd.show(
-                          //   //show the full screen adds when second year pressed
-                          //   anchorType: AnchorType.bottom,
-                          //   anchorOffset: 0.0,
-                          //   horizontalCenterOffset: 0.0,
-                          // );
-                          RewardedVideoAd.instance..show();
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Bpharmyear()));
-                        },
-                        child: ProjectWidget(title: "images/bpharma.jpg"),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // newTripAd.show(
-                          //   //show the full screen adds when second year pressed
-                          //   anchorType: AnchorType.bottom,
-                          //   anchorOffset: 0.0,
-                          //   horizontalCenterOffset: 0.0,
-                          // );
-                          RewardedVideoAd.instance..show();
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FreecoursePage()));
-                        },
-                        child: ProjectWidget(title: "images/freecourses.jpg"),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          RewardedVideoAd.instance..show();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Dpharmayear()));
-                        },
-                        child: ProjectWidget(title: "images/dpharmapic.jpg"),
-                      ),
-                      GestureDetector(
-                        onTap: () => {
-                          RewardedVideoAd.instance..show(),
-                          // newTripAd.show(
-                          //   //show the full screen adds when second year pressed
-                          //   anchorType: AnchorType.bottom,
-                          //   anchorOffset: 0.0,
-                          //   horizontalCenterOffset: 0.0,
-                          // ),
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Bscyear()))
-                        },
-                        child: ProjectWidget(title: "images/bse.png"),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // newTripAd.show(
-                          //   //show the full screen adds when second year pressed
-                          //   anchorType: AnchorType.bottom,
-                          //   anchorOffset: 0.0,
-                          //   horizontalCenterOffset: 0.0,
-                          // );
-                          RewardedVideoAd.instance..show();
-
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Bcomyear()));
-                        },
-                        child: ProjectWidget(title: "images/bcom1.png"),
-                      ),
-                    ],
-                    height: 120,
-                    viewportFraction: context.isMobile ? 0.75 : 0.4,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(
-                      seconds: 3,
-                    ),
-                    autoPlayAnimationDuration: 1.seconds,
-                  )),
-                ),
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("userprofile")
-                      .doc(currentuserid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Text("", style: TextStyle(color: Color(words)));
-                    }
-
-                    var Profiledetail = snapshot.data;
-                    print("username set ------------********* $username");
-
-                    username = Profiledetail["userName"];
-                    print("username set ------------********* $username");
-                    userprofile = Profiledetail["profileimageurl"];
-
-                    return Text("");
-                  },
-                ),
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("blogs")
-                      .orderBy("time")
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Column(children: [
-                        CircularProgressIndicator(
-                          backgroundColor: Color(words),
-                        ),
-                        Text("Loading", style: TextStyle(color: Color(words)))
-                      ]);
-                    }
-
-                    return ListView.builder(
-                        reverse: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: snapshot.data.documents.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Posttile(
-                            authorName: snapshot.data.documents[index]
-                                .data()['authorName'],
-                            title:
-                                snapshot.data.documents[index].data()["title"],
-                            imgUrl:
-                                snapshot.data.documents[index].data()['imgUrl'],
-                            iconUrl: snapshot.data.documents[index]
-                                .data()['iconUrl'],
-                            posttime: snapshot.data.documents[index]
-                                .data()["posttime"],
-                            postid: snapshot.data.documents[index]
-                                .data()["documentID"],
-                            userid:
-                                snapshot.data.documents[index].data()["userid"],
-                          );
-                        });
-                  },
-                ),
+                  )
+                ])
               ]),
             ),
-          )),
+          ),
+        ),
+        drawer: NavDrawer(),
+        backgroundColor: Color(back),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              RewardedVideoAd.instance..show();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Uploaddata()));
+            },
+            tooltip: "upload a new post",
+            backgroundColor: Color(words),
+            child: Icon(
+              Icons.add,
+              color: Color(back),
+            )),
+        body: EasyRefresh(
+          onRefresh: () {
+            setState(() {
+              print("refresh");
+            });
+          },
+          child: SingleChildScrollView(
+            // physics: ScrollPhysics(),
+
+            child: Column(children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                    height: size.height * 0.17,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal),
+                items: [
+                  "btech.png",
+                  "bpharma.jpg",
+                  "freecourses.jpg",
+                  "dpharmapic.jpg",
+                  "bse.png",
+                  "bcom1.png"
+                ].map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (i == "btech.png") {
+                            RewardedVideoAd.instance..show();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Branch()));
+                          }
+                          if (i == "bpharma.jpg") {
+                            RewardedVideoAd.instance..show();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Bpharmyear()));
+                          }
+                          if (i == "freecourses.jpg") {
+                            RewardedVideoAd.instance..show();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FreecoursePage()));
+                          }
+                          if (i == "dpharmapic.jpg") {
+                            RewardedVideoAd.instance..show();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dpharmayear()));
+                          }
+                          if (i == "bse.png") {
+                            RewardedVideoAd.instance..show();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Bscyear()));
+                          }
+                          if (i == "bcom1.png") {
+                            RewardedVideoAd.instance..show();
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Bcomyear()));
+                          }
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(color: Colors.amber),
+                            child: Image(
+                                image: AssetImage("images/$i"),
+                                fit: BoxFit.fill)),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("userprofile")
+                    .doc(currentuserid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Text("", style: TextStyle(color: Color(words)));
+                  }
+
+                  var Profiledetail = snapshot.data;
+                  print("username set ------------********* $username");
+
+                  username = Profiledetail["userName"];
+                  print("username set ------------********* $username");
+                  userprofile = Profiledetail["profileimageurl"];
+
+                  return Text("");
+                },
+              ),
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("blogs")
+                    .orderBy("time")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Column(children: [
+                      Center(
+                          child: CircularProgressIndicator(
+                        backgroundColor: Color(words),
+                      )),
+                      Text("Loading", style: TextStyle(color: Color(words)))
+                    ]);
+                  }
+
+                  return ListView.builder(
+                      reverse: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: snapshot.data.documents.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Posttile(
+                          authorName: snapshot.data.documents[index]
+                              .data()['authorName'],
+                          title: snapshot.data.documents[index].data()["title"],
+                          imgUrl:
+                              snapshot.data.documents[index].data()['imgUrl'],
+                          iconUrl:
+                              snapshot.data.documents[index].data()['iconUrl'],
+                          posttime:
+                              snapshot.data.documents[index].data()["posttime"],
+                          postid: snapshot.data.documents[index]
+                              .data()["documentID"],
+                          userid:
+                              snapshot.data.documents[index].data()["userid"],
+                        );
+                      });
+                },
+              ),
+            ]),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -698,6 +651,7 @@ class _PosttileState extends State<Posttile> {
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           print("load");
+                          return LinearProgressIndicator();
                         }
                         var data = snapshot.data;
 

@@ -424,7 +424,7 @@ class _GroupState extends State<Group> {
                                           child: Text(
                                             "Total members: $st",
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Color(words)),
                                           ),
                                         ))
                                     : Padding(
@@ -601,7 +601,7 @@ class _GroupState extends State<Group> {
                                           child: Text(
                                             "Total members: $st",
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Color(words)),
                                           ),
                                         ))
                                     : Padding(
@@ -778,7 +778,7 @@ class _GroupState extends State<Group> {
                                           child: Text(
                                             "Total members: $st",
                                             style:
-                                                TextStyle(color: Colors.black),
+                                                TextStyle(color: Color(words)),
                                           ),
                                         ))
                                     : Padding(

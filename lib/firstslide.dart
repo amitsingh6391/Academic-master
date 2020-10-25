@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-import "Loginscreen/loginscreen.dart";
 
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 
@@ -390,7 +389,7 @@ class _FeedbackState extends State<Feedback> {
           ),
           child: Column(
             children: <Widget>[
-              Box(100, 30),
+              //Box(100, 30),
               Container(
                 child: TextField(
                   controller: feedbackcontroller,

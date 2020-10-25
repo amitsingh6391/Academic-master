@@ -340,7 +340,7 @@ class _BpharmaState extends State<Bpharma> {
                           },
                           controller: messageEditingController,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.amber,
                           ),
                           decoration: InputDecoration(
                               hintText: "Send a message ...",

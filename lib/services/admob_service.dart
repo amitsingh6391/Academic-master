@@ -42,11 +42,12 @@ class AdMobService {
       switch (event) {
         case RewardedVideoAdEvent.rewarded:
 
-          ///
+          ///c
           break;
         default:
       }
-      print("********createReawrdAdAndLoad $event*********");
+      print(
+          "********createReawrdAdAndLoad $event*********  ca-app-pub-5023637575934146/1295216909");
     };
   }
 }

@@ -336,7 +336,7 @@ class _DpharmachatState extends State<Dpharmachat> {
                             });
                           },
                           controller: messageEditingController,
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.amber),
                           decoration: InputDecoration(
                               hintText: "Send a message ...",
                               hintStyle: TextStyle(

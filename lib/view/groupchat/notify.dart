@@ -24,7 +24,7 @@ class Notification {
 
   Notification() {
     var initializationSettingsAndroid =
-        new AndroidInitializationSettings('mortarboard.png');
+        new AndroidInitializationSettings('mortarboard');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);

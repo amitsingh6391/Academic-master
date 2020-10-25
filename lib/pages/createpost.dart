@@ -329,7 +329,7 @@ class _CreateBlogState extends State<CreateBlog> {
                     Text("upload post", style: TextStyle(color: Color(words))),
                     GestureDetector(
                         onTap: () {
-                          //  uploadBlog();
+                          uploadBlog();
                         },
                         child: Icon(Icons.cloud_upload,
                             size: 100, color: Color(words)))

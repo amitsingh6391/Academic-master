@@ -46,7 +46,7 @@ class _PaymentState extends State<Payment> {
       "key": "rzp_live_ozPULXLDgca7CR",
       "amount": x * 100,
       "description": "Academic Master",
-      "prefill": {"contact": "6677545343", "email": "amit@gmail.com"},
+      // "prefill": {"contact": "6677545343", "email": "amit@gmail.com"},
       "external": {
         "wallets": ["paytm"]
       }
