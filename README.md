@@ -10,8 +10,10 @@
 ## 7) user can also follow other students to see their activity.
 ## 8) You can join membership of Academic master by using any online payment method Razorpay Pyment is implimented here.
 ## 9) User will recive real time notification related to his stream
-## You can do one to one and  group chat.
+## !0) Firebase admob is enabled
 
+#Screenshot
+![login1](https://user-images.githubusercontent.com/57305134/97135545-87642880-1776-11eb-8f1b-454efe4e423d.jpg)
 
 # How you can start this project
 ### 1 Clone this repository.
