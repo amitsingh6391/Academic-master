@@ -12,10 +12,13 @@
 ## 9) User will recive real time notification related to his stream
 ## !0) Firebase admob is enabled
 
+# Make sure give star on This repository
+
 ##AppLink on play store
+[https://play.google.com/store/apps/details?id=com.academic.master&hl=en&gl=US]
 
 #Screenshot
-![login1](https://user-images.githubusercontent.com/57305134/97135545-87642880-1776-11eb-8f1b-454efe4e423d.jpg
+
 
 ![navbar](https://user-images.githubusercontent.com/57305134/97135509-7d422a00-1776-11eb-9cf5-14822e375ae0.jpg)
 
