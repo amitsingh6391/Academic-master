@@ -61,7 +61,7 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5023637575934146~1394088201"/>
+            android:value="your application id"/>
 <provider
     android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
     android:authorities="${applicationId}.flutter_downloader.provider"
