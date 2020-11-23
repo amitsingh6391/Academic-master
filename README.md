@@ -13,37 +13,21 @@
 ## !0) Firebase admob is enabled
 
 # Make sure give star on This repository
+# Screenshots
+![Screenshot_20201122-164117](https://user-images.githubusercontent.com/57305134/100026790-75c37e80-2e11-11eb-9685-7abf2cebd48c.png)
+![Screenshot_20201122-152511](https://user-images.githubusercontent.com/57305134/100026837-883db800-2e11-11eb-8a5e-ca057ec8639c.png)
+![Screenshot_20201124-050423](https://user-images.githubusercontent.com/57305134/100027369-a7891500-2e12-11eb-992f-b82c87acf2fb.png)
 
-##AppLink on play store
+
+![Screenshot_20201124-050210](https://user-images.githubusercontent.com/57305134/100027177-4a8d5f00-2e12-11eb-829d-d994c5037d71.png)
+![Screenshot_20201124-045921](https://user-images.githubusercontent.com/57305134/100027186-50834000-2e12-11eb-8054-02d2f4ac34d5.png)
+![Screenshot_20201124-050451](https://user-images.githubusercontent.com/57305134/100027383-b1ab1380-2e12-11eb-984e-13f78347d9d1.png)
+![Screenshot_20201124-050444](https://user-images.githubusercontent.com/57305134/100027396-b96ab800-2e12-11eb-99e3-6d2623670b94.png)
+![Screenshot_20201122-163205](https://user-images.githubusercontent.com/57305134/100027441-d0110f00-2e12-11eb-80ac-964c46504394.png)
+#AppLink on play store
 [https://play.google.com/store/apps/details?id=com.academic.master&hl=en&gl=US]
 
-#Screenshot
 
-
-![navbar](https://user-images.githubusercontent.com/57305134/97135509-7d422a00-1776-11eb-9cf5-14822e375ae0.jpg)
-
-![courses](https://user-images.githubusercontent.com/57305134/97135514-7f0bed80-1776-11eb-9ee9-a9d537cff3a2.jpg)
-
-![chatroom](https://user-images.githubusercontent.com/57305134/97135517-803d1a80-1776-11eb-98df-89a8e902a094.jpg)
-
-![chatbtech](https://user-images.githubusercontent.com/57305134/97135519-80d5b100-1776-11eb-9a1c-dadaa8f81ed7.jpg)
-
-![profiledark](https://user-images.githubusercontent.com/57305134/97135520-816e4780-1776-11eb-9654-89ac5f7de8c4.jpg)
-
-![mainpage](https://user-images.githubusercontent.com/57305134/97135527-8206de00-1776-11eb-8908-b3886c384452.jpg)
-
-![notification](https://user-images.githubusercontent.com/57305134/97135529-83380b00-1776-11eb-8a35-77a77c724804.jpg)
-
-![razorpay](https://user-images.githubusercontent.com/57305134/97135534-83d0a180-1776-11eb-98f1-2d9f984f638b.jpg)
-
-![uploadvideo](https://user-images.githubusercontent.com/57305134/97135535-84693800-1776-11eb-8a05-5c086acbe7c3.jpg)
-
-![uploadimage](https://user-images.githubusercontent.com/57305134/97135537-8501ce80-1776-11eb-82b7-b886db76e97e.jpg)
-
-![register1](https://user-images.githubusercontent.com/57305134/97135540-859a6500-1776-11eb-94d2-7d17ff16d46d.jpg)
-
-
-# How you can start this project
 ### 1 Clone this repository.
 ### 2) ADD Your app through Firebase.
 ### 3) Add your own App id.
