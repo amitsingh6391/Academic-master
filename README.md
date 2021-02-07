@@ -1,4 +1,4 @@
-# Academicmaster
+ Academicmaster
 
 # Academic master is educational purpose app Features:-
 ## 1) user can post real time post like images and video.
