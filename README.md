@@ -1,6 +1,6 @@
  Academicmaster
 
-# Academic master is educational purpose app Features:-
+# Academic master is E-learning app Features:-
 ## 1) user can post real time post like images and video.
 ## 2) We will provide notes,books and previous year paper according to their stream
 ## 3) User can chat with each other .
