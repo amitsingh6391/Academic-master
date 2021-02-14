@@ -9,7 +9,7 @@ class Academicmaster extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Container(
-      child: Text("State management And  © 😆 Clean srchitecture"),
+      child: Text("State management And © 😆 Clean srchitecture"),
     ));
   }
 }
