@@ -12,6 +12,8 @@
 ## 9) User will recive real time notification related to his stream
 ## !0) Firebase admob is enabled
 
+Must change your branch in developer 
+
 # Make sure give star on This repository
 # Screenshots
 ![Screenshot_20201122-164117](https://user-images.githubusercontent.com/57305134/100026790-75c37e80-2e11-11eb-9685-7abf2cebd48c.png)
