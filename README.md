@@ -1,4 +1,3 @@
- Academicmaster
 
 # Academic Master is E-learning app Features:-
 ## 1) You can post real time post like images and video.
