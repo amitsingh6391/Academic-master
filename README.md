@@ -1,7 +1,7 @@
 
 # Academic Master is E-learning App.
 Features:-
-## 1) You can post real time post like images and video.
+## 1) You can post real Post query in images and video formates.
 ## 2) We will provide notes,books and previous year paper according to their stream
 ## 3) User can Chat with each other .
 ## 4) User will recive real time push notification like in whats'up
