@@ -3,7 +3,7 @@
 Features:-
 ## 1) You can post real Post query in images and video formates.
 ## 2) We will provide notes,books and previous year paper according to their stream
-## 3) User can Chat with each other .
+## 3) User Can Chat with each other .
 ## 4) User will recive real time push notification like in whats'up
 ## 5) User can share pdf file and images in chat section also he can post any blog related to his field.
 ## 6) Dark and light mode 
