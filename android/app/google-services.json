@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "1025728717365",
+    "firebase_url": "https://academic-master.firebaseio.com",
+    "project_id": "academic-master",
+    "storage_bucket": "academic-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025728717365:android:47d0e59ab3a6353149877c",
+        "android_client_info": {
+          "package_name": "com.academic.master"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1025728717365-2f9ibe6e43b9e0iml4m70787vkc63b52.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.academic.master",
+            "certificate_hash": "d7c7157a4c6bbdc6af9ac96975576809ce7308fc"
+          }
+        },
+        {
+          "client_id": "1025728717365-dc1tv3cep3e1g084r97hnh0frq3cjggg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.academic.master",
+            "certificate_hash": "0a765373bc29544223ba8d6336c240d71f69d945"
+          }
+        },
+        {
+          "client_id": "1025728717365-4fmicaj0o23mqb5kh5vv9d8s5ukmi509.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqnqwFcTIWKZINIbt78p62tQGf3uAYF2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1025728717365-4fmicaj0o23mqb5kh5vv9d8s5ukmi509.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1025728717365-7nguc9vr4463dccrvjm3b6fc5satarlk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.academic.master"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

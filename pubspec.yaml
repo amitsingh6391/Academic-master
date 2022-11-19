@@ -1,0 +1,97 @@
+name: academic_master
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.16.0 <3.0.0"
+
+dependencies:
+  analyzer: ^5.1.0
+  animations: ^2.0.7
+  another_flushbar: ^1.12.29
+  auto_route: ^5.0.2
+  bloc: ^8.1.0
+  cached_network_image: ^3.2.1
+  circular_reveal_animation: ^2.0.1
+  cloud_firestore: ^3.5.1
+  dartz: ^0.10.1
+  equatable: ^2.0.5
+  file_picker: ^5.2.1
+  firebase_auth: ^3.11.2
+  firebase_core: ^1.24.0
+  firebase_storage: ^10.3.11
+  flip_card: ^0.6.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.1
+  flutter_cached_pdfview: ^0.4.1
+  flutter_feather_icons: ^2.0.0+1
+  flutter_hooks: ^0.18.5+1
+  flutter_screenutil: ^5.5.4
+  flutter_signin_button: ^2.0.0
+  flutter_slidable: ^2.0.0
+  flutter_spinkit: ^5.1.0
+  flutter_svg: ^1.1.5
+  flutter_swipe_action_cell: ^3.0.4
+  flutter_zoom_drawer: ^3.0.3
+  fluttertoast: ^8.1.1
+  freezed_annotation: ^2.2.0
+  get_it: ^7.2.0
+  google_fonts: ^3.0.1
+  google_sign_in: ^5.4.2
+  http: ^0.13.5
+  injectable: ^1.5.3
+  json_annotation: ^4.7.0
+  kt_dart: ^1.0.0
+  line_icons: ^2.0.1
+  loading_indicator: ^3.1.0
+  lottie: ^1.4.2
+  modal_bottom_sheet: ^2.1.2
+  nil: ^1.1.1
+  path_provider: ^2.0.11
+  persistent_bottom_nav_bar: ^5.0.2
+  provider: ^6.0.4
+  razorpay_flutter: ^1.3.2
+  responsive_framework: ^0.2.0
+  rxdart: ^0.27.5
+  selectable_autolink_text: ^2.3.0
+  share: ^2.0.4
+  shared_preferences: ^2.0.15
+  url_launcher: ^6.1.6
+  uuid: ^3.0.6
+  webview_flutter: ^3.0.4
+
+
+dev_dependencies:
+  auto_route_generator: ^5.0.3
+  build_runner: ^2.3.0
+  flutter_test:
+
+    sdk: flutter
+  freezed: ^2.2.0
+  # injectable_generator: ^1.5.4
+  json_serializable: ^6.5.1
+  lint: ^1.10.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/lottiefiles/
+    - assets/icons/
+
+  fonts:
+    - family: Circular
+      fonts:
+        - asset: assets/fonts/circular.otf
+    - family: Circular_Bold
+      fonts:
+        - asset: assets/fonts/CircularStdBold.otf
+    - family: Circular_Medium
+      fonts:
+        - asset: assets/fonts/CircularStdMedium.otf
