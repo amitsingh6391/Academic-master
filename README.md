@@ -22,7 +22,7 @@ with each other and solve their doubts easily.
 
 <img src="https://firebasestorage.googleapis.com/v0/b/academic-master.appspot.com/o/Screenshot_1668902923.png?alt=media&token=f9193f45-8cc8-4e9d-b05a-7f09bcc429ba"  width="350" height="700">
 
-<div style="color:#00DDFF; border-style:solid; border-width:30px;border-color:black;">
+<div style="color:#00DDFF; border-style:solid; border-width:2px;border-color:black;">
   
 </div>
 
