@@ -114,8 +114,6 @@ with each other and solve their doubts easily.
 I'm a flutter developer...
 
 
-# Hi, I'm Katherine! 👋
-
 
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://amitsingh6391.github.io)
