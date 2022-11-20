@@ -20,13 +20,10 @@ with each other and solve their doubts easily.
 
 <p>
 
-<img src="https://firebasestorage.googleapis.com/v0/b/academic-master.appspot.com/o/Screenshot_1668902923.png?alt=media&token=f9193f45-8cc8-4e9d-b05a-7f09bcc429ba"  width="350" height="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/academic-master.appspot.com/o/Screenshot_1668902923.png?alt=media&token=f9193f45-8cc8-4e9d-b05a-7f09bcc429ba"  width="370" height="700">
 
-<div style="color:#00DDFF; border-style:solid; border-width:2px;border-color:black;">
-  
-</div>
 
-<img src="https://firebasestorage.googleapis.com/v0/b/academic-master.appspot.com/o/Screenshot_1668902952.png?alt=media&token=aa50ea59-81ea-4513-b917-dd7a9581c3e4"  width="350" height="700">
+<img src="https://firebasestorage.googleapis.com/v0/b/academic-master.appspot.com/o/Screenshot_1668902952.png?alt=media&token=aa50ea59-81ea-4513-b917-dd7a9581c3e4"  width="370" height="700">
 </p>
 
 ![App Screenshot](https://firebasestorage.googleapis.com/v0/b/academic-master.appspot.com/o/Screenshot_1668902993.png?alt=media&token=dfc380db-f26a-4809-b330-8af0538ad150)
