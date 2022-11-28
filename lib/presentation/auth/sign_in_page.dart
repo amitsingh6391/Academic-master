@@ -43,6 +43,6 @@ class SignInPage extends StatelessWidget {
     } else if (index == 1) {
       return RegisterForm();
     }
-    return ForgotPasswordForm();
+    return const ForgotPasswordForm();
   }
 }

@@ -3,6 +3,7 @@ import 'package:academic_master/domain/e_learning/subject_material.dart';
 import 'package:academic_master/presentation/core/appbar.dart';
 import 'package:academic_master/presentation/core/critical_failure.dart';
 import 'package:academic_master/presentation/core/loading.dart';
+import 'package:academic_master/presentation/core/responsive.dart';
 import 'package:academic_master/presentation/e_learning/subjects/widgets/subject_tile.dart';
 import 'package:academic_master/presentation/theme/theme.dart';
 import 'package:flip_card/flip_card.dart';
@@ -22,59 +23,61 @@ class Subjects extends StatelessWidget {
         MediaQuery.of(context).size.height,
       ),
     );
-    return SafeArea(
-      child: Scaffold(
-        appBar: myAppBar(),
-        body: BlocBuilder<SubjectWatcherBloc, SubjectWatcherState>(
-          builder: (context, state) {
-            return state.map(
-              initial: (_) => Container(),
-              loadInProgress: (_) => Center(child: FindLoading()),
-              loadSuccess: (state) {
-                return ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 20.h,
-                        top: 20.h,
-                        bottom: 10.h,
+    return Responsive(
+      child: SafeArea(
+        child: Scaffold(
+          appBar: myAppBar(),
+          body: BlocBuilder<SubjectWatcherBloc, SubjectWatcherState>(
+            builder: (context, state) {
+              return state.map(
+                initial: (_) => Container(),
+                loadInProgress: (_) => Center(child: FindLoading()),
+                loadSuccess: (state) {
+                  return ListView(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 20.h,
+                          top: 20.h,
+                          bottom: 10.h,
+                        ),
+                        child: Text(
+                          "Subjects",
+                          textAlign: TextAlign.start,
+                          style: Apptheme(context)
+                              .boldText
+                              .copyWith(fontSize: 20.sp),
+                        ),
                       ),
-                      child: Text(
-                        "Subjects",
-                        textAlign: TextAlign.start,
-                        style: Apptheme(context)
-                            .boldText
-                            .copyWith(fontSize: 20.sp),
-                      ),
-                    ),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: state.subjects[0].studyMaterial.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1.sw > 450 ? 3 : 2,
-                      ),
-                      itemBuilder: (BuildContext context, int index) {
-                        final StudyMaterial material = state
-                            .subjects[0].studyMaterial
-                            .getorCrash()
-                            .get(index);
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: state.subjects[0].studyMaterial.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1.sw > 450 ? 3 : 2,
+                        ),
+                        itemBuilder: (BuildContext context, int index) {
+                          final StudyMaterial material = state
+                              .subjects[0].studyMaterial
+                              .getorCrash()
+                              .get(index);
 
-                        return SubjectDisplay(
-                          studyMaterials: material,
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-              loadFailure: (state) {
-                return CriticalFailureDisplay(
-                  failure: state.firbaseFailure,
-                );
-              },
-            );
-          },
+                          return SubjectDisplay(
+                            studyMaterials: material,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+                loadFailure: (state) {
+                  return CriticalFailureDisplay(
+                    failure: state.firbaseFailure,
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -85,9 +88,9 @@ class SubjectDisplay extends StatelessWidget {
   final StudyMaterial studyMaterials;
 
   const SubjectDisplay({
-    Key? key,
+    super.key,
     required this.studyMaterials,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +119,9 @@ class SubjectDisplay extends StatelessWidget {
 
 class FrontWidget extends StatelessWidget {
   const FrontWidget({
-    Key? key,
+    super.key,
     required this.studyMaterials,
-  }) : super(key: key);
+  });
 
   final StudyMaterial studyMaterials;
 
@@ -161,9 +164,9 @@ class FrontWidget extends StatelessWidget {
 
 class BackWidget extends StatelessWidget {
   const BackWidget({
-    Key? key,
+    super.key,
     required this.studyMaterials,
-  }) : super(key: key);
+  });
 
   final StudyMaterial studyMaterials;
 

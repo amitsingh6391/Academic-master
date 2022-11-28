@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatRoomPage extends StatefulWidget {
-  const ChatRoomPage({Key? key}) : super(key: key);
+  const ChatRoomPage({super.key});
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();

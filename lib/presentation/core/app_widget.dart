@@ -1,5 +1,6 @@
 import 'package:academic_master/presentation/core/academic_master_bloc_provider.dart';
 import 'package:academic_master/presentation/core/provider_injection.dart';
+import 'package:academic_master/presentation/core/responsive.dart';
 import 'package:academic_master/presentation/routes/router.gr.dart';
 import 'package:academic_master/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class AppWidget extends StatelessWidget {
           theme: Apptheme.theme,
           builder: (context, widget) => ResponsiveWrapper.builder(
             BouncingScrollWrapper.builder(context, widget!),
-            maxWidth: double.maxFinite,
+            maxWidth: PageBreakpoint.tablet,
             defaultScale: true,
             breakpoints: [
               const ResponsiveBreakpoint.resize(450, name: MOBILE),

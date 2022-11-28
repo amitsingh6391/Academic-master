@@ -17,9 +17,9 @@ class QuestionFormPage extends StatelessWidget {
   final Question? editedQuestion;
 
   const QuestionFormPage({
-    Key? key,
+    super.key,
     this.editedQuestion,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +76,9 @@ class SavingInProgressOverlay extends StatelessWidget {
   final bool isSaving;
 
   const SavingInProgressOverlay({
-    Key? key,
+    super.key,
     required this.isSaving,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +113,8 @@ class SavingInProgressOverlay extends StatelessWidget {
 
 class QuestionFormPageScaffold extends StatefulWidget {
   const QuestionFormPageScaffold({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _QuestionFormPageScaffoldState createState() =>
@@ -149,8 +149,6 @@ class _QuestionFormPageScaffoldState extends State<QuestionFormPageScaffold> {
             padding: const EdgeInsets.all(16.0),
             child: Form(
               autovalidateMode: AutovalidateMode.always,
-
-              // autovalidate: state.showErrorMessages,
               child: ListView(
                 children: [
                   const SizedBox(height: 16),
@@ -223,8 +221,8 @@ class _QuestionFormPageScaffoldState extends State<QuestionFormPageScaffold> {
 
 class QuestionDiscreptionField extends HookWidget {
   const QuestionDiscreptionField({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final textEditingController = useTextEditingController();

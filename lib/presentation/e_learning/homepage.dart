@@ -1,6 +1,6 @@
 import 'package:academic_master/application/auth/auth_bloc.dart';
 import 'package:academic_master/presentation/e_learning/chats_and_friends/chat_room_page.dart';
-import 'package:academic_master/presentation/e_learning/e_learning_dashboard/dashboard.dart';
+import 'package:academic_master/presentation/e_learning/e_learning_dashboard/dashboard_page.dart';
 import 'package:academic_master/presentation/e_learning/profile/profile_page.dart';
 import 'package:academic_master/presentation/e_learning/subjects/subjects.dart';
 import 'package:academic_master/presentation/routes/router.gr.dart';
@@ -15,8 +15,8 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 class Homepage extends StatefulWidget {
   const Homepage({
     this.intialIndex,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final int? intialIndex;
 
@@ -61,7 +61,7 @@ class _HomepageState extends State<Homepage> {
         context,
         controller: _controller,
         screens: [
-          Dashboard(),
+          DashboardPage(),
           Subjects(),
           const ChatRoomPage(),
           const ProfilePage(),

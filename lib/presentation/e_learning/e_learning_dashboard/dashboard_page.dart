@@ -1,3 +1,4 @@
+import 'package:academic_master/presentation/core/responsive.dart';
 import 'package:academic_master/presentation/e_learning/e_learning_dashboard/question_and_comments/users_questions.dart';
 import 'package:academic_master/presentation/e_learning/e_learning_dashboard/widgets/dashboard_appbar.dart';
 import 'package:academic_master/presentation/theme/theme.dart';
@@ -14,19 +15,21 @@ class DashboardPage extends StatelessWidget {
         MediaQuery.of(context).size.height,
       ),
     );
-    return ColoredBox(
-      color: Colors.white,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Apptheme.backgroundColor,
-          body: SingleChildScrollView(
-            physics: const ScrollPhysics(),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                DashBoardAppBar(),
-                UsersQuestions(),
-              ],
+    return Responsive(
+      child: ColoredBox(
+        color: Colors.white,
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Apptheme.backgroundColor,
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DashBoardAppBar(),
+                  UsersQuestions(),
+                ],
+              ),
             ),
           ),
         ),
