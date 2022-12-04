@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<AuthTabProvider>(context, listen: false);
     ScreenUtil.init(
       context,
       designSize: Size(
@@ -23,7 +24,11 @@ class SignInPage extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: SafeArea(
         child: Scaffold(
-          appBar: myAppBar(),
+          appBar: myAppBar(
+            onBackTap: () {
+              provider.updateTab(0);
+            },
+          ),
           body: Container(
             constraints: BoxConstraints(
               maxWidth: ScreenUtil().screenWidth,

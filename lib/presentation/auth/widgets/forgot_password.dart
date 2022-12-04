@@ -64,7 +64,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                     ),
                     const SizedBox(height: 53),
                     const Text(
-                      'Verification Code',
+                      'Forgot Password',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -73,7 +73,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      'Enter the verification code we just sent you on your email address',
+                      'Enter the email we will send password reset link on your mail',
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -86,7 +86,6 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                       padding: EdgeInsets.all(13.h),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.email),
                           labelText: 'Email',
                         ),
                         autocorrect: false,
