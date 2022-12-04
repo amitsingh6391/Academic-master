@@ -10,9 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PersonalTypeBoxField extends StatefulWidget {
   final String partnerId;
   const PersonalTypeBoxField({
-    Key? key,
+    super.key,
     required this.partnerId,
-  }) : super(key: key);
+  });
 
   @override
   State<PersonalTypeBoxField> createState() => _PersonalMessageBoxFieldState();

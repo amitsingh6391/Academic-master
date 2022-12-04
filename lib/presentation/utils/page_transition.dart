@@ -20,12 +20,10 @@ class RotationFadeTransitionBuilder extends PageTransitionsBuilder {
 
 class _RotationFadeTransitionBuilder extends StatelessWidget {
   _RotationFadeTransitionBuilder({
-    Key? key,
     required Animation<double> routeAnimation,
     required this.child,
   })  : _turnsAnimation = routeAnimation.drive(_linearToEaseOut),
-        _opacityAnimation = routeAnimation.drive(_easeInTween),
-        super(key: key);
+        _opacityAnimation = routeAnimation.drive(_easeInTween);
 
   static final Animatable<double> _linearToEaseOut =
       CurveTween(curve: Curves.linearToEaseOut);

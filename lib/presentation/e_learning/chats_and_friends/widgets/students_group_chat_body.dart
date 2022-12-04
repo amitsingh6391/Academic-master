@@ -19,9 +19,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class StudentGroupChatsBody extends StatelessWidget {
   const StudentGroupChatsBody({
-    Key? key,
+    super.key,
     required this.size,
-  }) : super(key: key);
+  });
 
   final Size size;
 

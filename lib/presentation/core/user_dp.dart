@@ -8,11 +8,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Userdp extends StatelessWidget {
   const Userdp({
-    Key? key,
+    super.key,
     this.userName,
     this.circleAvatarColor,
     this.size,
-  }) : super(key: key);
+  });
   final String? userName;
   final Color? circleAvatarColor;
   final double? size;

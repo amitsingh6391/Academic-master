@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 class PostDeleteConfirmatationPopup extends StatelessWidget {
   String message;
   PostDeleteConfirmatationPopup({
-    Key? key,
+    super.key,
     required this.message,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(

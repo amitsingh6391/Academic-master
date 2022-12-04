@@ -19,8 +19,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AcademicmasterBlocProvider extends StatelessWidget {
   const AcademicmasterBlocProvider({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Widget child;
 

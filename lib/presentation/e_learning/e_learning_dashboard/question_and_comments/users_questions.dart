@@ -8,7 +8,6 @@ import 'package:academic_master/presentation/e_learning/e_learning_dashboard/que
 import 'package:academic_master/presentation/e_learning/e_learning_dashboard/widgets/post_crud_popup.dart';
 import 'package:academic_master/presentation/extension/util_extensions.dart';
 import 'package:academic_master/presentation/theme/theme.dart';
-// import 'package:academic_master/presentation/utils/add_helper.dart';
 import 'package:academic_master/presentation/utils/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:selectable_autolink_text/selectable_autolink_text.dart';
 import 'package:share/share.dart';

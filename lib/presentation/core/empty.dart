@@ -6,11 +6,11 @@ class EmptyScreen extends StatelessWidget {
   final bool showLottie;
   final String? lottiefile;
   const EmptyScreen({
-    Key? key,
+    super.key,
     required this.message,
     required this.showLottie,
     this.lottiefile,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return Column(

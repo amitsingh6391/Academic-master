@@ -15,10 +15,10 @@ class Profileoption extends StatefulWidget {
   final String email;
 
   const Profileoption({
-    Key? key,
+    super.key,
     required this.mobileNumber,
     required this.email,
-  }) : super(key: key);
+  });
 
   @override
   State<Profileoption> createState() => _ProfileoptionState();

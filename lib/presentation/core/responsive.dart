@@ -48,7 +48,7 @@ class Responsive extends StatelessWidget {
           name: DESKTOP,
         ),
       ],
-      background: Container(color: backgroundColor),
+      background: ColoredBox(color: backgroundColor),
     );
   }
 }

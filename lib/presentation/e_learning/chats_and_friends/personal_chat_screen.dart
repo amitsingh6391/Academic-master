@@ -15,9 +15,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class PersonalChatScreen extends StatefulWidget {
   final String partnerId;
   const PersonalChatScreen({
-    Key? key,
+    super.key,
     required this.partnerId,
-  }) : super(key: key);
+  });
 
   @override
   State<PersonalChatScreen> createState() => _PersonalChatScreenState();

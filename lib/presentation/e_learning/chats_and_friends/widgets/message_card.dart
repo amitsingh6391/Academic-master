@@ -15,12 +15,12 @@ class MessageCard extends StatelessWidget {
   final String? time;
   final String friendId;
   const MessageCard({
-    Key? key,
+    super.key,
     required this.currentMsg,
     required this.friendDp,
     this.time,
     required this.friendId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

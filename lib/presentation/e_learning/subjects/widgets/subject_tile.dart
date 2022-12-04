@@ -11,11 +11,11 @@ class Sujectile extends StatelessWidget {
   final String url;
   final String backColor;
   const Sujectile({
-    Key? key,
+    super.key,
     required this.title,
     required this.url,
     required this.backColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -5,9 +5,9 @@ class CriticalFailureDisplay extends StatelessWidget {
   final FirebaseFailure failure;
 
   const CriticalFailureDisplay({
-    Key? key,
+    super.key,
     required this.failure,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessageInputField extends StatefulWidget {
   const MessageInputField({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<MessageInputField> createState() => _MessageInputFieldState();

@@ -75,7 +75,7 @@ class SubjectOverView extends StatelessWidget {
 class SubjectCard extends StatelessWidget {
   final Subject subject;
 
-  const SubjectCard({Key? key, required this.subject}) : super(key: key);
+  const SubjectCard({super.key, required this.subject});
 
   @override
   Widget build(BuildContext context) {
@@ -145,9 +145,9 @@ class SubjectDisplay extends StatelessWidget {
   final StudyMaterial studyMaterials;
 
   const SubjectDisplay({
-    Key? key,
+    super.key,
     required this.studyMaterials,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

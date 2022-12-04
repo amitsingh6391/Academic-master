@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icons.dart';
 
 class StudentsGroupChatScreen extends StatefulWidget {
-  const StudentsGroupChatScreen({Key? key}) : super(key: key);
+  const StudentsGroupChatScreen({super.key});
 
   @override
   State<StudentsGroupChatScreen> createState() =>

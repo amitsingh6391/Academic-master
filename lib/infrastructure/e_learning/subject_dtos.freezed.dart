@@ -20,6 +20,7 @@ SubjectDto _$SubjectDtoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SubjectDto {
+// ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   String get id => throw _privateConstructorUsedError;
   String get subjectIcon => throw _privateConstructorUsedError;
@@ -137,6 +138,7 @@ class _$_SubjectDto extends _SubjectDto {
   factory _$_SubjectDto.fromJson(Map<String, dynamic> json) =>
       _$$_SubjectDtoFromJson(json);
 
+// ignore: invalid_annotation_target
   @override
   @JsonKey(ignore: true)
   final String id;
@@ -195,7 +197,7 @@ abstract class _SubjectDto extends SubjectDto {
   factory _SubjectDto.fromJson(Map<String, dynamic> json) =
       _$_SubjectDto.fromJson;
 
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   String get id;
   @override

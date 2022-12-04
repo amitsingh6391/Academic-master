@@ -24,7 +24,7 @@ class InputField extends StatefulWidget {
   final InputBorder? focusBorder;
 
   const InputField({
-    Key? key,
+    super.key,
     this.readOnly = false,
     this.isPassword = false,
     this.enabled = true,
@@ -46,7 +46,7 @@ class InputField extends StatefulWidget {
     this.textStyle,
     this.inputBorder,
     this.focusBorder,
-  }) : super(key: key);
+  });
 
   @override
   _InputFieldState createState() => _InputFieldState();

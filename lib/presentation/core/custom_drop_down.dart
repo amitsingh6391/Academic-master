@@ -16,7 +16,7 @@ class CustomDropDownButton extends StatelessWidget {
   final void Function(String?)? onChanged;
   final void Function()? onTap;
   const CustomDropDownButton({
-    Key? key,
+    super.key,
     required this.items,
     this.hintText,
     this.backgroundColor,
@@ -27,7 +27,7 @@ class CustomDropDownButton extends StatelessWidget {
     this.textStyle,
     this.prefixIcon,
     this.enableBorder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

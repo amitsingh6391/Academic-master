@@ -19,10 +19,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PersonalChatBody extends StatefulWidget {
   const PersonalChatBody({
-    Key? key,
+    super.key,
     required this.size,
     required this.partnerId,
-  }) : super(key: key);
+  });
 
   final Size size;
   final String partnerId;

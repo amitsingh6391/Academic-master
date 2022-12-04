@@ -18,9 +18,9 @@ class PostCrudPopup extends StatelessWidget {
   Question question;
 
   PostCrudPopup({
-    Key? key,
+    super.key,
     required this.question,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(

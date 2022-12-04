@@ -20,10 +20,10 @@ class UsersComments extends StatefulWidget {
   final String questionId;
   final String questionUserId;
   const UsersComments({
-    Key? key,
+    super.key,
     required this.questionId,
     required this.questionUserId,
-  }) : super(key: key);
+  });
 
   @override
   State<UsersComments> createState() => _UsersCommentsState();
