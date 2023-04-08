@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icons.dart';
 
+@RoutePage()
 class StudentsGroupChatScreen extends StatefulWidget {
   const StudentsGroupChatScreen({super.key});
 

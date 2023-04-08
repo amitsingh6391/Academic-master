@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+@RoutePage()
 class Homepage extends StatefulWidget {
   const Homepage({
     this.intialIndex,

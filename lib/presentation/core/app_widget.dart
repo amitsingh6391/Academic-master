@@ -1,7 +1,7 @@
 import 'package:academic_master/presentation/core/academic_master_bloc_provider.dart';
 import 'package:academic_master/presentation/core/provider_injection.dart';
 import 'package:academic_master/presentation/core/responsive.dart';
-import 'package:academic_master/presentation/routes/router.gr.dart';
+import 'package:academic_master/presentation/routes/router.dart';
 import 'package:academic_master/presentation/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

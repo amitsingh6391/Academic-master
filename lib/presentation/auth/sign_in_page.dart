@@ -3,12 +3,12 @@ import 'package:academic_master/presentation/auth/widgets/forgot_password.dart';
 import 'package:academic_master/presentation/auth/widgets/register_form.dart';
 import 'package:academic_master/presentation/auth/widgets/sign_in_form.dart';
 import 'package:academic_master/presentation/core/appbar.dart';
-
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

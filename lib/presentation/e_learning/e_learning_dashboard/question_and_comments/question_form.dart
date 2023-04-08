@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+@RoutePage()
 class QuestionFormPage extends StatelessWidget {
   final Question? editedQuestion;
 
@@ -98,7 +99,7 @@ class SavingInProgressOverlay extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 'Saving',
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: Colors.white,
                       fontSize: 16,
                     ),
@@ -136,7 +137,7 @@ class _QuestionFormPageScaffoldState extends State<QuestionFormPageScaffold> {
               state.isEditing ? 'Edit question' : 'Add a question',
               style: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .bodyMedium!
                   .copyWith(color: Colors.black),
             );
           },
@@ -191,7 +192,7 @@ class _QuestionFormPageScaffoldState extends State<QuestionFormPageScaffold> {
                               : 'Raise Your Doubt',
                           style: Theme.of(context)
                               .textTheme
-                              .headline6!
+                              .bodyMedium!
                               .copyWith(color: Colors.black),
                         );
                       },

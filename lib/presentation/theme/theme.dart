@@ -47,11 +47,11 @@ class Apptheme {
       },
     ),
     primaryTextTheme: const TextTheme(
-      headline1: TextStyle(
+      headlineMedium: TextStyle(
         fontSize: 10,
         color: Colors.red,
       ),
-      bodyText2: TextStyle(
+      headlineSmall: TextStyle(
         fontSize: 5,
         color: Colors.red,
       ),
@@ -114,7 +114,6 @@ class Apptheme {
         size: 25,
       ),
     ),
-    toggleableActiveColor: primaryColor,
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(
         borderSide: BorderSide(color: primaryColor),

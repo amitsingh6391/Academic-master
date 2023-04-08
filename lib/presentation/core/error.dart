@@ -6,7 +6,7 @@ class ErrorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).errorColor,
+      color: Theme.of(context).focusColor,
       child: Padding(
         padding: const EdgeInsets.all(4),
         child: Column(
@@ -15,13 +15,13 @@ class ErrorCard extends StatelessWidget {
               'Invalid Item, please, contact support',
               style: Theme.of(context)
                   .primaryTextTheme
-                  .bodyText2!
+                  .bodySmall!
                   .copyWith(fontSize: 18),
             ),
             const SizedBox(height: 2),
             Text(
               'Details for nerds:',
-              style: Theme.of(context).primaryTextTheme.bodyText2,
+              style: Theme.of(context).primaryTextTheme.bodyMedium,
             ),
           ],
         ),

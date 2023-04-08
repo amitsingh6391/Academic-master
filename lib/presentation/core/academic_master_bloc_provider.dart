@@ -8,6 +8,7 @@ import 'package:academic_master/application/e_learning/chats_and_friends/all_cha
 import 'package:academic_master/application/e_learning/chats_and_friends/personal_chat_message_actor/personal_chat_message_actor_bloc.dart';
 import 'package:academic_master/application/e_learning/chats_and_friends/personal_chat_message_watcher/personal_chat_message_watcher_bloc.dart';
 import 'package:academic_master/application/e_learning/chats_and_friends/watch_all_users_in_our_class/watch_all_users_in_our_class_bloc.dart';
+import 'package:academic_master/application/e_learning/comments_watcher/comments_watcher_bloc.dart';
 import 'package:academic_master/application/e_learning/question_watcher/question_watcher_bloc.dart';
 import 'package:academic_master/application/e_learning/subject_watcher/subject_watcher_bloc.dart';
 import 'package:academic_master/application/e_learning/users_watcher/users_watcher_bloc.dart';
@@ -84,6 +85,9 @@ class AcademicmasterBlocProvider extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<PersonalChatMessageActorBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<CommentsWatcherBloc>(),
         ),
       ],
       child: child,

@@ -16,7 +16,7 @@ class EmptyScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Empty!', style: Theme.of(context).textTheme.headline4),
+        Text('Empty!', style: Theme.of(context).textTheme.bodyMedium),
         if (showLottie)
           Lottie.asset(
             lottiefile ?? "assets/lottiefiles/empty_chat.json",
@@ -27,7 +27,7 @@ class EmptyScreen extends StatelessWidget {
         Text(
           message,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );

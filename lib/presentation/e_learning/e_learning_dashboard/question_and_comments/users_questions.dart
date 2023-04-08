@@ -266,7 +266,7 @@ class _UsersQuestionsState extends State<UsersQuestions> {
                                     ),
                                   ),
                                   Text(
-                                    "112",
+                                    "", //Todo:(Amit) will add this feature soon..
                                     style: Apptheme(context)
                                         .lightboldText
                                         .copyWith(
@@ -280,17 +280,14 @@ class _UsersQuestionsState extends State<UsersQuestions> {
                                   IconButton(
                                     onPressed: () {
                                       showMaterialModalBottomSheet(
-                                        // expand: true,
                                         backgroundColor:
                                             Apptheme.backgroundColor,
-
                                         shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(30),
                                             topRight: Radius.circular(30),
                                           ),
                                         ),
-
                                         context: context,
                                         builder: (context) => UsersComments(
                                           questionId: state.questions
@@ -310,7 +307,7 @@ class _UsersQuestionsState extends State<UsersQuestions> {
                                     ),
                                   ),
                                   Text(
-                                    "20",
+                                    "", //Todo:(Amit) will add comment no feature soon..
                                     style: Apptheme(context)
                                         .lightboldText
                                         .copyWith(fontSize: 10.sp),
