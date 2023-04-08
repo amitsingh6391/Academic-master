@@ -13,7 +13,7 @@ class AppRouter extends $AppRouter {
       page: SplashRoute.page,
       path: '/',
     ),
-    AutoRoute(page: SignInRoute.page),
+    AutoRoute(page: SignInRoute.page, path: '/sign-in-page'),
     AutoRoute(page: Homepage.page),
     AutoRoute(page: SubjectPdfView.page),
     AutoRoute(page: QuestionFormRoute.page),

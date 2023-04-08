@@ -1,0 +1,17 @@
+image: cirrusci/flutter
+
+stages:
+  - tests
+
+before_script:
+  - bash reconfigure.sh
+
+unit tests:
+  stage: tests
+  script:
+    - flutter test --coverage ./lib
+    - lcov -r coverage/lcov.info '*/__test*__/*' -o coverage/lcov_cleaned.info
+    - genhtml coverage/lcov_cleaned.info --output=coverage
+  artifacts:
+    paths:
+      - coverage

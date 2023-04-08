@@ -14,6 +14,7 @@ dependencies:
   another_flushbar: ^1.12.29
   auto_route: ^6.0.5
   bloc: ^8.1.1
+  bloc_test: ^9.1.1
   cached_network_image: ^3.2.3
   circular_reveal_animation: ^2.0.1
   cloud_firestore: ^4.5.0
@@ -51,6 +52,7 @@ dependencies:
   line_icons: ^2.0.1
   loading_indicator: ^3.1.0
   lottie: ^2.3.2
+  mockito: ^5.4.0
   modal_bottom_sheet: ^3.0.0-pre
   nil: ^1.1.1
   path_provider: ^2.0.14

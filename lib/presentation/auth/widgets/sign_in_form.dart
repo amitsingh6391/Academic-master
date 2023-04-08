@@ -15,6 +15,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+const emailKey = Key('email');
+const passwordKey = Key('password');
+
 class SignInForm extends StatelessWidget {
   Widget buildAsset() {
     return Lottie.asset(
@@ -66,7 +69,6 @@ class SignInForm extends StatelessWidget {
       },
       builder: (context, state) {
         final signInForm = Form(
-          // autovalidate: state.showErrorMessages,
           autovalidateMode: AutovalidateMode.always,
           child: ListView(
             shrinkWrap: true,
@@ -88,6 +90,7 @@ class SignInForm extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(13.h),
                 child: TextFormField(
+                  key: emailKey,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.email),
                     labelText: 'Email',
@@ -113,6 +116,7 @@ class SignInForm extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(13.h),
                 child: TextFormField(
+                  key: passwordKey,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     labelText: 'Password',
