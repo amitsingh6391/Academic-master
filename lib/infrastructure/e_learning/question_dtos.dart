@@ -9,9 +9,6 @@ part 'question_dtos.g.dart';
 
 @freezed
 abstract class QuestionDto implements _$QuestionDto {
-  const QuestionDto._();
-
-  // ignore: sort_unnamed_constructors_first
   const factory QuestionDto({
     required String questionId,
     required String userId,
@@ -19,6 +16,7 @@ abstract class QuestionDto implements _$QuestionDto {
     required String mediaUrl,
     required DateTime askAt,
   }) = _QuestionDto;
+  const QuestionDto._();
 
   factory QuestionDto.fromDomain(Question question) {
     return QuestionDto(

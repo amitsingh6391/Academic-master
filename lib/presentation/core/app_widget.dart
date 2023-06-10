@@ -20,18 +20,35 @@ class AppWidget extends StatelessWidget {
           title: 'Academic master',
           debugShowCheckedModeBanner: false,
           theme: Apptheme.theme,
-          builder: (context, widget) => ResponsiveWrapper.builder(
-            BouncingScrollWrapper.builder(context, widget!),
-            maxWidth: PageBreakpoint.tablet,
-            defaultScale: true,
+          builder: (context, child) => ResponsiveBreakpoints.builder(
+            child: child!,
             breakpoints: [
-              const ResponsiveBreakpoint.resize(450, name: MOBILE),
-              const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-              const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-              const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-              const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+              const Breakpoint(
+                start: PageBreakpoint.MOBILE_MIN,
+                end: PageBreakpoint.MOBILE_MAX,
+                name: MOBILE,
+              ),
+              const Breakpoint(
+                start: PageBreakpoint.TABLET_MIN,
+                end: PageBreakpoint.TABLET_MAX,
+                name: TABLET,
+              ),
+              const Breakpoint(
+                start: PageBreakpoint.DESKTOP_MIN,
+                end: PageBreakpoint.DESKTOP_MAX,
+                name: DESKTOP,
+              ),
+              const Breakpoint(
+                start: PageBreakpoint.UHD_MIN,
+                end: PageBreakpoint.UHD_MAX,
+                name: '4K',
+              ),
+              const Breakpoint(
+                start: PageBreakpoint.BEYOND_UHD_MIN,
+                end: PageBreakpoint.MAX,
+                name: '>4K',
+              ),
             ],
-            background: const ColoredBox(color: Color(0xFFF5F5F5)),
           ),
         ),
       ),

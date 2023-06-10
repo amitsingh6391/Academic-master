@@ -27,8 +27,7 @@ import 'package:flutter/cupertino.dart' as _i11;
 import 'package:flutter/material.dart' as _i10;
 
 abstract class $AppRouter extends _i9.RootStackRouter {
-  $AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
-      : super(navigatorKey);
+  $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i9.PageFactory> pagesMap = {

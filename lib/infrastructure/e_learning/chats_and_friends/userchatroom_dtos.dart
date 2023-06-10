@@ -8,9 +8,6 @@ part 'userchatroom_dtos.g.dart';
 
 @freezed
 abstract class ChatroomDto implements _$ChatroomDto {
-  const ChatroomDto._();
-
-  // ignore: sort_unnamed_constructors_first
   const factory ChatroomDto({
     required String chatroomId,
     required String partnerId,
@@ -18,6 +15,7 @@ abstract class ChatroomDto implements _$ChatroomDto {
     required DateTime chatroomAt,
     required List<String> usersId,
   }) = _ChatroomDto;
+  const ChatroomDto._();
 
   factory ChatroomDto.fromDomain(Chatroom chatroom) {
     return ChatroomDto(

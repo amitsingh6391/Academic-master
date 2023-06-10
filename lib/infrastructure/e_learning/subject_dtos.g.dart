@@ -8,6 +8,7 @@ part of 'subject_dtos.dart';
 
 _$_SubjectDto _$$_SubjectDtoFromJson(Map<String, dynamic> json) =>
     _$_SubjectDto(
+      id: json['id'] as String? ?? "studyMaterial",
       subjectIcon: json['subjectIcon'] as String,
       studyMaterial: (json['studyMaterial'] as List<dynamic>)
           .map((e) => SubjectMaterialDto.fromJson(e as Map<String, dynamic>))
@@ -16,6 +17,7 @@ _$_SubjectDto _$$_SubjectDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_SubjectDtoToJson(_$_SubjectDto instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'subjectIcon': instance.subjectIcon,
       'studyMaterial': instance.studyMaterial,
     };

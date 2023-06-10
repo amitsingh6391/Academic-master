@@ -12,8 +12,7 @@ part 'subject_dtos.g.dart';
 @freezed
 abstract class SubjectDto implements _$SubjectDto {
   const factory SubjectDto({
-    // ignore: invalid_annotation_target
-    @JsonKey(ignore: true) @Default("studyMaterial") String id,
+    @Default("studyMaterial") String id,
     required String subjectIcon,
     required List<SubjectMaterialDto> studyMaterial,
   }) = _SubjectDto;
@@ -22,7 +21,6 @@ abstract class SubjectDto implements _$SubjectDto {
 
   factory SubjectDto.fromDomain(Subject subject) {
     return SubjectDto(
-      id: "studyMaterial",
       subjectIcon: subject.subjectIcon.getorCrash(),
       studyMaterial: subject.studyMaterial
           .getorCrash()
@@ -55,9 +53,6 @@ abstract class SubjectDto implements _$SubjectDto {
 
 @freezed
 abstract class SubjectMaterialDto implements _$SubjectMaterialDto {
-  const SubjectMaterialDto._();
-
-  // ignore: sort_unnamed_constructors_first
   const factory SubjectMaterialDto({
     required String id,
     required String subjectName,
@@ -67,6 +62,7 @@ abstract class SubjectMaterialDto implements _$SubjectMaterialDto {
     required String subjectPaper,
     required String subjectColor,
   }) = _SubjectMaterialDto;
+  const SubjectMaterialDto._();
 
   factory SubjectMaterialDto.fromDomain(StudyMaterial studyMaterial) {
     return SubjectMaterialDto(

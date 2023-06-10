@@ -34,8 +34,6 @@ extension WidgetTesterEx on WidgetTester {
   }
 }
 
-void setWindowSize(Size size) {
-  final AutomatedTestWidgetsFlutterBinding binding =
-      WidgetsBinding.instance as AutomatedTestWidgetsFlutterBinding;
-  binding.window.physicalSizeTestValue = size * binding.window.devicePixelRatio;
+void setWindowSize(WidgetTester tester, Size size) {
+  tester.view.physicalSize = size * tester.view.devicePixelRatio;
 }

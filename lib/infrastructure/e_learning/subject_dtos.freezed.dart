@@ -20,8 +20,6 @@ SubjectDto _$SubjectDtoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SubjectDto {
-// ignore: invalid_annotation_target
-  @JsonKey(ignore: true)
   String get id => throw _privateConstructorUsedError;
   String get subjectIcon => throw _privateConstructorUsedError;
   List<SubjectMaterialDto> get studyMaterial =>
@@ -40,9 +38,7 @@ abstract class $SubjectDtoCopyWith<$Res> {
       _$SubjectDtoCopyWithImpl<$Res, SubjectDto>;
   @useResult
   $Res call(
-      {@JsonKey(ignore: true) String id,
-      String subjectIcon,
-      List<SubjectMaterialDto> studyMaterial});
+      {String id, String subjectIcon, List<SubjectMaterialDto> studyMaterial});
 }
 
 /// @nodoc
@@ -88,9 +84,7 @@ abstract class _$$_SubjectDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(ignore: true) String id,
-      String subjectIcon,
-      List<SubjectMaterialDto> studyMaterial});
+      {String id, String subjectIcon, List<SubjectMaterialDto> studyMaterial});
 }
 
 /// @nodoc
@@ -129,7 +123,7 @@ class __$$_SubjectDtoCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_SubjectDto extends _SubjectDto {
   const _$_SubjectDto(
-      {@JsonKey(ignore: true) this.id = "studyMaterial",
+      {this.id = "studyMaterial",
       required this.subjectIcon,
       required final List<SubjectMaterialDto> studyMaterial})
       : _studyMaterial = studyMaterial,
@@ -138,9 +132,8 @@ class _$_SubjectDto extends _SubjectDto {
   factory _$_SubjectDto.fromJson(Map<String, dynamic> json) =>
       _$$_SubjectDtoFromJson(json);
 
-// ignore: invalid_annotation_target
   @override
-  @JsonKey(ignore: true)
+  @JsonKey()
   final String id;
   @override
   final String subjectIcon;
@@ -190,7 +183,7 @@ class _$_SubjectDto extends _SubjectDto {
 
 abstract class _SubjectDto extends SubjectDto {
   const factory _SubjectDto(
-      {@JsonKey(ignore: true) final String id,
+      {final String id,
       required final String subjectIcon,
       required final List<SubjectMaterialDto> studyMaterial}) = _$_SubjectDto;
   const _SubjectDto._() : super._();
@@ -198,8 +191,7 @@ abstract class _SubjectDto extends SubjectDto {
   factory _SubjectDto.fromJson(Map<String, dynamic> json) =
       _$_SubjectDto.fromJson;
 
-  @override // ignore: invalid_annotation_target
-  @JsonKey(ignore: true)
+  @override
   String get id;
   @override
   String get subjectIcon;

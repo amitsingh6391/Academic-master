@@ -29,9 +29,9 @@ class CriticalFailureDisplay extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {},
-            child: Row(
+            child: const Row(
               mainAxisSize: MainAxisSize.min,
-              children: const <Widget>[
+              children: <Widget>[
                 Icon(Icons.mail),
                 SizedBox(width: 4),
                 Text('I NEED HELP'),

@@ -9,15 +9,13 @@ part 'user_comment_dtos.g.dart';
 
 @freezed
 abstract class UserCommentDto implements _$UserCommentDto {
-  const UserCommentDto._();
-
-  // ignore: sort_unnamed_constructors_first
   const factory UserCommentDto({
     required String commentId,
     required String userId,
     required String commentDescription,
     required DateTime commentAt,
   }) = _UserCommentDto;
+  const UserCommentDto._();
 
   factory UserCommentDto.fromDomain(UserComment comment) {
     return UserCommentDto(

@@ -42,7 +42,7 @@ class _UsersCommentsState extends State<UsersComments> {
           child: SizedBox(
             height: 0.7.sh,
             child: Stack(
-              alignment: WidgetsBinding.instance.window.viewInsets.bottom > 0.0
+              alignment: MediaQuery.of(context).viewInsets.bottom > 0.0
                   ? Alignment.topCenter
                   : Alignment.bottomCenter,
               children: [
